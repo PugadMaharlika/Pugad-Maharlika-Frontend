@@ -1,10 +1,11 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useContext } from "react";
 import oneal from "../assets/oneal_profile.png";
 import logo from "../assets/logo1.png";
+import { UserContext } from "../context/User";
 
 function NavBar({ theme, toggleTheme, toggleSideBar }) {
   const [sideBarOpen, setSideBarOpen] = useState(true);
-
+  const [user, setUser] = useContext(UserContext);
   useEffect(() => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) setSideBarOpen(false);
@@ -27,10 +28,24 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
           )}
         </button>
       </div>
-      <div className="navbar-center flex-1  hidden lg:flex lg:gap-10"></div>
+      <div className="navbar-center flex-1 hidden lg:flex lg:gap-10"></div>
       <div className="flex-1 flex gap-5 justify-end mr-2">
-        <div className=" items-center justify-center font-bold hidden md:flex">SMOOSH</div>
-        <img className="rounded-full btn btn-circle border-inherit mr-2" src={logo} alt="mockup" />
+        <div className=" items-center hidden pt-2 md:pt-0 justify-center font-bold md:flex">
+          {user.username}
+        </div>
+        {user.profile ? (
+          <img
+            className="rounded-full btn btn-circle object-cover border-inherit mr-2"
+            src={`data:image/png;base64,${user.profile}`}
+            alt="mockup"
+          />
+        ) : (
+          <img
+            className="rounded-full btn btn-circle border-inherit mr-2"
+            src={logo}
+            alt="mockup"
+          />
+        )}
       </div>
     </div>
   );

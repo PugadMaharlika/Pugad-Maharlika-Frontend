@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import DrawerButton from "../components/ui/DrawerButton";
@@ -6,10 +6,18 @@ import logo from "../assets/logo1.png";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import PlayerDashboard from "./user/PlayerDashboard";
 import PlayerProfile from "./user/PlayerProfile";
+import { UserContext } from "../context/User";
+import { AlertsContext } from "../context/Alerts";
+import { SuccessContext } from "../context/Success";
+import Alert from "../components/ui/Alert";
 
 function Main({ theme, toggleTheme }) {
   const [selected, setSelected] = useState("Dashboard");
   const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [user, setUser] = useContext(UserContext);
+  const [success, setSuccess] = useContext(SuccessContext);
+  const [errors, setErrors] = useContext(AlertsContext);
+
   const navigate = useNavigate();
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -19,14 +27,17 @@ function Main({ theme, toggleTheme }) {
   };
 
   const handleLogout = () => {
-    localStorage.setItem("authToken", "");
-    localStorage.setItem("refreshToken", "");
+    localStorage.setItem("user", null);
+    localStorage.setItem("authToken", null);
+    localStorage.setItem("refreshToken", null);
     navigate("/");
   };
 
   useEffect(() => {
     const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) setSideBarOpen(false);
+    if (screenWidth <= 768) {
+      setSideBarOpen(false);
+    }
   }, []);
 
   return (
@@ -42,7 +53,7 @@ function Main({ theme, toggleTheme }) {
         buttonText={"Logout"}
       />
       {/* Main Content */}
-      <div className={`flex flex-row w-screen ${theme === "night" ? "bg-space" : "bg-gray-200"}`}>
+      <div className={`flex flex-row w-screen `}>
         {/* Drawer */}
         <div
           className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
@@ -137,12 +148,34 @@ function Main({ theme, toggleTheme }) {
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
           <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
-          <div className="relative  flex-2 flex-grow mb-5 flex overflow-auto max-h-full">
-            <div className="w-auto m-5 h-auto flex-grow border-solid">
-              {/* Content */}
+          <div
+            className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
+              theme === "night" ? "bg-space" : "bg-gray-200"
+            }`}
+          >
+            <div className={`flex-grow flex justify-center m-3 border-solid`}>
+              {/* Content  m-3 md:m-5 */}
               {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
               {selected === "Profile" && <PlayerProfile theme={theme} />}
             </div>
+          </div>
+        </div>
+        {/* Alert container */}
+        <div className="fixed z-40 bottom-5 right-2 md:right-3 lg:right-5">
+          <div className="flex flex-col gap-3 justify-items-end justify-end items-end p-5">
+            {errors.length > 0
+              ? errors.map((error, index) => (
+                  <Alert
+                    key={index}
+                    success={success}
+                    index={index}
+                    error={error}
+                    errors={errors}
+                    setErrors={setErrors}
+                    theme={theme}
+                  />
+                ))
+              : ""}
           </div>
         </div>
       </div>

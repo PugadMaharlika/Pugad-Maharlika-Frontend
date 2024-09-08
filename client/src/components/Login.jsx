@@ -2,6 +2,7 @@ import { React, useState, useContext } from "react";
 import { AlertsContext } from "../context/Alerts";
 import { useNavigate } from "react-router-dom";
 import { SuccessContext } from "../context/Success";
+import { UserContext } from "../context/User";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
@@ -13,6 +14,7 @@ function Login({ theme }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useContext(AlertsContext);
   const [success, setSuccess] = useContext(SuccessContext);
+  const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -40,13 +42,14 @@ function Login({ theme }) {
       .then((response) => {
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("refreshToken", response.data.refreshToken);
+        setUser(response.data.account);
         setEmail("");
         setPassword("");
         setErrors([]);
         setSuccess(false);
         setLoading(false);
         document.getElementById("sign_up_modal").close();
-        navigate("/dashboard");
+        navigate("/app");
       })
       .catch((error) => {
         setSuccess(false);

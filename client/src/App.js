@@ -3,6 +3,7 @@ import { Router, Route, BrowserRouter, Routes } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Alerts from "./context/Alerts";
 import Success from "./context/Success";
+import User from "./context/User";
 import Main from "./pages/Main";
 import { ThemeContext } from "./context/Theme";
 function App() {
@@ -15,7 +16,6 @@ function App() {
   };
   const toggleTheme = () => {
     setTheme(theme === "night" ? "fantasy" : "night");
-    console.log("test");
   };
 
   useEffect(() => {
@@ -25,24 +25,26 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Alerts>
-        <Success>
-          <Routes>
-            <Route
-              index
-              element={
-                <Landing
-                  cookie={cookie}
-                  theme={theme}
-                  toggleTheme={toggleTheme}
-                  handleCoookie={handleCoookie}
-                />
-              }
-            />
-            <Route path="/dashboard" element={<Main theme={theme} toggleTheme={toggleTheme} />} />
-          </Routes>
-        </Success>
-      </Alerts>
+      <User>
+        <Alerts>
+          <Success>
+            <Routes>
+              <Route
+                index
+                element={
+                  <Landing
+                    cookie={cookie}
+                    theme={theme}
+                    toggleTheme={toggleTheme}
+                    handleCoookie={handleCoookie}
+                  />
+                }
+              />
+              <Route path="/app" element={<Main theme={theme} toggleTheme={toggleTheme} />} />
+            </Routes>
+          </Success>
+        </Alerts>
+      </User>
     </BrowserRouter>
   );
 }

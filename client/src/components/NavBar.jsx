@@ -31,12 +31,12 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
       <div className="navbar-center flex-1 hidden lg:flex lg:gap-10"></div>
       <div className="flex-1 flex gap-5 justify-end mr-2">
         <div className=" items-center hidden pt-2 md:pt-0 justify-center font-bold md:flex">
-          {user.username}
+          {user && user.username}
         </div>
-        {user.profile ? (
+        {user && user.profile ? (
           <img
             className="rounded-full btn btn-circle object-cover border-inherit mr-2"
-            src={`data:image/png;base64,${user.profile}`}
+            src={`data:image/png;base64,${user && user.profile}`}
             alt="mockup"
           />
         ) : (

@@ -10,15 +10,24 @@ import { UserContext } from "../context/User";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
 import Alert from "../components/ui/Alert";
+import useAuthCheck from "../hooks/useAuthCheck";
+import useInactivityTimeout from "../hooks/useInactivityTimeout ";
+import axios from "axios";
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function Main({ theme, toggleTheme }) {
+  useAuthCheck();
   const [selected, setSelected] = useState("Dashboard");
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [user, setUser] = useContext(UserContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
+  const authToken = localStorage.getItem("authToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const navigate = useNavigate();
+
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
   };
@@ -26,11 +35,35 @@ function Main({ theme, toggleTheme }) {
     setSelected(title);
   };
 
-  const handleLogout = () => {
-    localStorage.setItem("user", null);
-    localStorage.setItem("authToken", null);
-    localStorage.setItem("refreshToken", null);
-    navigate("/");
+  const handlePutRequest = async (route, data, success) => {
+    axios
+      .put(`${serverUrl}${route}`, data, {
+        headers: {
+          "x-auth-token": authToken,
+          "x-refresh-token": refreshToken,
+        },
+      })
+      .then((response) => {
+        setSuccess(true);
+        setErrors([success]);
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+        setSuccess(false);
+        //setErrors(error.response.data.errors.map((error) => error.msg));
+        return false;
+      });
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken");
+    await handlePutRequest("/auth/logout", {}, "Logout Successful").then(() => {
+      navigate("/");
+    });
   };
 
   useEffect(() => {
@@ -39,6 +72,12 @@ function Main({ theme, toggleTheme }) {
       setSideBarOpen(false);
     }
   }, []);
+
+  const userInactive = () => {
+    handleLogout();
+  };
+
+  useInactivityTimeout(userInactive);
 
   return (
     <>

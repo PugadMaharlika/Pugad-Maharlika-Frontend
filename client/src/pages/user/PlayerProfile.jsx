@@ -64,93 +64,62 @@ const PlayerProfile = ({ theme }) => {
         setErrors(error.response.data.errors.map((error) => error.msg));
       });
   };
+  const handlePutRequest = async (route, data, success) => {
+    axios
+      .put(`${serverUrl}${route}`, data, {
+        headers: {
+          "x-auth-token": authToken,
+          "x-refresh-token": refreshToken,
+        },
+      })
+      .then((response) => {
+        setSuccess(true);
+        setErrors([success]);
+        setUser(response.data.account);
+      })
+      .catch((error) => {
+        console.log(error);
+        setSuccess(false);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+        return false;
+      });
+  };
 
-  const handleUsername = () => {
+  const handleUsername = async () => {
     if (!username) {
       setSuccess(false);
       setErrors(["No username entered"]);
       return;
     }
-
-    axios
-      .put(
-        `${serverUrl}/profile/update-username`,
-        { username: username },
-        {
-          headers: {
-            "x-auth-token": authToken,
-            "x-refresh-token": refreshToken,
-          },
-        }
-      )
-      .then((response) => {
-        setSuccess(true);
-        setErrors(["Success! username has been changed"]);
-        setUser(response.data.account);
-      })
-      .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      });
+    await handlePutRequest(
+      "/profile/update-username",
+      { username: username },
+      "Success! username has been changed"
+    );
   };
 
-  const handlePassword = () => {
+  const handlePassword = async () => {
     if (!password || !newpassword) {
       setSuccess(false);
       setErrors(["Current or new password is not filled"]);
       return;
     }
-
-    axios
-      .put(
-        `${serverUrl}/profile/update-password`,
-        { currentpassword: password, newpassword: newpassword },
-        {
-          headers: {
-            "x-auth-token": authToken,
-            "x-refresh-token": refreshToken,
-          },
-        }
-      )
-      .then((response) => {
-        setSuccess(true);
-        setErrors(["Success! password has been changed"]);
-        setPassword("");
-        setNewPassword("");
-        setUser(response.data.account);
-      })
-      .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      });
+    await handlePutRequest(
+      "/profile/update-password",
+      { currentpassword: password, newpassword: newpassword },
+      "Success! password has been changed"
+    );
   };
 
-  const handleDisable = () => {
-    axios
-      .put(
-        `${serverUrl}/profile/disable-account`,
-        {},
-        {
-          headers: {
-            "x-auth-token": authToken,
-            "x-refresh-token": refreshToken,
-          },
-        }
-      )
-      .then((response) => {
-        localStorage.setItem("user", null);
-        localStorage.setItem("authToken", null);
-        localStorage.setItem("refreshToken", null);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      });
+  const handleDisable = async () => {
+    await handlePutRequest("/profile/disable-account", {}, "Success! account is now disabled");
+
+    localStorage.setItem("user", null);
+    localStorage.setItem("authToken", null);
+    localStorage.setItem("refreshToken", null);
+    navigate("/");
   };
+
   return (
     <>
       {/* Logout Dialog */}
@@ -189,7 +158,7 @@ const PlayerProfile = ({ theme }) => {
         <p className="py-2   font-semibold">Username</p>
         <div className="flex flex-col md:flex-row md:items-center gap-1 sm:justify-between">
           <p className="">
-            Your username is <strong>smoosh3r</strong>
+            Your username is <strong>{user.username}</strong>
           </p>
           <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
             <input

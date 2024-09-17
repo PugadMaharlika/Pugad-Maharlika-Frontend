@@ -65,7 +65,7 @@ function ForgotPassword({ theme }) {
   return (
     <>
       <dialog
-        id="forgot_password_modal"
+        id="forget_password_modal"
         className="modal backdrop-brightness-50 z-30 flex flex-grow w-screen place-self-center fixed  h-screen place-items-center "
       >
         <div
@@ -76,7 +76,8 @@ function ForgotPassword({ theme }) {
           <div className="flex w-full  ">
             <span className="flex-2 w-full "></span>
             <button
-              onClick={() => document.getElementById("forgot_password_modal").close()}
+              id="forget_password_modal_close"
+              onClick={() => document.getElementById("forget_password_modal").close()}
               className="flex-1 hover:underline mt-2  "
             >
               <i className="fa-solid fa-x "></i>

@@ -5,6 +5,7 @@ function Alert({ success, index, error, errors, setErrors, theme }) {
     return (
       <div
         key={index}
+        id="alert"
         className={`flex items-center p-4 rounded-lg ${
           theme === "night" ? "bg-gray-800 text-green-400" : "bg-green-100 text-green-800"
         }`}

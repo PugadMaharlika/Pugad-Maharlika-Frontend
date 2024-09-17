@@ -3,7 +3,6 @@ import { AlertsContext } from "../context/Alerts";
 import { useNavigate } from "react-router-dom";
 import { SuccessContext } from "../context/Success";
 import { UserContext } from "../context/User";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -53,8 +52,13 @@ function Login({ theme }) {
       })
       .catch((error) => {
         setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-        setLoading(false);
+        if (error.message == "Network Error") {
+          console.log(error);
+          setErrors(["Network Error"]);
+        } else {
+          setErrors(error.response.data.errors.map((error) => error.msg));
+          setLoading(false);
+        }
       });
   };
 
@@ -72,6 +76,7 @@ function Login({ theme }) {
           <div className="flex w-full  ">
             <span className="flex-2 w-full "></span>
             <button
+              id="btn_sign_in_modal_close"
               onClick={() => document.getElementById("sign_in_modal").close()}
               className="flex-1 hover:underline mt-2  "
             >
@@ -116,8 +121,9 @@ function Login({ theme }) {
             <div className="flex items-start">
               <div className="flex items-start"></div>
               <a
+                id="btn_forget_password_modal"
                 onClick={() => {
-                  document.getElementById("forgot_password_modal").show();
+                  document.getElementById("forget_password_modal").show();
                   document.getElementById("sign_in_modal").close();
                 }}
                 className="ms-auto text-sm cursor-pointer text-blue-700 hover:underline dark:text-blue-500"
@@ -126,6 +132,7 @@ function Login({ theme }) {
               </a>
             </div>
             <button
+              id="btn_login"
               onClick={handleLogin}
               type="button"
               className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -139,6 +146,7 @@ function Login({ theme }) {
             >
               Not registered?{" "}
               <a
+                id="btn_sign_up_modal"
                 onClick={() => {
                   document.getElementById("sign_in_modal").close();
                   document.getElementById("sign_up_modal").show();

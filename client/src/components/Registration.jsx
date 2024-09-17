@@ -69,6 +69,7 @@ function Registration({ theme }) {
           <div className="flex w-full">
             <span className="flex-2 w-full "></span>
             <button
+              id="btn_sign_up_modal_close"
               onClick={() => document.getElementById("sign_up_modal").close()}
               className="flex-1 hover:underline mt-2"
             >

@@ -33,16 +33,24 @@ function NavBar2({ theme, toggleTheme }) {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a href="#">Home</a>
+            <a id="home" href="#">
+              Home
+            </a>
           </li>
           <li>
-            <a href="#discover">Discover</a>
+            <a id="discover-nav" href="#discover">
+              Discover
+            </a>
           </li>
           <li>
-            <a href="#about">About</a>
+            <a id="about" href="#about">
+              About
+            </a>
           </li>
           <li>
-            <a href="#team">Team</a>
+            <a id="team" href="#team">
+              Team
+            </a>
           </li>
         </ul>
       </div>
@@ -55,6 +63,7 @@ function NavBar2({ theme, toggleTheme }) {
           )}
         </button>
         <button
+          id="btn_sign_in_modal"
           onClick={() => document.getElementById("sign_in_modal").show()}
           className="btn btn-outline"
         >

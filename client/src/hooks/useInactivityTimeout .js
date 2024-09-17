@@ -26,6 +26,9 @@ function useInactivityTimeout(callback, timeout = 30 * 60000) {
       "keydown",
       "mousedown",
       "touchstart",
+      "touchend",
+      "touchmove",
+      "touchcancel",
     ];
 
     // Reset the timer on any of these events

@@ -181,7 +181,7 @@ const PlayerProfile = ({ theme }) => {
         <p className="py-2   font-semibold">Email Address</p>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <p className="">
-            Your email address is <strong>john.doe@company.com</strong>
+            Your email address is <strong>{user.email}</strong>
           </p>
         </div>
         <hr className="mt-4 mb-8" />

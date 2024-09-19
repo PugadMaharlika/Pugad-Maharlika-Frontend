@@ -34,7 +34,7 @@ describe("Landing Page Tests", function () {
     cy.get("#btn_sign_in_modal").click({ force: true });
     cy.get("#sign_in_modal").should("be.visible");
     cy.get("#email").type(this.data.email);
-    cy.get("#password").type("pugadmaharlika123");
+    cy.get("#password").type("password");
     cy.get("#btn_login").click({ force: true });
   });
 });

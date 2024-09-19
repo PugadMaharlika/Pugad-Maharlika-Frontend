@@ -2,9 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
+import emailjs from "@emailjs/browser";
 import Alert from "./ui/Alert";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+emailjs.init("7ZnP8XVakorqeHNIy");
 
 function ForgotPassword({ theme }) {
   const [sent, setSent] = useState(false);
@@ -21,6 +24,19 @@ function ForgotPassword({ theme }) {
       axios
         .get(`${serverUrl}/auth/reset-code?email=${email}`, {})
         .then((response) => {
+          var templateParams = {
+            recipient: email,
+            code: response.data.code,
+          };
+
+          emailjs.send("service_fp4kl58", "template_l6cbh1m", templateParams).then(
+            (response) => {
+              console.log("SUCCESS!", response.status, response.text);
+            },
+            (error) => {
+              console.log("FAILED...", error);
+            }
+          );
           setSuccess(true);
           setErrors(["Success! check email for verification"]);
         })
@@ -53,6 +69,7 @@ function ForgotPassword({ theme }) {
       .then((response) => {
         setSuccess(true);
         setErrors(["Success! password is reset"]);
+        document.getElementById("forget_password_modal").close();
       })
       .catch((error) => {
         console.log(error);

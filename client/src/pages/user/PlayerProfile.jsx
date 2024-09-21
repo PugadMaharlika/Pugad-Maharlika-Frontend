@@ -5,6 +5,7 @@ import { UserContext } from "../../context/User";
 import { SuccessContext } from "../../context/Success";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import axios from "axios";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -19,6 +20,7 @@ const PlayerProfile = ({ theme }) => {
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const navigate = useNavigate();
+  //useAuthCheck();
 
   const handleProfile = () => {
     setErrors([]);

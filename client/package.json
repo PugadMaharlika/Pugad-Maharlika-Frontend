@@ -46,6 +46,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "cypress": "^13.14.2",
     "daisyui": "^4.12.10",
     "tailwindcss": "^3.4.10"

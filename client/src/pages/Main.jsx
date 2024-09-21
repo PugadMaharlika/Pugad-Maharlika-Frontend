@@ -47,12 +47,13 @@ function Main({ theme, toggleTheme }) {
         setSuccess(true);
         setErrors([success]);
         setUser(null);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
         setSuccess(false);
-        //setErrors(error.response.data.errors.map((error) => error.msg));
-        return false;
+        setErrors(error.response.data.errors.map((error) => error.msg));
+        navigate("/");
       });
   };
 
@@ -60,10 +61,7 @@ function Main({ theme, toggleTheme }) {
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
-    localStorage.removeItem("refreshToken");
-    await handlePutRequest("/auth/logout", {}, "Logout Successful").then(() => {
-      navigate("/");
-    });
+    await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
   useEffect(() => {
@@ -73,11 +71,7 @@ function Main({ theme, toggleTheme }) {
     }
   }, []);
 
-  const userInactive = () => {
-    handleLogout();
-  };
-
-  useInactivityTimeout(userInactive);
+  useInactivityTimeout(handleLogout);
 
   return (
     <>

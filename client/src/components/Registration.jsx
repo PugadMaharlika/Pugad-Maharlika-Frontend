@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
+import emailjs from "@emailjs/browser";
 import axios from "axios";
 import Alert from "./ui/Alert";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+emailjs.init("7ZnP8XVakorqeHNIy");
 
 function Registration({ theme }) {
   const [username, setUsername] = useState("");
@@ -43,6 +46,22 @@ function Registration({ theme }) {
         }
       )
       .then((response) => {
+        var templateParams = {
+          username: username,
+          siteURL: response.data.url,
+          id: response.data.id,
+          recipient: email,
+        };
+
+        emailjs.send("service_fp4kl58", "template_2rt35su", templateParams).then(
+          (response) => {
+            console.log("SUCCESS!", response.status, response.text);
+          },
+          (error) => {
+            console.log("FAILED...", error);
+          }
+        );
+
         setSuccess(true);
         setErrors(["Success! check email for verification"]);
         setLoading(false);

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 
-// Default timeout of 30 minutes
+// Default timeout of 30 minutes 30 * 60000
 function useInactivityTimeout(callback, timeout = 30 * 60000) {
   const timeoutRef = useRef(null);
 

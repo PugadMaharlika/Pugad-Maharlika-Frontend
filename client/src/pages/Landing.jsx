@@ -6,7 +6,6 @@ import ForgotPassword from "../components/ForgotPassword";
 import Cookie from "../components/Cookie";
 import { AlertsContext } from "../context/Alerts";
 import Alert from "../components/ui/Alert";
-
 import logo from "../assets/logo1.png";
 import oneal from "../assets/oneal_profile.png";
 import louie from "../assets/louie_profile.png";
@@ -21,6 +20,7 @@ import fighting from "../assets/fighting.PNG";
 function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const [success, setSuccess] = useState(false);
+
   return (
     <>
       <NavBar2 theme={theme} toggleTheme={toggleTheme} />

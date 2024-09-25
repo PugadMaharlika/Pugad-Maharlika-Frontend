@@ -27,7 +27,6 @@ function Login({ theme }) {
       setLoading(false);
       return;
     }
-
     axios
       .post(
         `${serverUrl}/auth/login`,

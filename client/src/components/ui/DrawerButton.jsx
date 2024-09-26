@@ -10,6 +10,7 @@ function DrawerButton({
 }) {
   return (
     <button
+      id={`btn_drawer_${title}`}
       onClick={() => {
         handleSelectedButton(title);
       }}

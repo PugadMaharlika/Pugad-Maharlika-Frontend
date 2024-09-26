@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext } from "../../context/Theme";
 
 function DrawerButton({
   icon,
@@ -10,6 +11,7 @@ function DrawerButton({
 }) {
   return (
     <button
+    id={`btn_drawer_${title}`}
       onClick={() => {
         handleSelectedButton(title);
       }}

@@ -6,6 +6,9 @@ import logo from "../assets/logo1.png";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import PlayerDashboard from "./user/PlayerDashboard";
 import PlayerProfile from "./user/PlayerProfile";
+import { AddAdminAccount } from "../components/ui/AddAdminAccount";
+import {AdminAccount} from "../components/ui/AdminAccount";
+import { AdminManagement } from "./admin/AdminManagement";
 import { UserContext } from "../context/User";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
@@ -64,51 +67,10 @@ function Main({ theme, toggleTheme }) {
     await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
-  useEffect(() => {
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) {
-      setSideBarOpen(false);
-    }
-  }, []);
-
-  useInactivityTimeout(handleLogout);
-
-  return (
-    <>
-      {/* Logout Dialog */}
-      <ConfirmationDialog
-        theme={theme}
-        handleAction={() => {
-          handleLogout();
-        }}
-        id={"logout_dialog"}
-        message={"Confirm Logout?"}
-        buttonText={"Logout"}
-      />
-      {/* Main Content */}
-      <div className={`flex flex-row w-screen `}>
-        {/* Drawer */}
-        <div
-          className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
-            sideBarOpen ? "flex min-w-[240px]" : "w-20 flex"
-          }`}
-        >
-          <div className="mb-2 px-2 py-4">
-            <h5
-              className={`flex gap-2 antialiased tracking-normal font-sans text-lg font-semibold leading-snug ${
-                theme === "night" ? "text-fantasy " : "text-night "
-              }`}
-            >
-              <img
-                className="h-7 w-7 btn-square bg-contain  "
-                alt="Pugad Maharlika Icon"
-                src={logo}
-              />
-              {sideBarOpen ? "Pugad Maharlika" : ""}
-            </h5>
-          </div>
-          <nav className="flex flex-col mb-5 gap-1 p-0 ">
-            <DrawerButton
+  const displayUserNav = () =>{
+    return(
+      <>
+        <DrawerButton
               icon={<i className="fa-solid fa-house-chimney"></i>}
               selected={selected}
               theme={theme}
@@ -165,6 +127,160 @@ function Main({ theme, toggleTheme }) {
                 toggleTheme();
               }}
             />
+      </>
+    );
+  }
+  const displaySuperAdminNav = () =>{
+    return(
+      <>
+        <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Admin"}
+          handleSelectedButton={handleSelectedButton}
+        />
+      </>
+    );
+  }
+
+  const displayAdminNav = () =>{
+    return(
+      <>
+        <DrawerButton
+              icon={<i className="fa-solid fa-house-chimney"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Dashboard"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Profile"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Player"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-hat-wizard pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Items"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-sack-dollar pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Offers"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-bell pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Notifications"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-file-lines pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Transactions"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={<i className="fa-solid fa-flag pl-0.5 md-pl-0"></i>}
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Reports"}
+              handleSelectedButton={handleSelectedButton}
+            />
+            <DrawerButton
+              icon={
+                theme === "night" ? (
+                  <i className="fa-solid fa-cloud-moon"></i>
+                ) : (
+                  <i className="fa-solid fa-cloud-sun"></i>
+                )
+              }
+              selected={selected}
+              theme={theme}
+              sideBarOpen={sideBarOpen}
+              title={"Theme"}
+              handleSelectedButton={() => {
+                toggleTheme();
+              }}
+            />
+      </>
+    );
+  }
+
+  useEffect(() => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      setSideBarOpen(false);
+    }
+  }, []);
+
+  useInactivityTimeout(handleLogout);
+
+  return (
+    <>
+      {/* Logout Dialog */}
+      <ConfirmationDialog
+        theme={theme}
+        handleAction={() => {
+          handleLogout();
+        }}
+        id={"logout_dialog"}
+        message={"Confirm Logout?"}
+        buttonText={"Logout"}
+      />
+      {/* Main Content */}
+      <div className={`flex flex-row w-screen `}>
+        {/* Drawer */}
+        <div
+          className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
+            sideBarOpen ? "flex min-w-[240px]" : "w-20 flex"
+          }`}
+        >
+          <div className="mb-2 px-2 py-4">
+            <h5
+              className={`flex gap-2 antialiased tracking-normal font-sans text-lg font-semibold leading-snug ${
+                theme === "night" ? "text-fantasy " : "text-night "
+              }`}
+            >
+              <img
+                className="h-7 w-7 btn-square bg-contain  "
+                alt="Pugad Maharlika Icon"
+                src={logo}
+              />
+              {sideBarOpen ? "Pugad Maharlika" : ""}
+            </h5>
+          </div>
+          {/* DRAWER */}
+          <nav className="flex flex-col mb-5 gap-1 p-0 "> 
+
+          {user && user.role === 'S' && displaySuperAdminNav() }
+          {user && user.role === 'P'? displayUserNav() : displayAdminNav() }
+            
           </nav>
           <div className="flex-grow"></div>
           <DrawerButton
@@ -190,6 +306,9 @@ function Main({ theme, toggleTheme }) {
               {/* Content  m-3 md:m-5 */}
               {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
               {selected === "Profile" && <PlayerProfile theme={theme} />}
+              {selected === "Admin" && <AdminManagement setSelected={setSelected} theme={theme} />}
+              {selected === "AddAdminAccount" && <AddAdminAccount setSelected={setSelected} theme={theme} />}
+              {selected === "AdminAccount" && <AdminAccount setSelected={setSelected} theme={theme} />}
             </div>
           </div>
         </div>

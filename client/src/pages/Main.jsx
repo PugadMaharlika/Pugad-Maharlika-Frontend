@@ -17,6 +17,11 @@ import { Notification } from "./admin/Notification";
 import { AddNotification } from "./admin/AddNotification";
 import { ViewNotification } from "./admin/ViewNotification";
 import { EditNotification } from "./admin/EditNotification";
+import { Item } from "./admin/Item";
+import AddItem from "./admin/AddItem";
+import ItemDetails from "./admin/ItemDetails";
+import ItemCard from "../components/ui/ItemCard";
+import UpdateItem from "./admin/UpdateItem";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -77,6 +82,14 @@ function Main({ theme, toggleTheme }) {
           theme={theme}
           sideBarOpen={sideBarOpen}
           title={"Dashboard"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-hat-wizard pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Items"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -207,6 +220,14 @@ function Main({ theme, toggleTheme }) {
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Profile"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
           icon={
             theme === "night" ? (
               <i className="fa-solid fa-cloud-moon"></i>
@@ -322,6 +343,17 @@ function Main({ theme, toggleTheme }) {
               )}
               {selected === "EditNotification" && (
                 <EditNotification theme={theme} setSelected={setSelected} />
+              {selected === "Items" && (
+                <Item user={user} theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "ItemDetails" && (
+                <ItemDetails theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "UpdateItem" && (
+                <UpdateItem theme={theme} setSelected={setSelected} />
               )}
             </div>
           </div>

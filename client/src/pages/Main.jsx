@@ -13,6 +13,11 @@ import Alert from "../components/ui/Alert";
 import useAuthCheck from "../hooks/useAuthCheck";
 import useInactivityTimeout from "../hooks/useInactivityTimeout ";
 import axios from "axios";
+import { Item } from "./admin/Item";
+import AddItem from "./admin/AddItem";
+import ItemDetails from "./admin/ItemDetails";
+import ItemCard from "../components/ui/ItemCard";
+import UpdateItem from "./admin/UpdateItem";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -64,6 +69,180 @@ function Main({ theme, toggleTheme }) {
     await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
+  const displayUserNav = () => {
+    return (
+      <>
+        <DrawerButton
+          icon={<i className="fa-solid fa-house-chimney"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Dashboard"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-hat-wizard pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Items"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-sack-dollar pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Offers"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-bell pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Notification"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-file-lines pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Transaction"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Profile"}
+          handleSelectedButton={handleSelectedButton}
+        />
+
+        <DrawerButton
+          icon={
+            theme === "night" ? (
+              <i className="fa-solid fa-cloud-moon"></i>
+            ) : (
+              <i className="fa-solid fa-cloud-sun"></i>
+            )
+          }
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Theme"}
+          handleSelectedButton={() => {
+            toggleTheme();
+          }}
+        />
+      </>
+    );
+  };
+  const displaySuperAdminNav = () => {
+    console.log("Super Admin");
+    return (
+      <>
+        <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Admin"}
+          handleSelectedButton={handleSelectedButton}
+        />
+      </>
+    );
+  };
+
+  const displayAdminNav = () => {
+    return (
+      <>
+        <DrawerButton
+          icon={<i className="fa-solid fa-house-chimney"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Dashboard"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Player"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-hat-wizard pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Items"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-sack-dollar pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Offers"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-bell pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Notifications"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-file-lines pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Transactions"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-flag pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Reports"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Profile"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={
+            theme === "night" ? (
+              <i className="fa-solid fa-cloud-moon"></i>
+            ) : (
+              <i className="fa-solid fa-cloud-sun"></i>
+            )
+          }
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Theme"}
+          handleSelectedButton={() => {
+            toggleTheme();
+          }}
+        />
+      </>
+    );
+  };
+
   useEffect(() => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
@@ -107,64 +286,10 @@ function Main({ theme, toggleTheme }) {
               {sideBarOpen ? "Pugad Maharlika" : ""}
             </h5>
           </div>
+          {/* DRAWER */}
           <nav className="flex flex-col mb-5 gap-1 p-0 ">
-            <DrawerButton
-              icon={<i className="fa-solid fa-house-chimney"></i>}
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Dashboard"}
-              handleSelectedButton={handleSelectedButton}
-            />
-            <DrawerButton
-              icon={<i className="fa-solid fa-sack-dollar pl-0.5 md-pl-0"></i>}
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Offers"}
-              handleSelectedButton={handleSelectedButton}
-            />
-            <DrawerButton
-              icon={<i className="fa-solid fa-bell pl-0.5 md-pl-0"></i>}
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Notification"}
-              handleSelectedButton={handleSelectedButton}
-            />
-            <DrawerButton
-              icon={<i className="fa-solid fa-file-lines pl-0.5 md-pl-0"></i>}
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Transaction"}
-              handleSelectedButton={handleSelectedButton}
-            />
-            <DrawerButton
-              icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Profile"}
-              handleSelectedButton={handleSelectedButton}
-            />
-
-            <DrawerButton
-              icon={
-                theme === "night" ? (
-                  <i className="fa-solid fa-cloud-moon"></i>
-                ) : (
-                  <i className="fa-solid fa-cloud-sun"></i>
-                )
-              }
-              selected={selected}
-              theme={theme}
-              sideBarOpen={sideBarOpen}
-              title={"Theme"}
-              handleSelectedButton={() => {
-                toggleTheme();
-              }}
-            />
+            {user && user.role === "S" && displaySuperAdminNav()}
+            {user && user.role === "P" ? displayUserNav() : displayAdminNav()}
           </nav>
           <div className="flex-grow"></div>
           <DrawerButton
@@ -180,7 +305,11 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
+          <NavBar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            toggleSideBar={toggleSideBar}
+          />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
@@ -190,6 +319,18 @@ function Main({ theme, toggleTheme }) {
               {/* Content  m-3 md:m-5 */}
               {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
               {selected === "Profile" && <PlayerProfile theme={theme} />}
+              {selected === "Items" && (
+                <Item user={user} theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "ItemDetails" && (
+                <ItemDetails theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "UpdateItem" && (
+                <UpdateItem theme={theme} setSelected={setSelected} />
+              )}
             </div>
           </div>
         </div>

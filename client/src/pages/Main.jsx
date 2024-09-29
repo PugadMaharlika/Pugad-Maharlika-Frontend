@@ -22,6 +22,10 @@ import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import ItemCard from "../components/ui/ItemCard";
 import UpdateItem from "./admin/UpdateItem";
+import { Offer } from "./admin/Offer";
+import { ViewOffer } from "./admin/ViewOffer";
+import { AddOffer } from "./admin/AddOffer";
+import { UpdateOffer } from "./admin/UpdateOffer";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -97,7 +101,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -192,7 +196,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -343,6 +347,7 @@ function Main({ theme, toggleTheme }) {
               )}
               {selected === "EditNotification" && (
                 <EditNotification theme={theme} setSelected={setSelected} />
+              )}
               {selected === "Items" && (
                 <Item user={user} theme={theme} setSelected={setSelected} />
               )}
@@ -354,6 +359,22 @@ function Main({ theme, toggleTheme }) {
               )}
               {selected === "UpdateItem" && (
                 <UpdateItem theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Offer" && (
+                <Offer theme={theme} setSelected={setSelected} user={user} />
+              )}
+              {selected === "ViewOffer" && (
+                <ViewOffer
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                />
+              )}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "UpdateOffer" && (
+                <UpdateOffer theme={theme} setSelected={setSelected} />
               )}
             </div>
           </div>

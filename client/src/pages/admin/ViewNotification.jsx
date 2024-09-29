@@ -19,7 +19,7 @@ export const ViewNotification = ({ setSelected, user }) => {
           onClick={() => {
             setSelected("Notification");
           }}
-          className="absolute top-0 right-0 m-4 px-4 py-2 rounded-lg"
+          className="absolute top-0 right-0 m-4 px-4 py-2 rounded hover:text-blue-700"
         >
           <i class="fa-solid fa-circle-chevron-left text-3xl"></i>
         </button>
@@ -49,6 +49,12 @@ export const ViewNotification = ({ setSelected, user }) => {
               Edit
             </button>
           )}
+          <div className="ml-2">
+            <button className="hover:bg-red-700   bg-red-500 text-white rounded-lg px-4 py-2 mt-4 ">
+              <i class="fa-solid fa-trash mr-2"></i>
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

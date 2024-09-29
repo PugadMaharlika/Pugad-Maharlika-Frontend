@@ -31,8 +31,12 @@ const NotificationTable = ({ setSelected }) => {
   };
 
   return (
-    <div className="overflow-hidden rounded-lg items-center justify-center text-xs w-full">
-      <div className="p-6 rounded-lg bg-white shadow-lg w-full">
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night  text-white " : "bg-fantasy text-black"
+      }`}
+    >
+      <div className="p-6 w-full">
         <div className="mb-4 flex flex-col items-center justify-between">
           <div className="w-full">
             <input
@@ -41,10 +45,9 @@ const NotificationTable = ({ setSelected }) => {
               className="border p-2 rounded-md w-full"
             />
           </div>
-        </div>
-
-        <div className="flex justify-center">
-          <table className="table-auto w-full mt-8 text-center">
+        </div>{" "}
+        <div className="flex justify-center ">
+          <table className="table-auto w-full mt-8 text-center ">
             <thead>
               <tr>
                 <th>Action</th>

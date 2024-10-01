@@ -23,11 +23,6 @@ export const Item = ({ setSelected, user }) => {
       <div className="flex flex-wrap overflow-y-auto h-auto">
         <div className="flex flex-wrap w-full">
           <ItemCard setSelected={setSelected} user={user} />
-          <ItemCard setSelected={setSelected} user={user} />
-          <ItemCard setSelected={setSelected} user={user} />
-          <ItemCard setSelected={setSelected} user={user} />
-          <ItemCard setSelected={setSelected} user={user} />
-          <ItemCard setSelected={setSelected} user={user} />
         </div>
       </div>
     </div>

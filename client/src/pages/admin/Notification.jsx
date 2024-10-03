@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
 {
-  /*Get Props*/
+  /*Get Props import axios from "axios";*/
 }
 export const Notification = ({ setSelected, user }) => {
   const [theme, setTheme] = useContext(ThemeContext);

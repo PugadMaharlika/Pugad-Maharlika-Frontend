@@ -59,10 +59,10 @@ const ItemCard = ({ setSelected, name, details, image }) => {
         </button>
       </div>
 
-      <img className="w-full h-auto" src={image} alt="card" />
+      <img className="w-full h-auto" src={logo} alt="card" />
       <div className="p-4">
-        <h1 className="font-bold text-xl mb-2">{items.name}</h1>
-        <p className="text-base">{items.details}</p>
+        <h1 className="font-bold text-xl mb-2">Skin Name</h1>
+        <p className="text-base">Skin Details</p>
         <div className="mt-4 flex flex-col sm:flex-row">
           {user.role === "P" ? (
             <button className="bg-green-500 px-4 py-2 rounded mr-2 mb-2 sm:mb-0 text-white">

@@ -14,6 +14,8 @@ import useAuthCheck from "../hooks/useAuthCheck";
 import useInactivityTimeout from "../hooks/useInactivityTimeout ";
 import axios from "axios";
 import { Item } from "./admin/Item";
+import { Transactions } from "../pages/admin/Transactions";
+import { Invoice } from "../pages/admin/Receipt";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import ItemCard from "../components/ui/ItemCard";
@@ -109,7 +111,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Transaction"}
+          title={"Transactions"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -330,6 +332,12 @@ function Main({ theme, toggleTheme }) {
               )}
               {selected === "UpdateItem" && (
                 <UpdateItem theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Transactions" && (
+                <Transactions theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Receipt" && (
+                <Invoice theme={theme} setSelected={setSelected} />
               )}
             </div>
           </div>

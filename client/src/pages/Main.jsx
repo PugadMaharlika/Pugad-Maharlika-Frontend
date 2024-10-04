@@ -4,8 +4,8 @@ import NavBar from "../components/NavBar";
 import DrawerButton from "../components/ui/DrawerButton";
 import logo from "../assets/logo1.png";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import PlayerDashboard from "./user/PlayerDashboard";
-import PlayerProfile from "./user/PlayerProfile";
+import Dashboard from "./user/Dashboard";
+import Profile from "./user/Profile";
 import { UserContext } from "../context/User";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
@@ -305,11 +305,7 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar
-            theme={theme}
-            toggleTheme={toggleTheme}
-            toggleSideBar={toggleSideBar}
-          />
+          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
@@ -317,20 +313,14 @@ function Main({ theme, toggleTheme }) {
           >
             <div className={`flex-grow flex justify-center m-3 border-solid`}>
               {/* Content  m-3 md:m-5 */}
-              {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
-              {selected === "Profile" && <PlayerProfile theme={theme} />}
-              {selected === "Items" && (
-                <Item user={user} theme={theme} setSelected={setSelected} />
-              )}
-              {selected === "AddItem" && (
-                <AddItem theme={theme} setSelected={setSelected} />
-              )}
+              {selected === "Dashboard" && <Dashboard theme={theme} />}
+              {selected === "Profile" && <Profile theme={theme} />}
+              {selected === "Items" && <Item user={user} theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
               {selected === "ItemDetails" && (
                 <ItemDetails theme={theme} setSelected={setSelected} />
               )}
-              {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} />
-              )}
+              {selected === "UpdateItem" && <UpdateItem theme={theme} setSelected={setSelected} />}
             </div>
           </div>
         </div>

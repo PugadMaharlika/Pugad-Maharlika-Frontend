@@ -5,7 +5,6 @@ import { useContext, useState } from "react";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
-import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 
 export const AddItem = ({ setSelected }) => {
@@ -25,28 +24,6 @@ export const AddItem = ({ setSelected }) => {
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-  const { data, error, loading, refetch } = useAxios(
-    {
-      url: `${serverUrl}/item/add`, // Your API endpoint for adding items
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": authToken,
-        "x-refresh-token": refreshToken,
-      },
-      data: {
-        // Data to be sent to the API
-        name: name,
-        value: value,
-        details: details,
-        itemType: itemType,
-        itemholder: itemholder,
-        image: image, // Assuming you're sending image URL or base64 string
-      },
-    },
-    false // Manual fetch, do not run on mount
-  );
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -128,9 +105,7 @@ export const AddItem = ({ setSelected }) => {
         <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
           <div className="flex items-center gap-5">
             <div className="flex-1">
-              {image && (
-                <img src={displayItem} alt="Uploaded" className="mt-4" />
-              )}
+              {image && <img src={displayItem} alt="Uploaded" className="mt-4" />}
             </div>
             <div className="flex-1">
               <input
@@ -149,11 +124,7 @@ export const AddItem = ({ setSelected }) => {
                 onChange={(e) => setValue(e.target.value)}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               />
-              <select
-                value={value}
-                onChange={(e) => setItemType(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              >
+              <select value={value} className="w-full border border-gray-300 p-2 rounded-lg mb-4">
                 <option value="" disabled selected>
                   Item Type
                 </option>

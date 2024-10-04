@@ -5,7 +5,6 @@ import { useContext, useState, useEffect } from "react";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
-import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 
 export const UpdateItem = ({ setSelected, item_id }) => {
@@ -104,7 +103,6 @@ export const UpdateItem = ({ setSelected, item_id }) => {
       });
   };
 
-
   return (
     <>
       <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full">
@@ -124,9 +122,7 @@ export const UpdateItem = ({ setSelected, item_id }) => {
         <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
           <div className="flex items-center gap-5">
             <div className="flex-1">
-              {displayItem && (
-                <img src={displayItem} alt="Uploaded" className="mt-4" />
-              )}
+              {displayItem && <img src={displayItem} alt="Uploaded" className="mt-4" />}
             </div>
             <div className="flex-1">
               <input

@@ -4,8 +4,8 @@ import NavBar from "../components/NavBar";
 import DrawerButton from "../components/ui/DrawerButton";
 import logo from "../assets/logo1.png";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import PlayerDashboard from "./user/PlayerDashboard";
-import PlayerProfile from "./user/PlayerProfile";
+import Dashboard from "./user/Dashboard";
+import Profile from "./user/Profile";
 import { UserContext } from "../context/User";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
@@ -319,8 +319,8 @@ function Main({ theme, toggleTheme }) {
           >
             <div className={`flex-grow flex justify-center m-3 border-solid`}>
               {/* Content  m-3 md:m-5 */}
-              {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
-              {selected === "Profile" && <PlayerProfile theme={theme} />}
+              {selected === "Dashboard" && <Dashboard theme={theme} />}
+              {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Items" && (
                 <Item user={user} theme={theme} setSelected={setSelected} />
               )}

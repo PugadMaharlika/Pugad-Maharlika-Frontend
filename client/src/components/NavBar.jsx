@@ -36,7 +36,7 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
         {user && user.profile ? (
           <img
             className="rounded-full btn btn-circle object-cover border-inherit mr-2"
-            src={`data:image/png;base64,${user && user.profile}`}
+            src={user && user.profile}
             alt="mockup"
           />
         ) : (

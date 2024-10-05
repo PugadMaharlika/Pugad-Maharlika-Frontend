@@ -23,7 +23,7 @@ const Profile = ({ theme }) => {
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const navigate = useNavigate();
-  //useAuthCheck();
+  useAuthCheck();
 
   const handleUpdateImage = async (url) => {
     const config = {
@@ -34,13 +34,13 @@ const Profile = ({ theme }) => {
       },
     };
 
-    const { data, error, loading } = await API(config);
-    if (data) setUser(data.account);
+    const { res, error, loading } = await API(config);
+    if (res) setUser(res.data.account);
     if (error) console.log(error);
   };
 
   const handleProfile = async () => {
-    await UploadImage(profile, setSuccess, setErrors, handleUpdateImage);
+    const result = await UploadImage(profile, setSuccess, setErrors, handleUpdateImage, user);
   };
 
   const handlePutRequest = async (route, data, success) => {
@@ -113,13 +113,12 @@ const Profile = ({ theme }) => {
         is_danger={true}
       />
       <div
-        className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full ${
+        className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md flex-grow px-8  ${
           theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
         }`}
       >
         <div className="pt-4">
           <h1 className="py-2   font-semibold">Account Profile</h1>
-          {image != null && console.log("Image: ", image)}
         </div>
         <hr className="mt-4 mb-8" />
         <p className="py-2   font-semibold">Profile Picture</p>

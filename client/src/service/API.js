@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
-  let data = null;
+  let res = null;
   let error = null;
   let loading = false;
 
@@ -14,7 +14,7 @@ const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
     loading = true;
     try {
       const response = await axios({ ...axiosConfig, ...overrideConfig });
-      data = response.data;
+      res = response;
       error = null;
     } catch (err) {
       error = err;
@@ -23,18 +23,18 @@ const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
     }
   }
 
-  return { data, error, loading };
+  return { res, error, loading };
 };
 
 export default API;
 
 // import API from "../../service/API";
 
-// async function sendData() {
+// async function sendresponse() {
 //   const axiosConfig = {
 //     url: "https://api.example.com/submit",
 //     method: "POST",
-//     data: {  // The data you want to post
+//     response: {  // The response you want to post
 //       name: "John Doe",
 //       email: "john.doe@example.com",
 //     },
@@ -45,4 +45,4 @@ export default API;
 //     },
 //   };
 
-//   const { data, error, loading } = await API(axiosConfig);
+//   const { response, error, loading } = await API(axiosConfig);

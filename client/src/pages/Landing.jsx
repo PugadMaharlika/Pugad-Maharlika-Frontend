@@ -1,4 +1,4 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import NavBar2 from "../components/NavBar2";
 import Login from "../components/Login";
 import Registration from "../components/Registration";
@@ -20,6 +20,10 @@ import fighting from "../assets/fighting.PNG";
 function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    setErrors([]);
+  }, []);
 
   return (
     <>

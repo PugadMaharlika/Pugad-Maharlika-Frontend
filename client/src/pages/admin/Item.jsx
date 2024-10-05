@@ -7,7 +7,7 @@ import { AlertsContext } from "../../context/Alerts";
 import { UserContext } from "../../context/User";
 import { SuccessContext } from "../../context/Success";
 
-export const Item = ({ setSelected }) => {
+export const Item = ({ setSelected, setSelectedItem }) => {
   const [theme, setTheme] = useContext(ThemeContext);
   const [items, setItems] = useState(null);
   const [user, setUser] = useContext(UserContext);
@@ -77,6 +77,7 @@ export const Item = ({ setSelected }) => {
             setSelected={setSelected}
             user={user}
             item={item}
+            setSelectedItem={setSelectedItem}
           />
         ))}
       <div className="flex flex-wrap overflow-y-auto h-auto">

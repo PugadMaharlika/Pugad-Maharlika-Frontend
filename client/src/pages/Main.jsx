@@ -32,6 +32,7 @@ function Main({ theme, toggleTheme }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const navigate = useNavigate();
 
@@ -322,13 +323,22 @@ function Main({ theme, toggleTheme }) {
               {selected === "Dashboard" && <Dashboard theme={theme} />}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Items" && (
-                <Item user={user} theme={theme} setSelected={setSelected} />
+                <Item
+                  user={user}
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedItem={setSelectedItem}
+                />
               )}
               {selected === "AddItem" && (
                 <AddItem theme={theme} setSelected={setSelected} />
               )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
                 <UpdateItem theme={theme} setSelected={setSelected} />

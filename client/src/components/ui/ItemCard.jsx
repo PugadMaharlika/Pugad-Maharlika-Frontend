@@ -4,10 +4,11 @@ import logo from "../../../src/assets/logo1.png";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/User";
 
-const ItemCard = ({ setSelected, item }) => {
+const ItemCard = ({ setSelected, item, setSelectedItem }) => {
   const [theme, setTheme] = useContext(ThemeContext);
   const [user, setUser] = useContext(UserContext);
   console.log(`data:image/png;base64,${item && item.item_image}`);
+  console.log(item);
   return (
     <div
       className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 min-w-55 ${
@@ -25,7 +26,11 @@ const ItemCard = ({ setSelected, item }) => {
         </button>
       </div>
 
-      <img className="w-full h-auto" src={item && item.item_sprite} alt="card" />
+      <img
+        className="w-full h-auto"
+        src={item && item.item_sprite}
+        alt="card"
+      />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{item.name}</h1>
         <p className="text-base">{item.item_desc}</p>
@@ -38,6 +43,7 @@ const ItemCard = ({ setSelected, item }) => {
             <button
               id="btn_item_details"
               onClick={() => {
+                setSelectedItem(item.item_id);
                 setSelected("ItemDetails");
               }}
               className="bg-blue-500 px-4 py-2 rounded text-white"

@@ -49,20 +49,24 @@ export const AddItem = ({ setSelected }) => {
       },
     };
 
-    const { data, error, loading } = await API(config);
-    if (data) setUser(data.account);
+    const { res, error, loading } = await API(config);
+    if (res) {
+      setUser(res.data.account);
+      setSuccess(true);
+      setErrors(["Image uploaded successfully"]);
+    }
     if (error) console.log(error);
   };
 
   const handleItem = async () => {
-    await UploadImage(image, setSuccess, setErrors, handleInsertItem);
+    await UploadImage(image, setSuccess, setErrors, handleInsertItem, user);
   };
 
   return (
     <>
-      <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full">
-        <div className="flex justify-between items-center py-4">
-          <h1 className="text-3xl font-bold">Add Item</h1>
+      <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
+        <div className="flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold">
+          <h1 className="text-2xl font-bold">Items</h1>
           <button
             id="btn_back"
             onClick={() => {

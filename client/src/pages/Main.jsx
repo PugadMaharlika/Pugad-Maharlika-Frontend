@@ -15,6 +15,7 @@ import axios from "axios";
 import { Item } from "./admin/Item";
 import { Transactions } from "../pages/admin/Transactions";
 import { Invoice } from "../pages/admin/Receipt";
+import { Reports } from "../pages/admin/Reports";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import UpdateItem from "./admin/UpdateItem";
@@ -338,7 +339,11 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
                 <Transactions theme={theme} setSelected={setSelected} />
@@ -346,6 +351,7 @@ function Main({ theme, toggleTheme }) {
               {selected === "Receipt" && (
                 <Invoice theme={theme} setSelected={setSelected} />
               )}
+              {selected === "Reports" && <Reports theme={theme} />}
             </div>
           </div>
         </div>

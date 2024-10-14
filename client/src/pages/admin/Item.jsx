@@ -23,20 +23,24 @@ export const Item = ({ setSelected, setSelectedItem }) => {
         setErrors([]);
         setSuccess(false);
 
-        const response = await axios.get(
-          `${serverUrl}/item/view`,
+        await axios
+          .get(
+            `${serverUrl}/item/view`,
 
-          {
-            headers: {
-              "x-auth-token": authToken,
-              "x-refresh-token": refreshToken,
+            {
+              headers: {
+                "x-auth-token": authToken,
+                "x-refresh-token": refreshToken,
+              },
             },
-          },
-          {}
-        );
-        setItems(response.data.items);
-        setUser(response.data.account);
-        setSuccess(true); // Set success only if the request succeeds
+            {}
+          )
+          .then((response) => {
+            console.log(response);
+            setItems(response.data.items);
+            setUser(response.data.account);
+            setSuccess(true); // Set success only if the request succeeds
+          });
       } catch (error) {
         console.error(error);
         setSuccess(false);
@@ -57,9 +61,13 @@ export const Item = ({ setSelected, setSelectedItem }) => {
   }, []); // Dependencies to rerun effect only when these values change
 
   return (
-    <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full">
-      <div className="flex justify-between items-center py-4">
-        <h1 className="text-3xl font-bold">Items</h1>
+    <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-8 flex-grow h-full">
+      <div
+        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold ${
+          theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+        }`}
+      >
+        <h1 className="text-2xl font-bold">Items</h1>
         <button
           id="btn_add_item"
           onClick={() => {
@@ -70,18 +78,20 @@ export const Item = ({ setSelected, setSelectedItem }) => {
           Add Item
         </button>
       </div>
-      {items &&
-        items.map((item) => (
-          <ItemCard
-            key={item.item_id} // Assuming each item has a unique `id`
-            setSelected={setSelected}
-            user={user}
-            item={item}
-            setSelectedItem={setSelectedItem}
-          />
-        ))}
-      <div className="flex flex-wrap overflow-y-auto h-auto">
-        <div className="flex flex-wrap w-full"></div>
+      <div className="flex flex-wrap place gap-1">
+        {items &&
+          items.map((item) => (
+            <ItemCard
+              key={item.item_id} // Assuming each item has a unique `id`
+              setSelected={setSelected}
+              user={user}
+              item={item}
+              setSelectedItem={setSelectedItem}
+            />
+          ))}
+        <div className="flex flex-wrap overflow-y-auto h-auto">
+          <div className="flex flex-wrap w-full"></div>
+        </div>
       </div>
     </div>
   );

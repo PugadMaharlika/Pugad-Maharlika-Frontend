@@ -23,19 +23,19 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
         setErrors([]);
         setSuccess(false);
 
-        const response = await axios.get(
-          `${serverUrl}/item/itemdetails`,
-          {
+        await axios
+          .get(`${serverUrl}/item/itemdetails?id=${selectedItem}`, {
             headers: {
               "x-auth-token": authToken,
               "x-refresh-token": refreshToken,
             },
-          },
-          { id: selectedItem }
-        );
-        setItems(response.data.items);
-        setUser(response.data.account);
-        setSuccess(true); // Set success only if the request succeeds
+          })
+          .then((response) => {
+            console.log(response);
+            setItems(response.data.item);
+            setUser(response.data.account);
+            setSuccess(true); // Set success only if the request succeeds
+          });
       } catch (error) {
         console.error(error);
         setSuccess(false);
@@ -56,13 +56,13 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
   }, []); // Dependencies to rerun effect only when these values change
 
   return (
-    <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-8 sm:w-full h-full">
-      <div className="flex justify-between items-center py-4">
+    <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-8 sm:w-full h-full gap-5">
+      <div className="flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold">
         <h1 className="text-3xl font-bold">Item Details</h1>
         <button
           id="btn_back_item_details"
           onClick={() => {
-            setSelected("Item");
+            setSelected("Items");
           }}
           className="rounded-lg px-4"
         >
@@ -75,27 +75,37 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
           <div className="md:flex-shrink-0">
             <img
               className="h-48 w-full object-contain m-2"
-              src={items}
+              src={items && items.item_sprite}
               alt="Product"
             />
           </div>
           <div className="p-8">
             <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-              {items.name}
+              {items && items.item_name}
             </div>
-            <p className="mt-2 text-gray-600">Product Description</p>
-            <p className="mt-2 text-gray-600">{selectedItem.details}</p>
+            <p className="mt-2 text-gray-600">
+              Product Description: {items && items.item_desc}
+            </p>
             <div className="mt-4">
-              <span className="text-gray-600">Price: 250</span>
-            </div>
-            <div className="mt-4">
-              <span className="text-gray-600">Status: Released</span>
-            </div>
-            <div className="mt-4">
-              <span className="text-gray-600">Date Created: 2022-01-01</span>
+              <span className="text-gray-600">
+                Price: {items && items.item_value}
+              </span>
             </div>
             <div className="mt-4">
-              <span className="text-gray-600">Date Updated: 2022-01-15</span>
+              <span className="text-gray-600">
+                Status:{" "}
+                {items && items.item_enabled ? "Released" : "Unreleased"}
+              </span>
+            </div>
+            <div className="mt-4">
+              <span className="text-gray-600">
+                Date Created: {items && items.date_created}
+              </span>
+            </div>
+            <div className="mt-4">
+              <span className="text-gray-600">
+                Date Updated: {items && items.date_updated}
+              </span>
             </div>
           </div>
         </div>

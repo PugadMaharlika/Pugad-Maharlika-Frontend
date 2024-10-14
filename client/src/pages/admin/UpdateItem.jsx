@@ -6,107 +6,132 @@ import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
 import axios from "axios";
+import UploadImage from "../../service/UploadImage";
+import API from "../../service/API";
 
-export const UpdateItem = ({ setSelected, item_id }) => {
+export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [image, setImage] = useState(null);
-  const [theme] = useContext(ThemeContext);
-  const [displayItem, setdisplayItem] = useState("");
+  const [Theme] = useContext(ThemeContext);
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const [details, setDetails] = useState("");
   const [itemType, setItemType] = useState("S");
   const [itemholder, setItemHolder] = useState("diego silang");
-
+  const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
+  const [displayItem, setdisplayItem] = useState("");
+  const [itemId, setItemId] = useState("");
+  const [items, setItems] = useState("");
 
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-  useEffect(() => {
-    axios
-      .get(`${serverUrl}/item/${item_id}`, {
-        headers: {
-          "x-auth-token": authToken,
-          "x-refresh-token": refreshToken,
-        },
-      })
-      .then((response) => {
-        const item = response.data;
-        setName(item.name);
-        setValue(item.value);
-        setDetails(item.details);
-        setItemType(item.itemType);
-        setItemHolder(item.itemholder);
-        setdisplayItem(item.image); // Assuming image is returned as a URL
-      })
-      .catch((error) => {
-        setErrors(["Error fetching item data"]);
-        console.error(error);
-      });
-  }, [item_id, authToken, refreshToken, serverUrl]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setdisplayItem(imageUrl);
-      setImage(file);
     }
   };
 
-  const handleItemUpdate = () => {
-    setErrors([]);
-    setSuccess(false);
-
-    if (image && !["image/png", "image/jpeg", "image/jpg"].includes(image.type.toLowerCase())) {
-      setErrors(["Invalid file type. Only PNG, JPG, and JPEG are allowed"]);
+  const handleUpdateItem = async (url) => {
+    if (
+      name == items.item_name &&
+      value == items.item_value &&
+      details == items.item_desc &&
+      itemType == items.item_type &&
+      itemholder == items.item_holder &&
+      !image
+    ) {
+      setSuccess(true);
+      setErrors(["404 Item updated successfully"]);
       return;
     }
 
-    const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-    if (image && image.size > maxSize) {
-      setErrors(["File size exceeds 5 MB. Please choose a smaller file."]);
-      return;
+    const config = {
+      url: `${serverUrl}/item/update`,
+      method: "PUT",
+      data: {
+        id: selectedItem,
+        name: name,
+        value: value,
+        itemType: itemType,
+        details: details,
+        itemholder: itemholder,
+        url: url ? url : items.item_sprite,
+      },
+    };
+
+    const { res, error, loading } = await API(config);
+    if (res) {
+      console.log(res);
+      setUser(res.data.account);
+      setSuccess(true);
+      setErrors(["Item updated successfully"]);
     }
+    if (error) console.log(error);
+  };
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("value", value);
-    formData.append("itemType", itemType);
-    formData.append("details", details);
-    formData.append("itemholder", itemholder);
+  const handleItem = async () => {
+    if (image)
+      await UploadImage(image, setSuccess, setErrors, handleUpdateItem, user);
+    else handleUpdateItem();
+  };
 
-    if (image) {
-      formData.append("image", image); // Only append image if a new one is selected
-    }
-
-    axios
-      .put(`${serverUrl}/item/update/${item_id}`, formData, {
-        headers: {
-          "x-auth-token": authToken,
-          "x-refresh-token": refreshToken,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        setSuccess(true);
-        setErrors(["Success! Item has been updated"]);
-        setUser(response.data.account);
-      })
-      .catch((error) => {
-        console.log(error);
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        setErrors([]);
         setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      });
-  };
+
+        await axios
+          .get(`${serverUrl}/item/itemdetails?id=${selectedItem}`, {
+            headers: {
+              "x-auth-token": authToken,
+              "x-refresh-token": refreshToken,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setItems(response.data.item);
+            setUser(response.data.account);
+            setSuccess(true); // Set success only if the request succeeds
+            setName(response.data.item.item_name);
+            setValue(response.data.item.item_value);
+            setItemType(response.data.item.item_type);
+            setDetails(response.data.item.item_desc);
+            setItemHolder(response.data.item.item_holder);
+          });
+      } catch (error) {
+        console.error(error);
+        setSuccess(false);
+        if (error.response && error.response.data.errors) {
+          setErrors(error.response.data.errors.map((err) => err.msg));
+        } else {
+          setErrors(["An unexpected error occurred."]); // Generic fallback
+        }
+      }
+    };
+
+    fetchItems();
+
+    // Optionally return a cleanup function
+    return () => {
+      setItems([]); // Example cleanup, adjust as needed
+    };
+  }, []);
 
   return (
     <>
-      <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full">
-        <div className="flex justify-between items-center py-4">
+      <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
+        <div
+          className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           <h1 className="text-3xl font-bold">Update Item</h1>
           <button
             id="btn_back"
@@ -122,7 +147,12 @@ export const UpdateItem = ({ setSelected, item_id }) => {
         <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
           <div className="flex items-center gap-5">
             <div className="flex-1">
-              {displayItem && <img src={displayItem} alt="Uploaded" className="mt-4" />}
+              <img
+                id="image"
+                className="h-48 w-full object-contain m-2"
+                src={items && items.item_sprite}
+                alt="Uploaded"
+              />
             </div>
             <div className="flex-1">
               <input
@@ -175,7 +205,9 @@ export const UpdateItem = ({ setSelected, item_id }) => {
               <div className="flex w-full justify-end">
                 <button
                   className="bg-green-500 px-6 py-2 text-white rounded-lg"
-                  onClick={handleItemUpdate}
+                  onClick={() => {
+                    handleItem();
+                  }}
                 >
                   Update
                 </button>

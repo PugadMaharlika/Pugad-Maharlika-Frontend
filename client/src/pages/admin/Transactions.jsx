@@ -9,7 +9,11 @@ export const Transactions = ({ setSelected }) => {
   return (
     <>
       <div className="container mx-auto p-4">
-        <div className="flex items-center mb-4">
+        <div
+          className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 py-4 font-bold items-center mb-4 ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           <input
             type="text"
             placeholder="Search..."

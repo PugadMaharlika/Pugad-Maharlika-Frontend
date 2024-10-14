@@ -32,7 +32,7 @@ export const TransactionTable = ({ setSelected }) => {
 
   return (
     <div
-      className={`col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+      className={`flex col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 mb-5 ${
         theme === "night" ? "bg-night  text-white " : "bg-fantasy text-black"
       }`}
     >

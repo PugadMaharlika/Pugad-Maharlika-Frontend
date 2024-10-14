@@ -28,7 +28,7 @@ export const AddNotification = ({ setSelected }) => {
   const handleCreateNotification = async () => {
     setErrors([]);
     setSuccess(false);
-
+    setSelected("Notification");
     // Validation
     if (!title || !message) {
       setErrors(["All fields are required."]);

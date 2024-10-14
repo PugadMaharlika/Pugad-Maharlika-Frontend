@@ -25,6 +25,7 @@ import { ViewOffer } from "./admin/ViewOffer";
 import { AddOffer } from "./admin/AddOffer";
 import { UpdateOffer } from "./admin/UpdateOffer";
 import NotificationTable from "../components/ui/NotificationTable";
+import AdminDashboard from "./admin/AdminDashboard";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -273,7 +274,7 @@ function Main({ theme, toggleTheme }) {
       <div className={`flex flex-row w-screen `}>
         {/* Drawer */}
         <div
-          className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
+          className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] max-h-svh p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
             sideBarOpen ? "flex min-w-[240px]" : "w-20 flex"
           }`}
         >
@@ -292,7 +293,11 @@ function Main({ theme, toggleTheme }) {
             </h5>
           </div>
           {/* DRAWER */}
-          <nav className="flex flex-col mb-5 gap-1 p-0 ">
+          <nav
+            className={`flex flex-col mb-5 ${
+              sideBarOpen ? "overflow-y-auto" : "overflow-hidden"
+            } gap-1 p-0 `}
+          >
             {user && user.role === "S" && displaySuperAdminNav()}
             {user && user.role === "P" ? displayUserNav() : displayAdminNav()}
           </nav>
@@ -320,10 +325,16 @@ function Main({ theme, toggleTheme }) {
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            {/*Check Button Function*/}
-            <div className={`flex-grow flex justify-center m-3 border-solid`}>
-              {/* Content  m-3 md:m-5 */}
-              {selected === "Dashboard" && <Dashboard theme={theme} />}
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
+              {/* Content */}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
+              {selected === "Dashboard" && user.role === "P" && (
+                <Dashboard theme={theme} />
+              )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Notification" && (
                 <Notification

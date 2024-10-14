@@ -15,35 +15,7 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
 const LineChart = ({ sidetitle, title, data }) => {
-  // Chart data
-  const data = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    datasets: [
-      {
-        label: "",
-        data: [10, 20, 30, 40, 50, 60],
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 2,
-        pointBackgroundColor: "rgba(75,192,192,1)",
-      },
-    ],
-  };
-
-  // Chart options
+  // // Chart options
   const options = {
     responsive: true,
     plugins: {

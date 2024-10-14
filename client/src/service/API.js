@@ -30,11 +30,11 @@ export default API;
 
 // import API from "../../service/API";
 
-// async function sendData() {
+// async function sendresponse() {
 //   const axiosConfig = {
 //     url: "https://api.example.com/submit",
 //     method: "POST",
-//     data: {  // The data you want to post
+//     response: {  // The response you want to post
 //       name: "John Doe",
 //       email: "john.doe@example.com",
 //     },
@@ -45,4 +45,4 @@ export default API;
 //     },
 //   };
 
-//   const { data, error, loading } = await API(axiosConfig);
+//   const { response, error, loading } = await API(axiosConfig);

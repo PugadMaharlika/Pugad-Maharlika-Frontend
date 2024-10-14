@@ -10,7 +10,6 @@ import { UserContext } from "../context/User";
 import { AlertsContext } from "../context/Alerts";
 import { SuccessContext } from "../context/Success";
 import Alert from "../components/ui/Alert";
-import useAuthCheck from "../hooks/useAuthCheck";
 import useInactivityTimeout from "../hooks/useInactivityTimeout ";
 import axios from "axios";
 import { Notification } from "./admin/Notification";
@@ -20,7 +19,6 @@ import { EditNotification } from "./admin/EditNotification";
 import { Item } from "./admin/Item";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
-import ItemCard from "../components/ui/ItemCard";
 import UpdateItem from "./admin/UpdateItem";
 import { Offer } from "./admin/Offer";
 import { ViewOffer } from "./admin/ViewOffer";
@@ -31,7 +29,6 @@ import NotificationTable from "../components/ui/NotificationTable";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function Main({ theme, toggleTheme }) {
-  useAuthCheck();
   const [selected, setSelected] = useState("Dashboard");
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [user, setUser] = useContext(UserContext);

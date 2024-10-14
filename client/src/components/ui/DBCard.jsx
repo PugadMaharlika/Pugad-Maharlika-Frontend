@@ -1,9 +1,16 @@
 import React from "react";
-import { ThemeContext } from "../../context/Theme";
 
-const DBCard = () => {
+const DBCard = ({ theme, title, number, icon }) => {
   return (
-    <div className="bg-night rounded-lg h-24 w-44 md:h-32 md:w-48 lg:h-36 lg:w-52">asdasdasd</div>
+    <div
+      className={` rounded-lg shadow-lg h-36 w-full max-w-56 flex flex-col gap-3 py-5 px-10  bg-${theme}`}
+    >
+      <p className="font-bold text-md text-left opacity-50 w-full"> {title}</p>
+      <div className="flex flex-full gap-6">
+        <p className="text-4xl text-left "> {icon}</p>
+        <p className="text-4xl text-left "> {number}</p>
+      </div>
+    </div>
   );
 };
 

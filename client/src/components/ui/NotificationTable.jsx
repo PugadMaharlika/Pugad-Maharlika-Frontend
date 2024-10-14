@@ -1,33 +1,16 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-const NotificationTable = ({ setSelected }) => {
+const NotificationTable = ({
+  setSelected,
+  notifications,
+  setNotificationselected,
+}) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const Sampledata = [
-    {
-      id: 1,
-      title: "Game Update 1.1",
-      type: "Global",
-      datecreated: "2022-01-01",
-      dateupdate: "2022-01-01",
-    },
-    {
-      id: 2,
-      title: "New Purchase",
-      type: "Player",
-      datecreated: "2022-02-15",
-      dateupdate: "2022-02-15",
-    },
-    {
-      id: 3,
-      title: "New Offers ",
-      type: "Global",
-      datecreated: "2022-03-20",
-      dateupdate: "2022-03-20",
-    },
-  ];
-  const handleviewnotification = () => {
+
+  const handleviewnotification = (note_id) => {
     setSelected("ViewNotification");
+    setNotificationselected(note_id);
   };
 
   return (
@@ -54,29 +37,32 @@ const NotificationTable = ({ setSelected }) => {
                 <th>Title</th>
                 <th>Type</th>
                 <th>Date Created</th>
-                <th>Date Updated</th>
               </tr>
             </thead>
             <tbody>
-              {Sampledata.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2 justify-center">
-                    <button
-                      id="btn_Notification_action"
-                      onClick={() => {
-                        handleviewnotification();
-                      }}
-                      className="hover:text-blue-700  font-bold py-2 px-4 rounded"
-                    >
-                      <i class="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                  <td className="px-4 py-2">{item.title}</td>
-                  <td className="px-4 py-2">{item.type}</td>
-                  <td className="px-4 py-2">{item.datecreated}</td>
-                  <td className="px-4 py-2">{item.dateupdate}</td>
-                </tr>
-              ))}
+              {notifications &&
+                notifications.map((notification) => (
+                  <tr key={notification.ntf_id}>
+                    <td className="px-4 py-2 justify-center">
+                      <button
+                        id="btn_Notification_action"
+                        onClick={() => {
+                          handleviewnotification(notification.note_id);
+                        }}
+                        className="hover:text-blue-700  font-bold py-2 px-4 rounded"
+                      >
+                        <i className="fa-solid fa-eye"></i>
+                      </button>
+                    </td>
+                    <td className="px-4 py-2">{notification.note_title}</td>
+                    <td className="px-4 py-2">
+                      {notification.note_type == "G" ? "Global" : "Player"}
+                    </td>
+                    <td className="px-4 py-2">
+                      {notification.note_date_created}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

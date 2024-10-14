@@ -105,7 +105,9 @@ export const AddItem = ({ setSelected }) => {
         <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
           <div className="flex items-center gap-5">
             <div className="flex-1">
-              {image && <img src={displayItem} alt="Uploaded" className="mt-4" />}
+              {image && (
+                <img src={displayItem} alt="Uploaded" className="mt-4" />
+              )}
             </div>
             <div className="flex-1">
               <input
@@ -124,7 +126,10 @@ export const AddItem = ({ setSelected }) => {
                 onChange={(e) => setValue(e.target.value)}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               />
-              <select value={value} className="w-full border border-gray-300 p-2 rounded-lg mb-4">
+              <select
+                value={value}
+                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
+              >
                 <option value="" disabled selected>
                   Item Type
                 </option>

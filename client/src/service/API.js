@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
-  let data = null;
+  let res = null;
   let error = null;
   let loading = false;
 
@@ -14,7 +14,7 @@ const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
     loading = true;
     try {
       const response = await axios({ ...axiosConfig, ...overrideConfig });
-      data = response.data;
+      res = response;
       error = null;
     } catch (err) {
       error = err;
@@ -23,7 +23,7 @@ const API = async (axiosConfig, shouldFetch = true, overrideConfig = {}) => {
     }
   }
 
-  return { data, error, loading };
+  return { res, error, loading };
 };
 
 export default API;

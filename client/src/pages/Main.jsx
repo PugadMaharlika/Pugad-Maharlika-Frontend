@@ -26,6 +26,7 @@ import { Offer } from "./admin/Offer";
 import { ViewOffer } from "./admin/ViewOffer";
 import { AddOffer } from "./admin/AddOffer";
 import { UpdateOffer } from "./admin/UpdateOffer";
+import NotificationTable from "../components/ui/NotificationTable";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -38,7 +39,7 @@ function Main({ theme, toggleTheme }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
-
+  const [notificationselected, setNotificationselected] = useState();
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -149,7 +150,6 @@ function Main({ theme, toggleTheme }) {
     );
   };
   const displaySuperAdminNav = () => {
-    console.log("Super Admin");
     return (
       <>
         <DrawerButton
@@ -326,27 +326,43 @@ function Main({ theme, toggleTheme }) {
             {/*Check Button Function*/}
             <div className={`flex-grow flex justify-center m-3 border-solid`}>
               {/* Content  m-3 md:m-5 */}
-              {selected === "Dashboard" && <PlayerDashboard theme={theme} />}
-              {selected === "Profile" && <PlayerProfile theme={theme} />}
+              {selected === "Dashboard" && <Dashboard theme={theme} />}
+              {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Notification" && (
                 <Notification
                   theme={theme}
                   setSelected={setSelected}
                   user={user}
+                  setNotificationselected={setNotificationselected}
                 />
               )}
               {selected === "AddNotification" && (
                 <AddNotification theme={theme} setSelected={setSelected} />
               )}
+
               {selected === "ViewNotification" && (
                 <ViewNotification
                   theme={theme}
                   setSelected={setSelected}
                   user={user}
+                  setNotificationselected={setNotificationselected}
+                  notificationselected={notificationselected}
+                />
+              )}
+              {selected === "NotificationTable" && (
+                <NotificationTable
+                  setSelected={setSelected}
+                  setNotificationselected={setNotificationselected}
                 />
               )}
               {selected === "EditNotification" && (
-                <EditNotification theme={theme} setSelected={setSelected} />
+                <EditNotification
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setNotificationselected={setNotificationselected}
+                  notificationselected={notificationselected}
+                />
               )}
               {selected === "Items" && (
                 <Item user={user} theme={theme} setSelected={setSelected} />

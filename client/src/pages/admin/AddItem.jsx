@@ -5,7 +5,9 @@ import { useContext, useState } from "react";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
+import UploadImage from "../../service/UploadImage";
 import axios from "axios";
+import API from "../../service/API";
 
 export const AddItem = ({ setSelected }) => {
   const [image, setImage] = useState(null);
@@ -33,64 +35,38 @@ export const AddItem = ({ setSelected }) => {
     }
   };
 
-  const handleItem = () => {
-    setErrors([]);
-    setSuccess(false);
-    if (image == "") {
-      setSuccess(false);
-      setErrors(["No file selected. Please select an image file"]);
-      return;
+  const handleInsertItem = async (url) => {
+    const config = {
+      url: `${serverUrl}/item/add`,
+      method: "POST",
+      data: {
+        url: url,
+        name: name,
+        value: value,
+        itemType: itemType,
+        details: details,
+        itemholder: itemholder,
+      },
+    };
+
+    const { res, error, loading } = await API(config);
+    if (res) {
+      setUser(res.data.account);
+      setSuccess(true);
+      setErrors(["Image uploaded successfully"]);
     }
+    if (error) console.log(error);
+  };
 
-    // Check file type (case-insensitive)
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-    if (!allowedTypes.includes(image.type.toLowerCase())) {
-      setSuccess(false);
-      setErrors(["Invalid file type. Only PNG, JPG, and JPEG are allowed"]);
-      return;
-    }
-
-    // Check file size (less than or equal to 5 MB)
-    const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
-    if (image.size > maxSize) {
-      setSuccess(false);
-      setErrors(["File size exceeds 5 MB. Please choose a smaller file."]);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("name", name);
-    formData.append("value", value);
-    formData.append("itemType", itemType);
-    formData.append("details", details);
-    formData.append("itemholder", itemholder);
-
-    axios
-      .post(`${serverUrl}/item/add`, formData, {
-        headers: {
-          "x-auth-token": authToken,
-          "x-refresh-token": refreshToken,
-          "Content-Type": "multipart/form-data", // Important for file uploads
-        },
-      })
-      .then((response) => {
-        setSuccess(true);
-        setErrors(["Success! item has been added"]);
-        setUser(response.data.account);
-      })
-      .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      });
+  const handleItem = async () => {
+    await UploadImage(image, setSuccess, setErrors, handleInsertItem, user);
   };
 
   return (
     <>
-      <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full">
-        <div className="flex justify-between items-center py-4">
-          <h1 className="text-3xl font-bold">Add Item</h1>
+      <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
+        <div className="flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold">
+          <h1 className="text-2xl font-bold">Items</h1>
           <button
             id="btn_back"
             onClick={() => {

@@ -17,6 +17,9 @@ import { AddNotification } from "./admin/AddNotification";
 import { ViewNotification } from "./admin/ViewNotification";
 import { EditNotification } from "./admin/EditNotification";
 import { Item } from "./admin/Item";
+import { Transactions } from "../pages/admin/Transactions";
+import { Invoice } from "../pages/admin/Receipt";
+import { Reports } from "../pages/admin/Reports";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import UpdateItem from "./admin/UpdateItem";
@@ -38,6 +41,8 @@ function Main({ theme, toggleTheme }) {
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const [notificationselected, setNotificationselected] = useState();
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -116,7 +121,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Transaction"}
+          title={"Transactions"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -373,33 +378,37 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "Items" && (
-                <Item user={user} theme={theme} setSelected={setSelected} />
+                <Item
+                  user={user}
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedItem={setSelectedItem}
+                />
               )}
               {selected === "AddItem" && (
                 <AddItem theme={theme} setSelected={setSelected} />
               )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} />
-              )}
-              {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} />
-              )}
-              {selected === "Offer" && (
-                <Offer theme={theme} setSelected={setSelected} user={user} />
-              )}
-              {selected === "ViewOffer" && (
-                <ViewOffer
+                <ItemDetails
                   theme={theme}
                   setSelected={setSelected}
-                  user={user}
+                  selectedItem={selectedItem}
                 />
               )}
-              {selected === "AddOffer" && (
-                <AddOffer theme={theme} setSelected={setSelected} />
+              {selected === "UpdateItem" && (
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
-              {selected === "UpdateOffer" && (
-                <UpdateOffer theme={theme} setSelected={setSelected} />
+              {selected === "Transactions" && (
+                <Transactions theme={theme} setSelected={setSelected} />
               )}
+              {selected === "Receipt" && (
+                <Invoice theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Reports" && <Reports theme={theme} />}
             </div>
           </div>
         </div>

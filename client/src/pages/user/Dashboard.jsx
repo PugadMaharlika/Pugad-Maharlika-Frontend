@@ -38,7 +38,7 @@ function Dashboard() {
       </div>
       <div className=" flex flex-wrap justify-center gap-5  ">
         <div
-          className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
+          className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-md xl:max-w-lg max-h-64 bg-${theme}`}
         >
           <div className="flex flex-col w-2/5 ">
             <label className="text-xs ">Username</label>
@@ -74,7 +74,7 @@ function Dashboard() {
           <AutoCarousel images={images} />
         </div>
         <div
-          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-lg bg-${theme}`}
+          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md xl:max-w-lg  bg-${theme}`}
         >
           <p className="text-sm font-bold">Leaderboard</p>
           <div className="overflow-x-auto">

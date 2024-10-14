@@ -33,25 +33,36 @@ function AdminDashboard() {
   const sales = [10, 20, 30, 40, 50, 60];
   const recent_transactions = [
     {
+      acc_id: 1,
       acc_username: "SMOOSH",
       ofr_type: "Bundle",
       ofr_price: "200",
       date_created: "10-6-2024",
     },
     {
+      acc_id: 2,
       acc_username: "JACKSON23",
       ofr_type: "Single Item",
       ofr_price: "50",
       date_created: "10-5-2024",
     },
+
     {
+      acc_id: 3,
       acc_username: "NINA_SKY",
       ofr_type: "Subscription",
       ofr_price: "100",
       date_created: "10-4-2024",
     },
-    { acc_username: "JAY_MART", ofr_type: "Bundle", ofr_price: "250", date_created: "10-3-2024" },
     {
+      acc_id: 4,
+      acc_username: "JAY_MART",
+      ofr_type: "Bundle",
+      ofr_price: "250",
+      date_created: "10-3-2024",
+    },
+    {
+      acc_id: 5,
       acc_username: "CRYPTO_KING",
       ofr_type: "Special Deal",
       ofr_price: "400",
@@ -61,36 +72,68 @@ function AdminDashboard() {
 
   const recent_registration = [
     {
+      acc_id: 1,
       acc_username: "SMOOSH",
       acc_email: "smoosh@gmail.com",
       acc_type: "P",
       date_created: "10-6-2024",
     },
     {
+      acc_id: 2,
       acc_username: "JACKSON23",
       acc_email: "jackson23@hotmail.com",
       acc_type: "P",
       date_created: "10-5-2024",
     },
     {
+      acc_id: 3,
       acc_username: "NINA_SKY",
       acc_email: "nina_sky@yahoo.com",
       acc_type: "P",
       date_created: "10-4-2024",
     },
     {
+      acc_id: 4,
       acc_username: "JAY_MART",
       acc_email: "jaymart@business.com",
       acc_type: "P",
       date_created: "10-3-2024",
     },
     {
+      acc_id: 5,
       acc_username: "CRYPTO_KING",
       acc_email: "crypto_king@gmail.com",
       acc_type: "P",
       date_created: "10-2-2024",
     },
   ];
+
+  const lineChartData = {
+    labels: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    datasets: [
+      {
+        label: "",
+        data: [10, 20, 30, 40, 50, 60],
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(75,192,192,1)",
+      },
+    ],
+  };
 
   return (
     <div className="w-full h-full flex flex-col flex-grow gap-5">
@@ -128,7 +171,7 @@ function AdminDashboard() {
         <div
           className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
         >
-          <LineChart />
+          <LineChart data={lineChartData} />
         </div>
         <div
           className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
@@ -148,7 +191,7 @@ function AdminDashboard() {
               </thead>
               <tbody className="">
                 {recent_transactions.map((transaction, index) => (
-                  <tr>
+                  <tr key={transaction.acc_id}>
                     <th>{index + 1}</th>
                     <td>{transaction.acc_username}</td>
                     <td>{transaction.ofr_type}</td>
@@ -178,7 +221,7 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {recent_registration.map((account, index) => (
-                  <tr>
+                  <tr key={account.acc_id}>
                     <th>{index + 1}</th>
                     <td>{account.acc_username}</td>
                     <td>{account.acc_email}</td>

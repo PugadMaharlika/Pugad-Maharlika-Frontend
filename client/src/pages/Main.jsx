@@ -13,6 +13,9 @@ import Alert from "../components/ui/Alert";
 import useInactivityTimeout from "../hooks/useInactivityTimeout ";
 import axios from "axios";
 import { Item } from "./admin/Item";
+import { Transactions } from "../pages/admin/Transactions";
+import { Invoice } from "../pages/admin/Receipt";
+import { Reports } from "../pages/admin/Reports";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import UpdateItem from "./admin/UpdateItem";
@@ -28,6 +31,7 @@ function Main({ theme, toggleTheme }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const navigate = useNavigate();
 
@@ -107,7 +111,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Transaction"}
+          title={"Transactions"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -306,7 +310,11 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
+          <NavBar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            toggleSideBar={toggleSideBar}
+          />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
@@ -317,12 +325,38 @@ function Main({ theme, toggleTheme }) {
               {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
               {selected === "Dashboard" && user.role === "P" && <Dashboard theme={theme} />}
               {selected === "Profile" && <Profile theme={theme} />}
-              {selected === "Items" && <Item user={user} theme={theme} setSelected={setSelected} />}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
-              {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} />
+              {selected === "Items" && (
+                <Item
+                  user={user}
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedItem={setSelectedItem}
+                />
               )}
-              {selected === "UpdateItem" && <UpdateItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "ItemDetails" && (
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
+              )}
+              {selected === "UpdateItem" && (
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
+              )}
+              {selected === "Transactions" && (
+                <Transactions theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Receipt" && (
+                <Invoice theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Reports" && <Reports theme={theme} />}
             </div>
           </div>
         </div>

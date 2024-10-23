@@ -20,15 +20,7 @@ const NotificationTable = ({
       }`}
     >
       <div className="p-6 w-full">
-        <div className="mb-4 flex flex-col items-center justify-between">
-          <div className="w-full">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="border p-2 rounded-md w-full"
-            />
-          </div>
-        </div>{" "}
+        {" "}
         <div className="flex justify-center ">
           <table className="table-auto w-full mt-8 text-center ">
             <thead>

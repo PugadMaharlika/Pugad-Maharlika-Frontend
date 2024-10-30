@@ -7,7 +7,9 @@ function Alert({ success, index, error, errors, setErrors, theme }) {
         key={index}
         id="alert"
         className={`flex items-center p-4 rounded-lg ${
-          theme === "night" ? "bg-gray-800 text-green-400" : "bg-green-100 text-green-800"
+          theme === "night"
+            ? "bg-gray-800 text-green-400"
+            : "bg-green-100 text-green-800"
         }`}
         role="alert"
       >
@@ -37,7 +39,9 @@ function Alert({ success, index, error, errors, setErrors, theme }) {
     <div
       key={index}
       className={`flex items-center p-4 rounded-lg  text-red-400 ${
-        theme === "night" ? "bg-gray-800 text-red-400" : "bg-red-100 text-red-800"
+        theme === "night"
+          ? "bg-gray-800 text-red-400"
+          : "bg-red-100 text-red-800"
       }`}
       role="alert"
     >

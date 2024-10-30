@@ -12,7 +12,7 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
   }, []);
 
   return (
-    <div className="h-auto w-full flex-2 flex flex-row z-20 py-3 bg-base-100  ">
+    <div className="h-auto w-full flex-2 flex flex-row z-20  shadow-lg py-3 bg-base-100  ">
       <div className="flex-1 navbar-start">
         <button
           onClick={() => {
@@ -36,7 +36,7 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
         {user && user.profile ? (
           <img
             className="rounded-full btn btn-circle object-cover border-inherit mr-2"
-            src={`data:image/png;base64,${user && user.profile}`}
+            src={user && user.profile}
             alt="mockup"
           />
         ) : (

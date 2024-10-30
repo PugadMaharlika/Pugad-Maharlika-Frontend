@@ -12,6 +12,10 @@ import { SuccessContext } from "../context/Success";
 import Alert from "../components/ui/Alert";
 import useInactivityTimeout from "../hooks/useInactivityTimeout ";
 import axios from "axios";
+import { Notification } from "./admin/Notification";
+import { AddNotification } from "./admin/AddNotification";
+import { ViewNotification } from "./admin/ViewNotification";
+import { EditNotification } from "./admin/EditNotification";
 import { Item } from "./admin/Item";
 import { Transactions } from "../pages/admin/Transactions";
 import { Invoice } from "../pages/admin/Receipt";
@@ -20,6 +24,11 @@ import { FeedBackDetails } from "../pages/admin/FeedBackDetails";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import UpdateItem from "./admin/UpdateItem";
+import { Offer } from "./admin/Offer";
+import { ViewOffer } from "./admin/ViewOffer";
+import { AddOffer } from "./admin/AddOffer";
+import { UpdateOffer } from "./admin/UpdateOffer";
+import NotificationTable from "../components/ui/NotificationTable";
 import AdminDashboard from "./admin/AdminDashboard";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -32,6 +41,7 @@ function Main({ theme, toggleTheme }) {
   const [errors, setErrors] = useContext(AlertsContext);
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
+  const [notificationselected, setNotificationselected] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
 
   const navigate = useNavigate();
@@ -88,7 +98,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -182,7 +192,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -190,7 +200,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Notifications"}
+          title={"Notification"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -324,7 +334,43 @@ function Main({ theme, toggleTheme }) {
                 <Dashboard theme={theme} />
               )}
               {selected === "Profile" && <Profile theme={theme} />}
-              {selected === "Items" && user.role != "P" && (
+              {selected === "Notification" && (
+                <Notification
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setNotificationselected={setNotificationselected}
+                />
+              )}
+              {selected === "AddNotification" && (
+                <AddNotification theme={theme} setSelected={setSelected} />
+              )}
+
+              {selected === "ViewNotification" && (
+                <ViewNotification
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setNotificationselected={setNotificationselected}
+                  notificationselected={notificationselected}
+                />
+              )}
+              {selected === "NotificationTable" && (
+                <NotificationTable
+                  setSelected={setSelected}
+                  setNotificationselected={setNotificationselected}
+                />
+              )}
+              {selected === "EditNotification" && (
+                <EditNotification
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setNotificationselected={setNotificationselected}
+                  notificationselected={notificationselected}
+                />
+              )}
+              {selected === "Items" && (
                 <Item
                   user={user}
                   theme={theme}

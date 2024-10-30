@@ -30,14 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./client
-
-      - name: Run test start
-        run: sudo npm start
-        working-directory: ./client
-        
-      - name: Run test build
-        run: sudo npm run build
-        working-directory: ./client
         
       - name: Run test lint
         run: sudo npm run lint

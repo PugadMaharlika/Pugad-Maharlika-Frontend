@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+     env:
+      CI: false
 
     steps:
       - name: Checkout code
@@ -33,10 +35,6 @@ jobs:
 
       - name: Initialized ch
         run: chmod +x ./node_modules/.bin/react-scripts
-        working-directory: ./client
-
-      - name: Unset CI
-        run: CI=false
         working-directory: ./client
       
       - name: Run test build

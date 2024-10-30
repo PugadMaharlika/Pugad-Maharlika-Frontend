@@ -17,34 +17,38 @@ jobs:
         run: >
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
-
+  
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '21.7.3'
 
+      - name: Remove dependencies
+        run: rm -rf /node_modules
+        working-directory: ./client
+      
       - name: Install dependencies
         run: npm install
         working-directory: ./client
 
       - name: Run test start
-        run: npm start
+        run: sudo npm start
         working-directory: ./client
         
       - name: Run test build
-        run: npm run build
+        run: sudo npm run build
         working-directory: ./client
         
       - name: Run test lint
-        run: npm run lint
+        run: sudo npm run lint
         working-directory: ./client
 
       - name: Run test format write
-        run: npm run format:write
+        run: sudo npm run format:write
         working-directory: ./client
 
       - name: Run test format:check
-        run: npm run format:check
+        run: sudo npm run format:check
         working-directory: ./client
 
       - name: Deploy

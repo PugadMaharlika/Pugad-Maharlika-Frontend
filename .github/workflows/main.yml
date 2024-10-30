@@ -42,7 +42,7 @@ jobs:
         working-directory: ./client
         
       - name: Fix permissions
-        run: chmod -R 755 ./client/node_modules
+        run: chmod -R 755 ./node_modules
         working-directory: ./client
         
       - name: Run test lint

@@ -42,15 +42,15 @@ jobs:
         working-directory: ./client
   
       - name: Run test lint
-        run: npm run lint
+        run: sudo npm run lint
         working-directory: ./client
 
       - name: Run test format write
-        run: npm run format:write
+        run: sudo npm run format:write
         working-directory: ./client
 
       - name: Run test format:check
-        run: npm run format:check
+        run: sudo npm run format:check
         working-directory: ./client
 
       - name: Deploy

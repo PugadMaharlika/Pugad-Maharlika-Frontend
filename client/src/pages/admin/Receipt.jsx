@@ -21,14 +21,14 @@ export const Invoice = ({ setSelected }) => {
 
         {/* Upper right button */}
         <button
-          className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded"
+          className="absolute top-4 right-4 bg-green-500 text-white px-2 rounded"
           onClick={() => console.log("Right Button Clicked")}
         >
-          Right
+          <i className="fa-solid fa-arrow-down text-3xl"></i>
         </button>
 
         <h1 className="font-bold text-2xl my-4 text-center text-blue-600">
-          KRP Services
+          Pugad Maharlika
         </h1>
         <hr className="mb-2" />
 

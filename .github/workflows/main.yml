@@ -29,6 +29,7 @@ jobs:
 
       - name: Run test start
         run: npm start
+        working-directory: ./client
         
       - name: Run test build
         run: npm run build

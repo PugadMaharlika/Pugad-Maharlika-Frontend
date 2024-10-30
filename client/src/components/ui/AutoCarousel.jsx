@@ -5,7 +5,9 @@ const AutoCarousel = ({ images }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1,
+      );
     }, 3000); // Switch every 3 seconds
 
     return () => clearInterval(interval);
@@ -19,7 +21,10 @@ const AutoCarousel = ({ images }) => {
             key={index}
             className={`carousel-item  ${index === currentIndex ? "block" : "hidden"}`}
           >
-            <img src={image} className="rounded-box max-h-52 w-full object-cover" />
+            <img
+              src={image}
+              className="rounded-box max-h-52 w-full object-cover"
+            />
           </div>
         ))}
     </div>

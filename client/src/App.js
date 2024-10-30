@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Router, Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Alerts from "./context/Alerts";
 import Success from "./context/Success";
@@ -7,7 +7,6 @@ import User from "./context/User";
 import Main from "./pages/Main";
 import { ThemeContext } from "./context/Theme";
 function App() {
-  const savedTheme = localStorage.getItem("theme");
   const [cookie, setCookie] = useState(localStorage.getItem("cookie"));
   const [theme, setTheme] = useContext(ThemeContext);
   const handleCoookie = () => {
@@ -40,7 +39,10 @@ function App() {
                   />
                 }
               />
-              <Route path="/app" element={<Main theme={theme} toggleTheme={toggleTheme} />} />
+              <Route
+                path="/app"
+                element={<Main theme={theme} toggleTheme={toggleTheme} />}
+              />
             </Routes>
           </Success>
         </Alerts>

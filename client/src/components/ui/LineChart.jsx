@@ -12,7 +12,15 @@ import {
 } from "chart.js";
 
 // Register the required components for Chart.js
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 const LineChart = ({ sidetitle, title, data }) => {
   // // Chart options

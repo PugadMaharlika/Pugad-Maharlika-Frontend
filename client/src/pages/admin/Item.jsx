@@ -33,7 +33,7 @@ export const Item = ({ setSelected, setSelectedItem }) => {
                 "x-refresh-token": refreshToken,
               },
             },
-            {}
+            {},
           )
           .then((response) => {
             console.log(response);

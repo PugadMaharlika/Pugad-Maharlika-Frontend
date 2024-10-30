@@ -137,12 +137,19 @@ function Dashboard() {
               ></progress>
             </div>
           </div>
-          <div className={`flex w-full flex-col h-52 rounded-xl p-4 shadow-md bg-${theme}`}>
-            <p className="text-sm font-bold pb-2 w-14 text-nowrap">Unlocked Characters</p>
+          <div
+            className={`flex w-full flex-col h-52 rounded-xl p-4 shadow-md bg-${theme}`}
+          >
+            <p className="text-sm font-bold pb-2 w-14 text-nowrap">
+              Unlocked Characters
+            </p>
             <div className="flex w-full gap-2 max-w-full overflow-x-auto overflow-y-hidden pb-2">
               {characters &&
                 characters.map((character, index) => (
-                  <img className=" h-32 object-contain rounded-lg" src={character} />
+                  <img
+                    className=" h-32 object-contain rounded-lg"
+                    src={character}
+                  />
                 ))}
             </div>
           </div>

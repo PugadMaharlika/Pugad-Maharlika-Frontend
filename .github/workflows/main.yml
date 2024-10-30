@@ -30,7 +30,11 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./client
-        
+
+      - name: Initialized ch
+        run: chmod +x ./node_modules/.bin/react-scripts
+        working-directory: ./client
+  
       - name: Run test lint
         run: sudo npm run lint
         working-directory: ./client

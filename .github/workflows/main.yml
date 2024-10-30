@@ -18,19 +18,29 @@ jobs:
         with:
           node-version: '21.7.3'
 
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./client
+
       - name: Run test start
         run: npm start
+        working-directory: ./client
         
       - name: Run test build
         run: npm run build
+        working-directory: ./client
         
       - name: Run test lint
         run: npm run lint
+        working-directory: ./client
 
       - name: Run test format write
         run: npm run format:write
+        working-directory: ./client
 
       - name: Run test format:check
-        run: npm run format:write
+        run: npm run format:check
+        working-directory: ./client
 
-     
+      - name: Deploy
+        run: echo "Deploying application..."  # Replace with your deployment command

@@ -25,7 +25,12 @@ function Registration({ theme }) {
     setErrors([]);
 
     // form validation
-    if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       setErrors((prevErrors) => [...prevErrors, "Please fill all the fields"]);
       setLoading(false);
       return;
@@ -43,7 +48,7 @@ function Registration({ theme }) {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       )
       .then((response) => {
         var templateParams = {
@@ -53,14 +58,16 @@ function Registration({ theme }) {
           recipient: email,
         };
 
-        emailjs.send("service_fp4kl58", "template_2rt35su", templateParams).then(
-          (response) => {
-            console.log("SUCCESS!", response.status, response.text);
-          },
-          (error) => {
-            console.log("FAILED...", error);
-          }
-        );
+        emailjs
+          .send("service_fp4kl58", "template_2rt35su", templateParams)
+          .then(
+            (response) => {
+              console.log("SUCCESS!", response.status, response.text);
+            },
+            (error) => {
+              console.log("FAILED...", error);
+            },
+          );
 
         setSuccess(true);
         setErrors(["Success! check email for verification"]);
@@ -98,7 +105,10 @@ function Registration({ theme }) {
           <form className="space-y-4">
             <h5 className="text-xl text-center font-medium">Sign Up</h5>
             <div>
-              <label htmlFor="username" className="block mb-2 text-sm font-medium">
+              <label
+                htmlFor="username"
+                className="block mb-2 text-sm font-medium"
+              >
                 <i className="fa-regular fa-user mr-2"></i>
                 Username
               </label>
@@ -130,7 +140,10 @@ function Registration({ theme }) {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block mb-2 text-sm font-medium">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium"
+              >
                 <i className="fa-solid fa-shield-halved mr-2"></i>
                 Password
               </label>
@@ -148,7 +161,10 @@ function Registration({ theme }) {
               </div>
             </div>
             <div>
-              <label htmlFor="confirm" className="block mb-2 text-sm font-medium">
+              <label
+                htmlFor="confirm"
+                className="block mb-2 text-sm font-medium"
+              >
                 <i className="fa-solid fa-shield-halved mr-2"></i>
                 Confirm Password
               </label>
@@ -171,7 +187,11 @@ function Registration({ theme }) {
               type="button"
               className="w-full cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              {loading ? <span className="loading w-4 mr-2 loading-spinner"></span> : ""}
+              {loading ? (
+                <span className="loading w-4 mr-2 loading-spinner"></span>
+              ) : (
+                ""
+              )}
               Create Account
             </button>
             <div

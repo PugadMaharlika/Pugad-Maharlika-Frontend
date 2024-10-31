@@ -74,7 +74,6 @@ jobs:
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             cd /PugadMaharlika/Pugad-Maharlika-Frontend
-            git remote set-url origin git@github.com:${{ secrets.GH_USER }}/PugadMaharlika/Pugad-Maharlika-Frontend.git
             git pull origin main
             docker-compose down
             docker-compose up -d --build

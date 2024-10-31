@@ -76,7 +76,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no $DO_USER@$DO_HOST << 'EOF'
             ls /
-            cd /PugadMaharlika
+            cd /PugadMaharlika/Pugad-Maharlika-Frontend
             git pull origin main
             docker-compose down
             docker-compose up -d --build

@@ -15,11 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Reconfigure git to use HTTP authentication
-        run: >
-          git config --global url."https://github.com/".insteadOf
-          ssh://git@github.com/
-  
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -33,7 +28,7 @@ jobs:
         run: npm install
         working-directory: ./client
 
-      - name: Initialized ch
+      - name: Initialize chmod
         run: chmod +x ./node_modules/.bin/react-scripts
         working-directory: ./client
       
@@ -74,14 +69,11 @@ jobs:
           DO_HOST: ${{ secrets.DO_HOST }}
           DO_USER: ${{ secrets.DO_USER }}
           GH_USER: ${{ secrets.GH_USER }}
-          GH_ACCESS: ${{ secrets.GH_ACCESS }}
         run: |
           ssh -o StrictHostKeyChecking=no $DO_USER@$DO_HOST << 'EOF'
-            ls /
             cd /PugadMaharlika/Pugad-Maharlika-Frontend
+            git remote set-url origin git@github.com:${{ secrets.GH_USER }}/Pugad-Maharlika-Frontend.git
             git pull origin main
-            $GH_USER
-            $GH_ACCESS
             docker-compose down
             docker-compose up -d --build
           EOF

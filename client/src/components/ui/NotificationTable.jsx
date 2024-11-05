@@ -14,15 +14,11 @@ const NotificationTable = ({
   };
 
   return (
-    <div
-      className={`col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night  text-white " : "bg-fantasy text-black"
-      }`}
-    >
-      <div className="p-6 w-full">
-        {" "}
-        <div className="flex justify-center ">
-          <table className="table-auto w-full mt-8 text-center ">
+    <div className="p-6 w-full">
+      {" "}
+      <div className="flex justify-center ">
+        <div className="w-full max-h-80 overflow-y-auto">
+          <table className="table-auto w-full mt-8 text-center  ">
             <thead>
               <tr>
                 <th>Action</th>
@@ -57,14 +53,6 @@ const NotificationTable = ({
                 ))}
             </tbody>
           </table>
-        </div>
-        {/* Pagination */}
-        <div className="flex justify-end mt-5">
-          <div className="flex items-center">
-            <button className="py-2 px-4 mr-2">&lt;</button>
-            <button className="py-2 px-4">1</button>
-            <button className="py-2 px-4 ml-2">&gt;</button>
-          </div>
         </div>
       </div>
     </div>

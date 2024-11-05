@@ -20,6 +20,7 @@ import { Item } from "./admin/Item";
 import { Transactions } from "../pages/admin/Transactions";
 import { Invoice } from "../pages/admin/Receipt";
 import { Reports } from "../pages/admin/Reports";
+import { FeedBackDetails } from "../pages/admin/FeedBackDetails";
 import AddItem from "./admin/AddItem";
 import ItemDetails from "./admin/ItemDetails";
 import UpdateItem from "./admin/UpdateItem";
@@ -90,14 +91,6 @@ function Main({ theme, toggleTheme }) {
           theme={theme}
           sideBarOpen={sideBarOpen}
           title={"Dashboard"}
-          handleSelectedButton={handleSelectedButton}
-        />
-        <DrawerButton
-          icon={<i className="fa-solid fa-hat-wizard pl-0.5 md-pl-0"></i>}
-          selected={selected}
-          theme={theme}
-          sideBarOpen={sideBarOpen}
-          title={"Items"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -437,7 +430,12 @@ function Main({ theme, toggleTheme }) {
               {selected === "Receipt" && (
                 <Invoice theme={theme} setSelected={setSelected} />
               )}
-              {selected === "Reports" && <Reports theme={theme} />}
+              {selected === "Reports" && (
+                <Reports theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "FeedBackDetails" && (
+                <FeedBackDetails theme={theme} setSelected={setSelected} />
+              )}
             </div>
           </div>
         </div>

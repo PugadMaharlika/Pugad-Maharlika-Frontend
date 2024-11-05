@@ -50,9 +50,9 @@ export const FeedbackTable = ({ setSelected }) => {
                 <tr key={item.id}>
                   <td className="px-4 py-2 justify-center">
                     <button
-                      id="btn_Notification_action"
+                      id="btn_view_feedback"
                       onClick={() => {
-                        setSelected("Receipt");
+                        setSelected("FeedBackDetails");
                       }}
                       className="hover:text-blue-700  font-bold py-2 px-4 rounded"
                     >

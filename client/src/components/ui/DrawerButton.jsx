@@ -1,6 +1,13 @@
 import React from "react";
 
-function DrawerButton({ icon, theme, selected, sideBarOpen, title, handleSelectedButton }) {
+function DrawerButton({
+  icon,
+  theme,
+  selected,
+  sideBarOpen,
+  title,
+  handleSelectedButton,
+}) {
   return (
     <button
       id={`btn_drawer_${title}`}

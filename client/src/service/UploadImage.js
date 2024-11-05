@@ -32,11 +32,13 @@ const UploadImage = (file, setSuccess, setErrors, setCallback, user) => {
   formData.append("file", newFile);
   formData.append("upload_preset", "bly6md1o");
 
-  axios.post("https://api.cloudinary.com/v1_1/dchcpwbya/upload", formData).then((response) => {
-    setSuccess(true);
-    setErrors(["Image uploaded successfully."]);
-    setCallback(response.data.url);
-  });
+  axios
+    .post("https://api.cloudinary.com/v1_1/dchcpwbya/upload", formData)
+    .then((response) => {
+      setSuccess(true);
+      setErrors(["Image uploaded successfully."]);
+      setCallback(response.data.url);
+    });
 };
 
 export default UploadImage;

@@ -43,7 +43,7 @@ function Main({ theme, toggleTheme }) {
   const refreshToken = localStorage.getItem("refreshToken");
   const [notificationselected, setNotificationselected] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [offerselected, setOfferselected] = useState(null);
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -334,6 +334,35 @@ function Main({ theme, toggleTheme }) {
                 <Dashboard theme={theme} />
               )}
               {selected === "Profile" && <Profile theme={theme} />}
+              {selected === "Offer" && (
+                <Offer
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setOfferselected={setOfferselected}
+                />
+              )}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "ViewOffer" && (
+                <ViewOffer
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setOfferselected={setOfferselected}
+                  offerselected={offerselected}
+                />
+              )}
+              {selected === "UpdateOffer" && (
+                <UpdateOffer
+                  theme={theme}
+                  setSelected={setSelected}
+                  user={user}
+                  setOfferselected={setOfferselected}
+                  offerselected={offerselected}
+                />
+              )}
               {selected === "Notification" && (
                 <Notification
                   theme={theme}

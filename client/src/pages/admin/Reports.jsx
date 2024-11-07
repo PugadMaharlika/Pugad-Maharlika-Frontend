@@ -1,13 +1,12 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
 import { useContext, useState } from "react";
-import { TransactionTable } from "../../components/ui/Table";
+import { TransactionTable } from "../../components/ui/TransactionTable";
 import { FeedbackTable } from "../../components/ui/FeedBackTable";
 import { UserLogsTable } from "../../components/ui/UserLogsTable";
 import { FeedBackDetails } from "../../pages/admin/FeedBackDetails";
 import LineChart from "../../components/ui/LineChart";
-import TopItem from "../../components/ui/TopItemTable";
-import TopOffer from "../../components/ui/TopOfferTable";
+import TopItem from "../../components/ui/TopTables";
 
 export const Reports = ({
   setSelected,
@@ -19,12 +18,40 @@ export const Reports = ({
 
   const years = Array.from(
     { length: endYear - startYear + 1 },
-    (_, i) => startYear + i,
+    (_, i) => startYear + i
   );
 
   const handleChange = (e) => {
     setSelectedYear(e.target.value);
   };
+
+  const sampleData = [
+    {
+      id: 1,
+      name: "Johny Bravo",
+      type: "Global",
+    },
+    {
+      id: 2,
+      name: "Johny Maskulado",
+      type: "Player",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+  ];
 
   const lineChartData = {
     labels: [
@@ -61,7 +88,6 @@ export const Reports = ({
         >
           <div className="flex items-center w-full space-x-4">
             <label className="text-2xl">Reports</label>
-            <label className="text-xl">From: </label>
             <div className=" border-gray-300 p-2 rounded-lg">
               <select
                 value={selectedYear}
@@ -101,11 +127,17 @@ export const Reports = ({
         <div className="flex gap-40 justify-center">
           <div>
             <label className="text-2xl font-bold">Top 5 Items</label>
-            <TopItem />
+            <TopItem
+              sampleData={sampleData}
+              column={{ column1: "Item", column2: "Sold" }}
+            />
           </div>
           <div>
             <label className="text-2xl font-bold">Top 5 Offers</label>
-            <TopOffer data={lineChartData} />
+            <TopItem
+              sampleData={sampleData}
+              column={{ column1: "Item", column2: "Sold" }}
+            />
           </div>
         </div>
 

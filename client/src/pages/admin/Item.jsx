@@ -33,10 +33,9 @@ export const Item = ({ setSelected, setSelectedItem }) => {
                 "x-refresh-token": refreshToken,
               },
             },
-            {},
+            {}
           )
           .then((response) => {
-            console.log(response);
             setItems(response.data.items);
             setUser(response.data.account);
             setSuccess(true); // Set success only if the request succeeds

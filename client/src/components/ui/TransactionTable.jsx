@@ -1,34 +1,8 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TransactionTable = ({ setSelected }) => {
+export const TransactionTable = ({ transactions, setSelected }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const Sampledata = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Global",
-      mode: "Gcash",
-      dateupdate: "2022-01-01",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Player",
-      mode: "Gcash",
-      dateupdate: "2022-02-15",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-      mode: "Gcash",
-      dateupdate: "2022-03-20",
-    },
-  ];
-  const handleviewnotification = () => {
-    setSelected("ViewNotification");
-  };
 
   return (
     <div
@@ -49,8 +23,8 @@ export const TransactionTable = ({ setSelected }) => {
               </tr>
             </thead>
             <tbody>
-              {Sampledata.map((item) => (
-                <tr key={item.id}>
+              {transactions.map((item) => (
+                <tr key={transactions.id}>
                   <td className="px-4 py-2 justify-center">
                     <button
                       id="btn_Notification_action"
@@ -59,13 +33,13 @@ export const TransactionTable = ({ setSelected }) => {
                       }}
                       className="hover:text-blue-700  font-bold py-2 px-4 rounded"
                     >
-                      <i class="fa-solid fa-eye"></i>
+                      <i className="fa-solid fa-eye"></i>
                     </button>
                   </td>
-                  <td className="px-4 py-2">{item.name}</td>
-                  <td className="px-4 py-2">{item.type}</td>
-                  <td className="px-4 py-2">{item.mode}</td>
-                  <td className="px-4 py-2">{item.dateupdate}</td>
+                  <td className="px-4 py-2">{transactions.acc_username}</td>
+                  <td className="px-4 py-2">{transactions.item_type}</td>
+                  <td className="px-4 py-2">{transactions.his_mode}</td>
+                  <td className="px-4 py-2">{transactions.date_created}</td>
                 </tr>
               ))}
             </tbody>

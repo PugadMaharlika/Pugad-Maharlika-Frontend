@@ -43,6 +43,7 @@ function Main({ theme, toggleTheme }) {
   const refreshToken = localStorage.getItem("refreshToken");
   const [notificationselected, setNotificationselected] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
+  const [transactions, setTransactions] = useState(null);
 
   const navigate = useNavigate();
 
@@ -396,7 +397,11 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "Transactions" && (
-                <Transactions theme={theme} setSelected={setSelected} />
+                <Transactions
+                  theme={theme}
+                  transactions={transactions}
+                  setSelected={setSelected}
+                />
               )}
               {selected === "Receipt" && (
                 <Invoice theme={theme} setSelected={setSelected} />

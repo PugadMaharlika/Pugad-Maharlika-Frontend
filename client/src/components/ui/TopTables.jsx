@@ -1,35 +1,8 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TopOffer = ({ setSelected }) => {
+export const TopItem = ({ sampleData, column }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const Sampledata = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Global",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Player",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-  ];
 
   return (
     <div
@@ -42,12 +15,12 @@ export const TopOffer = ({ setSelected }) => {
           <table className="table-auto w-full text-center ">
             <thead>
               <tr>
-                <th>Item</th>
-                <th>Sold</th>
+                <th>{column.column1}</th>
+                <th>{column.column2}</th>
               </tr>
             </thead>
             <tbody>
-              {Sampledata.map((item) => (
+              {sampleData.map((item) => (
                 <tr key={item.id}>
                   <td className="px-4 py-2">{item.name}</td>
                   <td className="px-4 py-2">{item.type}</td>
@@ -60,4 +33,4 @@ export const TopOffer = ({ setSelected }) => {
     </div>
   );
 };
-export default TopOffer;
+export default TopItem;

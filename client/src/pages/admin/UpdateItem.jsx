@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ItemCard from "../../components/ui/ItemCard";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState, useEffect } from "react";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
@@ -11,6 +10,7 @@ import API from "../../service/API";
 
 export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [image, setImage] = useState(null);
+  const [displayItem, setDisplayItem] = useState(null); // Update to store the image URL for display
   const [Theme] = useContext(ThemeContext);
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
@@ -21,7 +21,6 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
-  const [displayItem, setdisplayItem] = useState("");
   const [itemId, setItemId] = useState("");
   const [items, setItems] = useState("");
 
@@ -33,17 +32,18 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setdisplayItem(imageUrl);
+      setDisplayItem(imageUrl); // Update displayItem with new image URL
+      setImage(file); // Set image state with selected file
     }
   };
 
   const handleUpdateItem = async (url) => {
     if (
-      name == items.item_name &&
-      value == items.item_value &&
-      details == items.item_desc &&
-      itemType == items.item_type &&
-      itemholder == items.item_holder &&
+      name === items.item_name &&
+      value === items.item_value &&
+      details === items.item_desc &&
+      itemType === items.item_type &&
+      itemholder === items.item_holder &&
       !image
     ) {
       setSuccess(true);
@@ -65,7 +65,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
       },
     };
 
-    const { res, error, loading } = await API(config);
+    const { res, error } = await API(config);
     if (res) {
       console.log(res);
       setUser(res.data.account);
@@ -76,9 +76,11 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
   };
 
   const handleItem = async () => {
-    if (image)
+    if (image) {
       await UploadImage(image, setSuccess, setErrors, handleUpdateItem, user);
-    else handleUpdateItem();
+    } else {
+      handleUpdateItem();
+    }
   };
 
   useEffect(() => {
@@ -87,40 +89,40 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         setErrors([]);
         setSuccess(false);
 
-        await axios
-          .get(`${serverUrl}/item/itemdetails?id=${selectedItem}`, {
+        const response = await axios.get(
+          `${serverUrl}/item/itemdetails?id=${selectedItem}`,
+          {
             headers: {
               "x-auth-token": authToken,
               "x-refresh-token": refreshToken,
             },
-          })
-          .then((response) => {
-            console.log(response);
-            setItems(response.data.item);
-            setUser(response.data.account);
-            setSuccess(true); // Set success only if the request succeeds
-            setName(response.data.item.item_name);
-            setValue(response.data.item.item_value);
-            setItemType(response.data.item.item_type);
-            setDetails(response.data.item.item_desc);
-            setItemHolder(response.data.item.item_holder);
-          });
+          }
+        );
+
+        setItems(response.data.item);
+        setUser(response.data.account);
+        setSuccess(true);
+        setName(response.data.item.item_name);
+        setValue(response.data.item.item_value);
+        setItemType(response.data.item.item_type);
+        setDetails(response.data.item.item_desc);
+        setItemHolder(response.data.item.item_holder);
+        setDisplayItem(response.data.item.item_sprite); // Set initial displayItem state with fetched image
       } catch (error) {
         console.error(error);
         setSuccess(false);
         if (error.response && error.response.data.errors) {
           setErrors(error.response.data.errors.map((err) => err.msg));
         } else {
-          setErrors(["An unexpected error occurred."]); // Generic fallback
+          setErrors(["An unexpected error occurred."]);
         }
       }
     };
 
     fetchItems();
 
-    // Optionally return a cleanup function
     return () => {
-      setItems([]); // Example cleanup, adjust as needed
+      setItems([]); // Cleanup
     };
   }, []);
 
@@ -135,9 +137,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
           <h1 className="text-3xl font-bold">Update Item</h1>
           <button
             id="btn_back"
-            onClick={() => {
-              setSelected("Items");
-            }}
+            onClick={() => setSelected("Items")}
             className="rounded-lg px-4"
           >
             <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
@@ -150,7 +150,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
               <img
                 id="image"
                 className="h-48 w-full object-contain m-2"
-                src={items && items.item_sprite}
+                src={displayItem || items.item_sprite} // Display new image or fallback to initial image
                 alt="Uploaded"
               />
             </div>
@@ -196,18 +196,13 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => {
-                    setImage(e.target.files[0]);
-                    handleImageUpload(e);
-                  }}
+                  onChange={handleImageUpload}
                 />
               </div>
               <div className="flex w-full justify-end">
                 <button
                   className="bg-green-500 px-6 py-2 text-white rounded-lg"
-                  onClick={() => {
-                    handleItem();
-                  }}
+                  onClick={handleItem}
                 >
                   Update
                 </button>

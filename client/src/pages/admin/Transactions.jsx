@@ -1,10 +1,55 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState } from "react";
-import { TransactionTable } from "../../components/ui/Table";
+import { useContext, useState, useEffect } from "react";
+import TransactionTable from "../../components/ui/TransactionTable";
+import { AlertsContext } from "../../context/Alerts";
+import { SuccessContext } from "../../context/Success";
+import axios from "axios";
 
 export const Transactions = ({ setSelected }) => {
   const [theme] = useContext(ThemeContext);
+  const [transactions, setTransactions] = useState([]);
+  const [success, setSuccess] = useContext(SuccessContext);
+  const [errors, setErrors] = useContext(AlertsContext);
+  const authToken = localStorage.getItem("authToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        setErrors([]);
+        setSuccess(false);
+
+        await axios
+          .get(`${serverUrl}/transaction/view`, {
+            headers: {
+              "x-auth-token": authToken,
+              "x-refresh-token": refreshToken,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setTransactions(response.data.transactions);
+            setSuccess(true);
+          });
+      } catch (error) {
+        console.error(error);
+        setSuccess(false);
+        if (error.response && error.response.data.errors) {
+          setErrors(error.response.data.errors.map((err) => err.msg));
+        } else {
+          setErrors(["An unexpected error occurred."]);
+        }
+      }
+    };
+
+    fetchTransactions();
+
+    return () => {
+      setTransactions([]);
+    };
+  }, []);
 
   return (
     <>
@@ -27,7 +72,10 @@ export const Transactions = ({ setSelected }) => {
             <option>Option 3</option>
           </select>
         </div>
-        <TransactionTable setSelected={setSelected} />
+        <TransactionTable
+          transactions={transactions}
+          setSelected={setSelected}
+        />
       </div>
     </>
   );

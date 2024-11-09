@@ -59,6 +59,7 @@ export const AddItem = ({ setSelected }) => {
   };
 
   const handleItem = async () => {
+    console.log(image);
     await UploadImage(image, setSuccess, setErrors, handleInsertItem, user);
   };
 

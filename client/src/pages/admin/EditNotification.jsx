@@ -45,6 +45,11 @@ export const EditNotification = ({
       if (error) console.log(error);
     };
     handleViewNotification();
+
+    // Optionally return a cleanup function
+    return () => {
+      setNotification([]); // Example cleanup, adjust as needed
+    };
   }, []);
 
   const handleUpdateNotification = async () => {

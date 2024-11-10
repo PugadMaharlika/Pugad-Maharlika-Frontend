@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../context/User";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -6,6 +7,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function useAuthCheck() {
   const navigate = useNavigate();
+  const [user, setUser] = useContext(UserContext);
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -24,9 +26,10 @@ function useAuthCheck() {
             "x-auth-token": authToken,
             "x-refresh-token": refreshToken,
           },
-        }
+        },
       )
       .then((response) => {
+        setUser(response.data.account);
         localStorage.setItem("authToken", response.data.token);
       })
       .catch((error) => {

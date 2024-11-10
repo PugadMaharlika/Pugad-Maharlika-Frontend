@@ -5,7 +5,9 @@ export const SuccessContext = createContext();
 function Success({ children }) {
   const [success, setSuccess] = useState(false);
   return (
-    <SuccessContext.Provider value={[success, setSuccess]}>{children}</SuccessContext.Provider>
+    <SuccessContext.Provider value={[success, setSuccess]}>
+      {children}
+    </SuccessContext.Provider>
   );
 }
 

@@ -35,7 +35,7 @@ function Login({ theme }) {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       )
       .then((response) => {
         localStorage.setItem("authToken", response.data.token);
@@ -100,7 +100,10 @@ function Login({ theme }) {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block mb-2 text-sm font-medium ">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium "
+              >
                 <i className="fa-solid fa-shield-halved mr-2"></i>
                 Password
               </label>

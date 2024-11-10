@@ -8,7 +8,11 @@ function User({ children }) {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
-  return <UserContext.Provider value={[user, setUser]}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={[user, setUser]}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
 export default User;

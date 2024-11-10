@@ -1,67 +1,41 @@
-import React from 'react';
-import { Chart } from "react-google-charts";
+import React from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
+// Register the required components for Chart.js
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
-const LineChart = ({values, title, htitle,vtitle}) => {
-  const data = values
-
+const LineChart = ({ title_text, data }) => {
   const options = {
-    title: title,
-    curveType: "function", // Smooth the lines
-    hAxis: {
-      title: htitle,
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+        position: "top",
+      },
+      title: {
+        position: "top",
+        display: true,
+        text: title_text,
+      },
     },
-    vAxis: {  
-      title: vtitle,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
     },
-    legend: { position: "bottom" },
-    colors: ["#1A56DB"], // Customize the color of the line
   };
-  
-  return (
-    <div>
-      <Chart
-        chartType="LineChart"
-        width="100%"
-        height="400px"
-        data={data}
-        options={options}
-        loader={<div>Loading Chart...</div>}
-      />
-    </div>
-  );
+
+  return <Line data={data} options={options} />;
 };
 
 export default LineChart;
-
-
-// const data = [
-//   ["Month", ""],
-//   ["January", 500],
-//   ["February", 436],
-//   ["March", 846],
-//   ["April", 245],
-//   ["May", 500],
-//   ["June", 475],
-//   ["July", 500],
-//   ["August", 500],
-//   ["September", 500],
-//   ["October", 1250],
-//   ["November", 1250],
-//   ["December", 1250],
-// ];
-
-// const options = {
-//   title: "Recent",
-//   curveType: "function", // Smooth the lines
-//   hAxis: {
-//     title: "Months",
-//   },
-//   vAxis: {
-//     title: "Admin Accounts",
-//   },
-//   legend: { position: "bottom" },
-//   colors: ["#1A56DB"], // Customize the color of the line
-// };
-
-

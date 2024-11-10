@@ -9,18 +9,11 @@ import LineChart from "../../components/ui/LineChart";
 import TopItem from "../../components/ui/TopItemTable";
 import TopOffer from "../../components/ui/TopOfferTable";
 
-export const Reports = ({
-  setSelected,
-  startYear = 2000,
-  endYear = new Date().getFullYear(),
-}) => {
+export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().getFullYear() }) => {
   const [selectedYear, setSelectedYear] = useState("");
   const [theme] = useContext(ThemeContext);
 
-  const years = Array.from(
-    { length: endYear - startYear + 1 },
-    (_, i) => startYear + i,
-  );
+  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
 
   const handleChange = (e) => {
     setSelectedYear(e.target.value);
@@ -52,6 +45,34 @@ export const Reports = ({
       },
     ],
   };
+
+  const Sampledata = [
+    {
+      id: 1,
+      name: "Johny Bravo",
+      type: "Global",
+    },
+    {
+      id: 2,
+      name: "Johny Maskulado",
+      type: "Player",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+  ];
 
   return (
     <>
@@ -101,7 +122,7 @@ export const Reports = ({
         <div className="flex gap-40 justify-center">
           <div>
             <label className="text-2xl font-bold">Top 5 Items</label>
-            <TopItem />
+            <TopItem Sampledata={Sampledata} column={{ column1: "Item", column2: "Sold" }} />
           </div>
           <div>
             <label className="text-2xl font-bold">Top 5 Offers</label>
@@ -124,15 +145,9 @@ export const Reports = ({
             <option>Oldest</option>
           </select>
           <label className="text-l font-bold">From: </label>
-          <input
-            type="date"
-            className="border border-gray-300 p-2 rounded-lg"
-          />
+          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
           <label className="text-l font-bold">To: </label>
-          <input
-            type="date"
-            className="border border-gray-300 p-2 rounded-lg"
-          />
+          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
         </div>
         <div>
           <FeedbackTable setSelected={setSelected} />
@@ -148,15 +163,9 @@ export const Reports = ({
         <div className="flex flex-col mb-10">
           <div className="flex items-center space-x-4 mb-4">
             <label className="text-l font-bold">From: </label>
-            <input
-              type="date"
-              className="border border-gray-300 p-2 rounded-lg"
-            />
+            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
             <label className="text-l font-bold">To: </label>
-            <input
-              type="date"
-              className="border border-gray-300 p-2 rounded-lg"
-            />
+            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
           </div>
           <div>
             <UserLogsTable setSelected={setSelected} />

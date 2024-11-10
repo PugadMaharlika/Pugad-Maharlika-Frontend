@@ -36,7 +36,10 @@ export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
         setOffers(res.data.offerview);
         console.log(res);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors([error.response.data.errors.map((error) => error.msg)]);
+      }
     };
     handleViewOffer();
   }, []);

@@ -164,7 +164,10 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       setSelected("Offer");
     }
 
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors([error.response.data.errors.map((error) => error.msg)]);
+    }
   };
 
   const handleOfferImg = async () => {

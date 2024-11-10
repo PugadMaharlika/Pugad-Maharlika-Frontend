@@ -80,7 +80,11 @@ export const EditNotification = ({
       setSuccess(true);
     }
 
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   return (

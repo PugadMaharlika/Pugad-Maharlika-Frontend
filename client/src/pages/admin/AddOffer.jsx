@@ -55,7 +55,10 @@ export const AddOffer = ({ setSelected }) => {
       setUser(res.data.account);
       setErrors(["Offer added successfully!"]);
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors([error.response.data.errors.map((error) => error.msg)]);
+    }
   };
 
   const handleOfferImg = async () => {

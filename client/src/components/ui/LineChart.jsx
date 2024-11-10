@@ -12,29 +12,20 @@ import {
 } from "chart.js";
 
 // Register the required components for Chart.js
-ChartJS.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
-const LineChart = ({ sidetitle, title, data }) => {
-  // // Chart options
+const LineChart = ({ title_text, data }) => {
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: "top",
       },
       title: {
-        position: "left",
+        position: "top",
         display: true,
-        text: "Monthly Sales Data",
+        text: title_text,
       },
     },
     scales: {

@@ -62,24 +62,18 @@ function Main({ theme, toggleTheme }) {
         },
       })
       .then((response) => {
-        setSuccess(true);
-        setErrors([success]);
-        setUser(null);
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
         navigate("/");
       });
   };
 
   const handleLogout = async () => {
+    await handlePutRequest("/auth/logout", {}, "Logout Successful");
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
-    await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
   const displayUserNav = () => {
@@ -137,7 +131,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -238,7 +232,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -313,26 +307,16 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar
-            theme={theme}
-            toggleTheme={toggleTheme}
-            toggleSideBar={toggleSideBar}
-          />
+          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div
-              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
-            >
+            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && (
-                <AdminDashboard theme={theme} />
-              )}
-              {selected === "Dashboard" && user.role === "P" && (
-                <Dashboard theme={theme} />
-              )}
+              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
+              {selected === "Dashboard" && user.role === "P" && <Dashboard theme={theme} />}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
                 <Offer
@@ -407,32 +391,18 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && (
-                <AddItem theme={theme} setSelected={setSelected} />
-              )}
+              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
               {selected === "ItemDetails" && (
-                <ItemDetails
-                  theme={theme}
-                  setSelected={setSelected}
-                  selectedItem={selectedItem}
-                />
+                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem
-                  theme={theme}
-                  setSelected={setSelected}
-                  selectedItem={selectedItem}
-                />
+                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
               )}
               {selected === "Transactions" && (
                 <Transactions theme={theme} setSelected={setSelected} />
               )}
-              {selected === "Receipt" && (
-                <Invoice theme={theme} setSelected={setSelected} />
-              )}
-              {selected === "Reports" && (
-                <Reports theme={theme} setSelected={setSelected} />
-              )}
+              {selected === "Receipt" && <Invoice theme={theme} setSelected={setSelected} />}
+              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
               {selected === "FeedBackDetails" && (
                 <FeedBackDetails theme={theme} setSelected={setSelected} />
               )}

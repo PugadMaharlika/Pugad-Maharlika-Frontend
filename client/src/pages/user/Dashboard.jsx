@@ -25,7 +25,7 @@ import spaniard from "../../assets/characters/default_spaniard.png";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-function Dashboard() {
+function Dashboard({ setSelected }) {
   useAuthCheck();
   const [theme, setTheme] = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,6 @@ function Dashboard() {
           const char_names = res.data.account.progress.characters.map(
             (obj) => Object.values(obj)[0]
           );
-          console.log(char_names);
           setCharacters(char_names);
         }
         if (error) {
@@ -114,13 +113,13 @@ function Dashboard() {
             style={{ "--size": "7rem", "--value": `${user && user.winrate}` }}
             role="progressbar"
           >
-            {user.winrate}%
+            {Math.trunc(user.winrate)}%
           </div>
         </div>
         <div
-          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-lg bg-${theme}`}
+          className={`rounded-xl place-items-center p-2 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md max-h-64 bg-${theme}`}
         >
-          <AutoCarousel images={images} />
+          <AutoCarousel images={images} setSelected={setSelected} />
         </div>
         <div
           className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md xl:max-w-lg  bg-${theme}`}

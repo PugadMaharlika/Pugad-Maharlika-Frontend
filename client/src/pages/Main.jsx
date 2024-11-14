@@ -316,7 +316,9 @@ function Main({ theme, toggleTheme }) {
             <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
               {/* Content */}
               {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
-              {selected === "Dashboard" && user.role === "P" && <Dashboard theme={theme} />}
+              {selected === "Dashboard" && user.role === "P" && (
+                <Dashboard setSelected={setSelected} theme={theme} />
+              )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
                 <Offer
@@ -326,9 +328,7 @@ function Main({ theme, toggleTheme }) {
                   setOfferselected={setOfferselected}
                 />
               )}
-              {selected === "AddOffer" && (
-                <AddOffer theme={theme} setSelected={setSelected} />
-              )}
+              {selected === "AddOffer" && <AddOffer theme={theme} setSelected={setSelected} />}
               {selected === "ViewOffer" && (
                 <ViewOffer
                   theme={theme}

@@ -39,7 +39,9 @@ export const Notification = ({
         setUser(res.data.account);
         setNotification(res.data.notifications);
       }
-      if (error) console.log(error);
+      if (error) {
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleViewNotification();
   }, []); // Dependencies to rerun effect only when these values change
@@ -59,7 +61,10 @@ export const Notification = ({
       setUser(res.data.account);
       setNotification(res.data.notifications);
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   // UseEffect For Search Notification
@@ -90,7 +95,7 @@ export const Notification = ({
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 
@@ -113,7 +118,7 @@ export const Notification = ({
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 

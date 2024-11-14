@@ -59,7 +59,7 @@ function Dashboard({ setSelected }) {
           setLoading(false);
           setUser(res.data.account);
           setLeaderboard(res.data.leaderboard);
-
+          console.log(res.data.account);
           const char_names = res.data.account.progress.characters.map(
             (obj) => Object.values(obj)[0]
           );
@@ -141,7 +141,7 @@ function Dashboard({ setSelected }) {
                   leaderboard.map((row, index) => {
                     if (row.win_rate)
                       return (
-                        <tr>
+                        <tr key={index + 1}>
                           <th>{index + 1}</th>
                           <td>{row.acc_username}</td>
                           <td>{row.win_rate}%</td>

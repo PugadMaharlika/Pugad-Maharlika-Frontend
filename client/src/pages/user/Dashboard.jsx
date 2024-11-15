@@ -25,7 +25,7 @@ import spaniard from "../../assets/characters/default_spaniard.png";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-function Dashboard() {
+function Dashboard({ setSelected }) {
   useAuthCheck();
   const [theme, setTheme] = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
@@ -59,11 +59,10 @@ function Dashboard() {
           setLoading(false);
           setUser(res.data.account);
           setLeaderboard(res.data.leaderboard);
-
+          console.log(res.data.account);
           const char_names = res.data.account.progress.characters.map(
             (obj) => Object.values(obj)[0]
           );
-          console.log(char_names);
           setCharacters(char_names);
         }
         if (error) {
@@ -114,13 +113,13 @@ function Dashboard() {
             style={{ "--size": "7rem", "--value": `${user && user.winrate}` }}
             role="progressbar"
           >
-            {user.winrate}%
+            {Math.trunc(user.winrate)}%
           </div>
         </div>
         <div
-          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-lg bg-${theme}`}
+          className={`rounded-xl place-items-center p-2 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md max-h-64 bg-${theme}`}
         >
-          <AutoCarousel images={images} />
+          <AutoCarousel images={images} setSelected={setSelected} />
         </div>
         <div
           className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md xl:max-w-lg  bg-${theme}`}
@@ -142,7 +141,7 @@ function Dashboard() {
                   leaderboard.map((row, index) => {
                     if (row.win_rate)
                       return (
-                        <tr>
+                        <tr key={index + 1}>
                           <th>{index + 1}</th>
                           <td>{row.acc_username}</td>
                           <td>{row.win_rate}%</td>

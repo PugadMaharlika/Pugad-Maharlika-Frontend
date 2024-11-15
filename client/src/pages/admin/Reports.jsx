@@ -1,23 +1,57 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
 import { useContext, useState } from "react";
-import { TransactionTable } from "../../components/ui/Table";
+import { TransactionTable } from "../../components/ui/TransactionTable";
 import { FeedbackTable } from "../../components/ui/FeedBackTable";
 import { UserLogsTable } from "../../components/ui/UserLogsTable";
 import { FeedBackDetails } from "../../pages/admin/FeedBackDetails";
 import LineChart from "../../components/ui/LineChart";
-import TopItem from "../../components/ui/TopItemTable";
-import TopOffer from "../../components/ui/TopOfferTable";
+import TopItem from "../../components/ui/TopTables";
 
-export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().getFullYear() }) => {
+export const Reports = ({
+  setSelected,
+  startYear = 2000,
+  endYear = new Date().getFullYear(),
+}) => {
   const [selectedYear, setSelectedYear] = useState("");
   const [theme] = useContext(ThemeContext);
 
-  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
 
   const handleChange = (e) => {
     setSelectedYear(e.target.value);
   };
+
+  const sampleData = [
+    {
+      id: 1,
+      name: "Johny Bravo",
+      type: "Global",
+    },
+    {
+      id: 2,
+      name: "Johny Maskulado",
+      type: "Player",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+    {
+      id: 3,
+      name: "Johny Brave",
+      type: "Global",
+    },
+  ];
 
   const lineChartData = {
     labels: [
@@ -46,34 +80,6 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     ],
   };
 
-  const Sampledata = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Global",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Player",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-  ];
-
   return (
     <>
       <div className="container mx-auto p-4">
@@ -82,7 +88,6 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
         >
           <div className="flex items-center w-full space-x-4">
             <label className="text-2xl">Reports</label>
-            <label className="text-xl">From: </label>
             <div className=" border-gray-300 p-2 rounded-lg">
               <select
                 value={selectedYear}
@@ -122,11 +127,17 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
         <div className="flex gap-40 justify-center">
           <div>
             <label className="text-2xl font-bold">Top 5 Items</label>
-            <TopItem Sampledata={Sampledata} column={{ column1: "Item", column2: "Sold" }} />
+            <TopItem
+              sampleData={sampleData}
+              column={{ column1: "Item", column2: "Sold" }}
+            />
           </div>
           <div>
             <label className="text-2xl font-bold">Top 5 Offers</label>
-            <TopOffer data={lineChartData} />
+            <TopItem
+              sampleData={sampleData}
+              column={{ column1: "Item", column2: "Sold" }}
+            />
           </div>
         </div>
 
@@ -145,9 +156,15 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             <option>Oldest</option>
           </select>
           <label className="text-l font-bold">From: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+          <input
+            type="date"
+            className="border border-gray-300 p-2 rounded-lg"
+          />
           <label className="text-l font-bold">To: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+          <input
+            type="date"
+            className="border border-gray-300 p-2 rounded-lg"
+          />
         </div>
         <div>
           <FeedbackTable setSelected={setSelected} />
@@ -163,9 +180,15 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
         <div className="flex flex-col mb-10">
           <div className="flex items-center space-x-4 mb-4">
             <label className="text-l font-bold">From: </label>
-            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+            <input
+              type="date"
+              className="border border-gray-300 p-2 rounded-lg"
+            />
             <label className="text-l font-bold">To: </label>
-            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+            <input
+              type="date"
+              className="border border-gray-300 p-2 rounded-lg"
+            />
           </div>
           <div>
             <UserLogsTable setSelected={setSelected} />

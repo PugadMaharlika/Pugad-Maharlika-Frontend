@@ -52,9 +52,9 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   const [charts, setCharts] = useState("");
   const [linecharts, setLineCharts] = useState(lineChartData);
 
-  const handleChangePage = (id) => {
+  const handleChangePage = (account) => {
     setSelected("AdminAccount");
-    setSelectedAdmin(id);
+    setSelectedAdmin(account);
   };
 
   useEffect(() => {
@@ -86,9 +86,7 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   }, []); // Dependencies to rerun effect only when these values change
 
   return (
-    <div
-      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
-    >
+    <div className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}>
       {/* Admin Accounts Title and Add Account Button */}
       <div
         className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${

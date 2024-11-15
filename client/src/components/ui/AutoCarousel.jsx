@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const AutoCarousel = ({ images }) => {
+const AutoCarousel = ({ images, setSelected }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -12,14 +12,14 @@ const AutoCarousel = ({ images }) => {
   }, [images.length]);
 
   return (
-    <div className="max-h-52">
+    <div className="max-h-72 max-w-md" onClick={() => setSelected("Offer")}>
       {images &&
         images.map((image, index) => (
           <div
             key={index}
             className={`carousel-item  ${index === currentIndex ? "block" : "hidden"}`}
           >
-            <img src={image} className="rounded-box max-h-52 w-full object-fill" />
+            <img src={image} className="rounded-box w-full object-cover" />
           </div>
         ))}
     </div>

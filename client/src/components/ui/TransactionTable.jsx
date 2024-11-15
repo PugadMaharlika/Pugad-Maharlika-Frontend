@@ -1,58 +1,55 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TransactionTable = ({ transactions, setSelected }) => {
+export const TransactionTable = ({
+  transactions,
+  setSelected,
+  setTransactionSelected,
+}) => {
   const [theme, setTheme] = useContext(ThemeContext);
 
   return (
-    <div
-      className={`flex col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 mb-5 ${
-        theme === "night" ? "bg-night  text-white " : "bg-fantasy text-black"
-      }`}
-    >
-      <div className="p-6 w-full">
-        <div className="flex justify-center ">
-          <table className="table-auto w-full mt-8 text-center ">
-            <thead>
-              <tr>
-                <th>Action</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Mode</th>
-                <th>Date Created</th>
+    <div className="p-6 w-full">
+      <div className="flex justify-center overflow-y-auto">
+        <table className="table-auto w-full mt-8 text-center ">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Mode</th>
+              <th>Date Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction) => (
+              <tr key={transaction.id}>
+                <td className="px-4 py-2 justify-center">
+                  <button
+                    id="btn_view_receipt"
+                    onClick={() => {
+                      setSelected("Receipt");
+                      setTransactionSelected(transaction.his_id);
+                    }}
+                    className="hover:text-blue-700  font-bold py-2 px-4 rounded"
+                  >
+                    <i className="fa-solid fa-eye"></i>
+                  </button>
+                </td>
+                <td className="px-4 py-2">{transaction.acc_username}</td>
+                <td className="px-4 py-2">
+                  {transaction.his_type === "I"
+                    ? "I"
+                    : transaction.his_type === "O"
+                      ? "O"
+                      : ""}
+                </td>
+                <td className="px-4 py-2">{transaction.his_mode}</td>
+                <td className="px-4 py-2">{transaction.date_created}</td>
               </tr>
-            </thead>
-            <tbody>
-              {transactions.map((item) => (
-                <tr key={transactions.id}>
-                  <td className="px-4 py-2 justify-center">
-                    <button
-                      id="btn_Notification_action"
-                      onClick={() => {
-                        setSelected("Receipt");
-                      }}
-                      className="hover:text-blue-700  font-bold py-2 px-4 rounded"
-                    >
-                      <i className="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                  <td className="px-4 py-2">{transactions.acc_username}</td>
-                  <td className="px-4 py-2">{transactions.item_type}</td>
-                  <td className="px-4 py-2">{transactions.his_mode}</td>
-                  <td className="px-4 py-2">{transactions.date_created}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Pagination */}
-        <div className="flex justify-end mt-5">
-          <div className="flex items-center">
-            <button className="py-2 px-4 mr-2">&lt;</button>
-            <button className="py-2 px-4">1</button>
-            <button className="py-2 px-4 ml-2">&gt;</button>
-          </div>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

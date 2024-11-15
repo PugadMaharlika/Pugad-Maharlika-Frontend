@@ -145,15 +145,32 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         </div>
 
         <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
-          <div className="flex items-center gap-5">
-            <div className="flex-1">
+          {/* Image uploading */}
+          <div className="flex flex-col items-center w-full md:w-1/3">
+            <div className="relative">
               <img
-                id="image"
-                className="h-48 w-full object-contain m-2"
-                src={displayItem || items.item_sprite} // Display new image or fallback to initial image
+                src={
+                  displayItem ||
+                  "https://img.freepik.com/premium-vector/no-photo-available-vector-icon-default-image-symbol-picture-coming-soon-web-site-mobile-app_87543-10639.jpg?w=740"
+                }
                 alt="Uploaded"
+                className="mt-4 w-32 h-32 md:w-36 md:h-36 object-cover rounded-lg"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  handleImageUpload(e);
+                }}
+                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
+            <p className="mt-2 text-gray-600 text-sm text-center">
+              Click to upload a new image
+            </p>
+          </div>
+          <div className="flex items-center gap-5">
             <div className="flex-1">
               <input
                 type="text"
@@ -192,13 +209,6 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 onChange={(e) => setDetails(e.target.value)}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               ></textarea>
-              <div className="mb-5">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-              </div>
               <div className="flex w-full justify-end">
                 <button
                   className="bg-green-500 px-6 py-2 text-white rounded-lg"

@@ -18,7 +18,7 @@ import { ViewNotification } from "./admin/ViewNotification";
 import { EditNotification } from "./admin/EditNotification";
 import { Item } from "./admin/Item";
 import { Transactions } from "../pages/admin/Transactions";
-import { Invoice } from "../pages/admin/Receipt";
+import { Receipt } from "../pages/admin/Receipt";
 import { Reports } from "../pages/admin/Reports";
 import { FeedBackDetails } from "../pages/admin/FeedBackDetails";
 import AddItem from "./admin/AddItem";
@@ -44,6 +44,8 @@ function Main({ theme, toggleTheme }) {
   const [notificationselected, setNotificationselected] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
   const [offerselected, setOfferselected] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [transactionSelected, setTransactionSelected] = useState([]);
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -425,10 +427,20 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "Transactions" && (
-                <Transactions theme={theme} setSelected={setSelected} />
+                <Transactions
+                  theme={theme}
+                  setSelected={setSelected}
+                  transactions={transactions}
+                  setTransactionSelected={setTransactionSelected}
+                />
               )}
               {selected === "Receipt" && (
-                <Invoice theme={theme} setSelected={setSelected} />
+                <Receipt
+                  theme={theme}
+                  setSelected={setSelected}
+                  transactions={transactions}
+                  transactionSelected={transactionSelected}
+                />
               )}
               {selected === "Reports" && (
                 <Reports theme={theme} setSelected={setSelected} />

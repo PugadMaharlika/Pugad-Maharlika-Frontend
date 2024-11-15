@@ -66,8 +66,10 @@ export const AddItem = ({ setSelected }) => {
   return (
     <>
       <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
-        <div className="flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold">
-          <h1 className="text-2xl font-bold">Items</h1>
+        <div
+          className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold bg-${Theme}`}
+        >
+          <h1 className="text-2xl font-bold">Add Item</h1>
           <button
             id="btn_back"
             onClick={() => {
@@ -79,76 +81,85 @@ export const AddItem = ({ setSelected }) => {
           </button>
         </div>
 
-        <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
-          <div className="flex items-center gap-5">
-            <div className="flex-1">
-              {image && (
-                <img src={displayItem} alt="Uploaded" className="mt-4" />
-              )}
+        <div className="flex flex-col md:flex-row bg-white items-center justify-center w-full p-6 rounded-lg shadow-lg gap-6">
+          {/* Image uploading */}
+          <div className="flex flex-col items-center w-full md:w-1/3">
+            <div className="relative">
+              <img
+                src={
+                  displayItem ||
+                  "https://img.freepik.com/premium-vector/no-photo-available-vector-icon-default-image-symbol-picture-coming-soon-web-site-mobile-app_87543-10639.jpg?w=740"
+                }
+                alt="Uploaded"
+                className="mt-4 w-32 h-32 md:w-36 md:h-36 object-cover rounded-lg"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  handleImageUpload(e);
+                }}
+                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+              />
             </div>
-            <div className="flex-1">
-              <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              />
-              <input
-                type="number"
-                step="0.01"
-                max="99999999999"
-                placeholder="Value"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              />
-              <select
-                value={value}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
+            <p className="mt-2 text-gray-600 text-sm text-center">
+              Click to upload a new image
+            </p>
+          </div>
+
+          {/* Form fields */}
+          <div className="flex flex-col w-full md:w-2/3 space-y-3">
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
+            />
+            <input
+              type="number"
+              step="0.01"
+              max="99999999999"
+              placeholder="Value"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
+            />
+            <select
+              value={itemType}
+              onChange={(e) => setItemType(e.target.value)}
+              className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
+            >
+              <option value="" disabled>
+                Item Type
+              </option>
+              <option value="S">Skin</option>
+            </select>
+            <select
+              value={itemholder}
+              onChange={(e) => setItemHolder(e.target.value)}
+              className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
+            >
+              <option value="" disabled>
+                Item Holder
+              </option>
+              <option value="diego silang">Diego Silang</option>
+              <option value="gabriela silang">Gabriela Silang</option>
+            </select>
+            <textarea
+              placeholder="Details"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
+            ></textarea>
+            <div className="flex justify-end w-5/6 mx-auto">
+              <button
+                className="bg-green-500 px-6 py-2 text-white rounded-lg"
+                onClick={handleItem}
               >
-                <option value="" disabled selected>
-                  Item Type
-                </option>
-                <option value="S">Skin</option>
-              </select>
-              <select
-                value={value}
-                onChange={(e) => setItemHolder(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              >
-                <option value="" disabled selected>
-                  Item Holder
-                </option>
-                <option value="diego silang">Diego Silang</option>
-                <option value="gabriela silang">Gabriela Silang</option>
-              </select>
-              <textarea
-                placeholder="Details"
-                value={details}
-                onChange={(e) => setDetails(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              ></textarea>
-              <div className="mb-5">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setImage(e.target.files[0]);
-                    handleImageUpload(e);
-                  }}
-                />
-              </div>
-              <div className="flex w-full justify-end">
-                <button
-                  className="bg-green-500 px-6 py-2 text-white rounded-lg"
-                  onClick={() => {
-                    handleItem();
-                  }}
-                >
-                  Add
-                </button>
-              </div>
+                Add
+              </button>
             </div>
           </div>
         </div>

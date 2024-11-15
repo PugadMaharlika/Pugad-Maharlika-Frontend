@@ -38,6 +38,7 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
               setSelectedItem(item.item_id);
               setSelected("UpdateItem");
             }}
+            className=" hover:text-yellow-500 font-bold px-1 rounded"
           >
             <i className="fas fa-edit"></i>
           </button>

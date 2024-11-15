@@ -18,7 +18,7 @@ import { ViewNotification } from "./admin/ViewNotification";
 import { EditNotification } from "./admin/EditNotification";
 import { Item } from "./admin/Item";
 import { Transactions } from "../pages/admin/Transactions";
-import { Invoice } from "../pages/admin/Receipt";
+import { Receipt } from "../pages/admin/Receipt";
 import { Reports } from "../pages/admin/Reports";
 import { FeedBackDetails } from "../pages/admin/FeedBackDetails";
 import AddItem from "./admin/AddItem";
@@ -44,6 +44,8 @@ function Main({ theme, toggleTheme }) {
   const [notificationselected, setNotificationselected] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
   const [offerselected, setOfferselected] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [transactionSelected, setTransactionSelected] = useState([]);
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -62,18 +64,24 @@ function Main({ theme, toggleTheme }) {
         },
       })
       .then((response) => {
+        setSuccess(true);
+        setErrors([success]);
+        setUser(null);
         navigate("/");
       })
       .catch((error) => {
+        console.log(error);
+        setSuccess(false);
+        setErrors(error.response.data.errors.map((error) => error.msg));
         navigate("/");
       });
   };
 
   const handleLogout = async () => {
-    await handlePutRequest("/auth/logout", {}, "Logout Successful");
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
+    await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
   const displayUserNav = () => {
@@ -131,7 +139,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Mode"}
+          title={"Theme"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -232,7 +240,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Mode"}
+          title={"Theme"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -307,17 +315,25 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
+          <NavBar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            toggleSideBar={toggleSideBar}
+          />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
               {selected === "Dashboard" && user.role === "P" && (
-                <Dashboard setSelected={setSelected} theme={theme} />
+                <Dashboard theme={theme} />
               )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
@@ -328,7 +344,9 @@ function Main({ theme, toggleTheme }) {
                   setOfferselected={setOfferselected}
                 />
               )}
-              {selected === "AddOffer" && <AddOffer theme={theme} setSelected={setSelected} />}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ViewOffer" && (
                 <ViewOffer
                   theme={theme}
@@ -391,18 +409,42 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
-                <Transactions theme={theme} setSelected={setSelected} />
+                <Transactions
+                  theme={theme}
+                  setSelected={setSelected}
+                  transactions={transactions}
+                  setTransactionSelected={setTransactionSelected}
+                />
               )}
-              {selected === "Receipt" && <Invoice theme={theme} setSelected={setSelected} />}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
+              {selected === "Receipt" && (
+                <Receipt
+                  theme={theme}
+                  setSelected={setSelected}
+                  transactions={transactions}
+                  transactionSelected={transactionSelected}
+                />
+              )}
+              {selected === "Reports" && (
+                <Reports theme={theme} setSelected={setSelected} />
+              )}
               {selected === "FeedBackDetails" && (
                 <FeedBackDetails theme={theme} setSelected={setSelected} />
               )}

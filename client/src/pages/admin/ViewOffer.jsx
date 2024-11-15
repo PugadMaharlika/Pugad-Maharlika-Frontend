@@ -6,6 +6,7 @@ import { AlertsContext } from "../../context/Alerts";
 import axios from "axios";
 import API from "../../service/API";
 import perlas from "../../../src/assets/Perlas.png";
+import ginto from "../../../src/assets/Icon_Small_WhiteOutline_Coin.png";
 
 export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
   const [theme, setTheme] = useContext(ThemeContext);
@@ -38,7 +39,7 @@ export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
       }
       if (error) {
         console.log(error);
-        setErrors([error.response.data.errors.map((error) => error.msg)]);
+        setErrors(error.response.data.errors.map((error) => error.msg));
       }
     };
     handleViewOffer();
@@ -72,9 +73,13 @@ export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
         />
         <div className="ml-5">
           <h2 className="text-2xl font-bold">{offer && offer.ofr_name}</h2>
-          <p className=" text-xs mt-2">
-            {" "}
-            <img src={perlas} alt="Perlas" className="w-5 h-5 mr-2" />
+          <p className="text-base flex items-center font-thin font-sans text-xl">
+            {/* Image aligned to the left and resized */}
+            <img
+              src={offer && offer.ofr_type === "P" ? perlas : ginto}
+              alt="Type of Currency"
+              className="w-5 h-5 mr-2" // w-10 h-10 are Tailwind classes for 40px width and height, mr-2 adds a small margin-right
+            />
             {offer && offer.ofr_value}
           </p>
           <p className=" mt-2"> ₱ {offer && offer.ofr_price}</p>

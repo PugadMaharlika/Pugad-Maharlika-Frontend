@@ -42,7 +42,10 @@ export const EditNotification = ({
         setTitle(notif.note_title);
         setMessage(notif.note_message);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleViewNotification();
 

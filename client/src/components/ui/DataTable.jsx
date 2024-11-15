@@ -48,13 +48,11 @@ const DataTable = ({ accvalues, selectedCallback }) => {
                 accvalues.map((item) => (
                   <tr
                     key={item.id}
-                    className={
-                      item.acc_enabled === false ? "bg-red-700 text-white" : ""
-                    }
+                    className={item.acc_enabled === false ? "bg-red-700 text-white" : ""}
                   >
                     <td className="px-4 py-2">
                       <button
-                        onClick={() => selectedCallback(item.acc_id)}
+                        onClick={() => selectedCallback(item)}
                         className="hover:text-blue-700 font-bold py-2 px-4 rounded"
                       >
                         <i className="fa-solid fa-eye"></i>

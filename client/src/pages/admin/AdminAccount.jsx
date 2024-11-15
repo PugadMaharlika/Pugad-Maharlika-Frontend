@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import shane from "/Github/Pugad Testing/Pugad-Maharlika-Frontend/client/src/assets/James-Reid.jpg";
+import shane from "../../assets/James-Reid.jpg";
 import { SuccessContext } from "../../context/Success";
 import { AlertsContext } from "../../context/Alerts";
 import API from "../../service/API";
@@ -9,7 +9,7 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dateCreated, setDateCreated] = useState("");
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(selectedadmin.acc_enabled);
   const [wins, setWins] = useState("");
   const [loses, setLoses] = useState("");
   const [gold, setGold] = useState("");
@@ -20,18 +20,18 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
   const [useraccount, setUserAccount] = useState({});
 
   useEffect(() => {
+    console.log(selectedadmin);
     const handleViewAdmins = async () => {
       setErrors([]);
       setSuccess(false);
       const config = {
         url: `${serverUrl}/account/view`,
         method: "POST",
-        data: { id: selectedadmin },
+        data: { id: selectedadmin.acc_id },
       };
 
       const { res, error } = await API(config);
       if (res) {
-        setStatus(res.data.useraccount.acc_enabled);
         setUserAccount(res.data.useraccount);
       }
       if (error) {
@@ -41,24 +41,26 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
     handleViewAdmins();
   }, []);
 
-  const handleEnabler = async () => {
-    setErrors([]);
-    setSuccess(false);
-    console.log({ id: selectedadmin, status: status });
-    const config = {
-      url: `${serverUrl}/account/enabler`,
-      method: "POST",
-      data: { id: selectedadmin, status: status },
-    };
+  useEffect(() => {
+    const handleEnabler = async () => {
+      setErrors([]);
+      setSuccess(false);
+      const config = {
+        url: `${serverUrl}/account/enabler`,
+        method: "POST",
+        data: { id: selectedadmin.acc_id, status: status },
+      };
 
-    const { res, error } = await API(config);
-    if (res) {
-      setUserAccount(res.data.useraccount);
-    }
-    if (error) {
-      setErrors(error.response.data.errors.map((error) => error.msg));
-    }
-  };
+      const { res, error } = await API(config);
+      if (res) {
+        setUserAccount(res.data.useraccount);
+      }
+      if (error) {
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
+    };
+    handleEnabler();
+  }, [status]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -97,19 +99,10 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
                 className="w-full h-auto rounded-lg mb-4"
               />
             ) : (
-              <img
-                src={shane}
-                alt="Default"
-                className="w-full h-auto rounded-lg mb-4"
-              />
+              <img src={shane} alt="Default" className="w-full h-auto rounded-lg mb-4" />
             )}
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mb-4"
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" />
         </div>
 
         {/* Middle Column: Username, Email, Wins, Loses */}
@@ -163,9 +156,7 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
               type="text"
               value={
                 (useraccount &&
-                  (useraccount.acc_win /
-                    (useraccount.acc_win + useraccount.acc_lose)) *
-                    100) ||
+                  (useraccount.acc_win / (useraccount.acc_win + useraccount.acc_lose)) * 100) ||
                 0
               }
               placeholder="Win Rate"
@@ -211,13 +202,10 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           <div className="flex justify-end mt-4 space-x-4">
             <button
               onClick={() => {
-                handleEnabler();
                 handleToggleStatus();
               }}
               className={`py-2 px-4 rounded text-white ${
-                status
-                  ? "bg-red-500 hover:bg-red-700"
-                  : "bg-green-500 hover:bg-green-700"
+                status ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
               }`}
             >
               {status ? "Deactivate" : "Activate"}

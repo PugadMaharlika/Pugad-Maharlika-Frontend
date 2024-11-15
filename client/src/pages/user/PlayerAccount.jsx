@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import defaultPlayerImage from "/Github/Pugad Testing/Pugad-Maharlika-Frontend/client/src/assets/James-Reid.jpg";
+import defaultPlayerImage from "../../assets/James-Reid.jpg";
 
 const playerValues = [
   {
@@ -94,11 +94,7 @@ export const PlayerAccount = ({ setSelected }) => {
         <div className="w-full md:w-1/2 p-4 flex flex-col items-center">
           <div className="mb-4">
             {selectedImage ? (
-              <img
-                src={selectedImage}
-                alt="Selected"
-                className="w-full h-auto rounded-lg mb-4"
-              />
+              <img src={selectedImage} alt="Selected" className="w-full h-auto rounded-lg mb-4" />
             ) : (
               <img
                 src={defaultPlayerImage}
@@ -107,12 +103,7 @@ export const PlayerAccount = ({ setSelected }) => {
               />
             )}
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mb-4"
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" />
         </div>
 
         {/* Player Details */}
@@ -165,9 +156,7 @@ export const PlayerAccount = ({ setSelected }) => {
             <button
               onClick={handleToggleStatus}
               className={`py-2 px-4 rounded text-white ${
-                status
-                  ? "bg-red-500 hover:bg-red-700"
-                  : "bg-green-500 hover:bg-green-700"
+                status ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
               }`}
             >
               {status ? "Set Offline" : "Set Online"}

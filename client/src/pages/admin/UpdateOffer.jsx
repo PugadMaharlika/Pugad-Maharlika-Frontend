@@ -14,6 +14,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
   const [value, setValue] = useState("");
   const [price, setPrice] = useState("");
   const [desc, setDescription] = useState("");
+  const [type, setType] = useState("");
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
@@ -44,7 +45,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
         setValue(res.data.offerview.ofr_value);
         setPrice(res.data.offerview.ofr_price);
         setDescription(res.data.offerview.ofr_desc);
-
+        setType(res.data.offerview.ofr_type);
         console.log(res);
       }
       if (error) {
@@ -62,6 +63,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
     };
   }, [offerselected]);
 
+  // Unrelease Offer
   const handleUnrelease = async () => {
     setErrors([]);
     setSuccess(false);
@@ -85,10 +87,11 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 
+  // Release Offer
   const handleRelease = async () => {
     setErrors([]);
     setSuccess(false);
@@ -110,7 +113,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 
@@ -133,6 +136,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       value == offer.ofr_value &&
       price == offer.ofr_price &&
       desc == offer.ofr_desc &&
+      type == offer.ofr_type &&
       !image
     ) {
       setSuccess(true);
@@ -141,7 +145,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       return;
     }
 
-    console.log("DATA: ", name, value, price, desc, offerselected);
+    console.log("DATA: ", name, value, price, desc, type, offerselected);
     const config = {
       url: `${serverUrl}/offer/updateOffer`,
       method: "PUT",
@@ -151,6 +155,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
         value: value,
         price: price,
         desc: desc,
+        type: type,
         url: url ? url : offer.ofr_sprite,
       },
     };
@@ -166,7 +171,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
 
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 
@@ -192,7 +197,10 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
           </button>
         </div>
 
-        <div className="flex bg-white items-center w-full p-8 rounded-lg shadow-lg">
+        <div
+      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+      }`}>
           <div className="flex flex-col items-center mb-5 w-1/3">
             <div className="relative">
               <img
@@ -243,6 +251,14 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
               onChange={(e) => setPrice(e.target.value)}
               className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
             />
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
+            >
+              <option value="G">Ginto</option>
+              <option value="P">Perlas</option>
+            </select>
             <textarea
               placeholder="Description"
               value={desc}

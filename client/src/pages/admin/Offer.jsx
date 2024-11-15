@@ -36,7 +36,7 @@ export const Offer = ({ setSelected, setOfferselected }) => {
       }
       if (error) {
         console.log(error);
-        setErrors([error.response.data.errors.map((error) => error.msg)]);
+        setErrors(error.response.data.errors.map((error) => error.msg));
       }
     };
     handleOffer();

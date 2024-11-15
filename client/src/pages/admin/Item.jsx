@@ -33,10 +33,9 @@ export const Item = ({ setSelected, setSelectedItem }) => {
                 "x-refresh-token": refreshToken,
               },
             },
-            {},
+            {}
           )
           .then((response) => {
-            console.log(response);
             setItems(response.data.items);
             setUser(response.data.account);
             setSuccess(true); // Set success only if the request succeeds
@@ -73,7 +72,7 @@ export const Item = ({ setSelected, setSelectedItem }) => {
           onClick={() => {
             setSelected("AddItem");
           }}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-blue-600"
         >
           Add Item
         </button>

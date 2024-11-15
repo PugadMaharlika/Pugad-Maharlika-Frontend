@@ -1,99 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext } from "../../context/Theme";
 
-const DataTable = ({ accvalues, setSelected }) => {
+const DataTable = ({ accvalues, selectedCallback }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
+  const [theme] = useContext(ThemeContext);
 
-  // Filter accvalues based on the search term
-  const filteredData = accvalues.filter((row) => {
-    const { username, email, date, status } = row;
-    const dateMonthYear = new Date(date).toLocaleString("default", {
-      month: "long",
-      year: "numeric",
-    });
-
-    return (
-      username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dateMonthYear.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      status.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
-
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  // Theme-based styles
+  const textColor = theme === "night" ? "text-white" : "text-black";
+  const bgColor = theme === "night" ? "bg-night" : "bg-fantasy";
+  const headerColor = theme === "night" ? "bg-transparent" : "bg-transparent"; // Remove gray background
 
   return (
-    <div className="overflow-x-auto w-full p-6 bg-white">
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-
-      <table className="min-w-full table-auto">
-        <thead className="bg-white">
-          <tr>
-            <th className="px-4 py-2 text-center">Action</th>
-            <th className="px-4 py-2 text-center">Username</th>
-            <th className="px-4 py-2 text-center">Email</th>
-            <th className="px-4 py-2 text-center">Date Created</th>
-            <th className="px-4 py-2 text-center">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData
-            .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
-            .map((row) => (
-              <tr key={row.id} className="border-t">
-                <td className="px-4 py-2 text-center">
-                  <button 
-                    onClick={() => setSelected("AdminAccount", row)} // Pass selected row to AdminAccount
-                    className="account-info text-blue-500"
-                  >
-                    <i className="fa-solid fa-pen"></i>
-                  </button>
-                </td>
-                <td className="px-4 py-2 text-center">{row.username}</td>
-                <td className="px-4 py-2 text-center">{row.email}</td>
-                <td className="px-4 py-2 text-center">{row.date}</td>
-                <td className="px-4 py-2 text-center">
-                  {row.status === "Active" ? (
-                    <span className="text-green-500">{row.status}</span>
-                  ) : (
-                    <span className="text-red-500">{row.status}</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`text-blue-500 px-4 py-2 ${currentPage === 1 && "opacity-50"}`}
-        >
-          Previous
-        </button>
-
-        <div className="text-gray-600">
-          Page {currentPage} of {totalPages}
+    <div
+      className={`flex col-span-8 overflow-hidden rounded-lg shadow-lg text-xs md:text-md w-64 px-8 sm:w-full py-10 mb-5 ${bgColor} ${textColor}`}
+    >
+      <div className="p-6 w-full">
+        {/* Search Input */}
+        <div className="w-full sm:w-full p-1 py-1 px-7 mb-4 sm:mb-0">
+          <div className="flex items-center border rounded-md w-full">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="p-2 w-full rounded-l-md outline-none"
+            />
+            {/* Search Icon on the right */}
+            <i className="fa-solid fa-magnifying-glass p-2"></i>
+          </div>
         </div>
 
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`text-blue-500 px-4 py-2 ${currentPage === totalPages && "opacity-50"}`}
-        >
-          Next
-        </button>
+        {/* Table */}
+        <div className="flex justify-center">
+          <table className="table-auto w-full mt-8 text-center">
+            <thead>
+              <tr className={`${headerColor}`}>
+                <th className="px-4 py-2">Action</th>
+                <th className="px-4 py-2">Username</th>
+                <th className="px-4 py-2">Email</th>
+                <th className="px-4 py-2">Date Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {accvalues.length > 0 ? (
+                accvalues.map((item) => (
+                  <tr
+                    key={item.id}
+                    className={
+                      item.acc_enabled === false ? "bg-red-700 text-white" : ""
+                    }
+                  >
+                    <td className="px-4 py-2">
+                      <button
+                        onClick={() => selectedCallback(item.acc_id)}
+                        className="hover:text-blue-700 font-bold py-2 px-4 rounded"
+                      >
+                        <i className="fa-solid fa-eye"></i>
+                      </button>
+                    </td>
+                    <td className="px-4 py-2">{item.acc_username}</td>
+                    <td className="px-4 py-2">{item.acc_email}</td>
+                    <td className="px-4 py-2">{item.date_created}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    No results found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

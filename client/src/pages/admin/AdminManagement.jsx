@@ -1,64 +1,125 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import LineChart from "../../components/ui/LineChart";
 import DataTable from "../../components/ui/DataTable";
 import { ThemeContext } from "../../context/Theme";
+import { UserContext } from "../../context/User";
+import { SuccessContext } from "../../context/Success";
+import { AlertsContext } from "../../context/Alerts";
+import API from "../../service/API";
 
-const values = [
-  ["Month", ""],
-  ["January", 500],
-  ["February", 436],
-  ["March", 846],
-  ["April", 245],
-  ["May", 500],
-  ["June", 475],
-  ["July", 500],
-  ["August", 500],
-  ["September", 500],
-  ["October", 1250],
-  ["November", 1250],
-  ["December", 1250],
-];
-
-const accvalues = [
-  { id: 1, username: "OhMama", email: "johny@gmail.com", date: "28 Jan, 12:30 AM", status: "Active" },
-  { id: 2, username: "OhMuscle", email: "masku@gmail.com", date: "25 Jan, 10:40 PM", status: "Active" },
-  { id: 3, username: "Alahooooo!", email: "abdul@gmail.com", date: "20 Jan, 10:40 PM", status: "Disabled" },
-  { id: 4, username: "Lalalala", email: "wsmith@gmail.com", date: "15 Jan, 03:29 PM", status: "Disabled" },
-  { id: 5, username: "Yeaaaahh!", email: "ESing@gmail.com", date: "14 Jan, 10:40 PM", status: "Active" },
-  { id: 6, username: "sHANE", email: "johny@gmail.com", date: "28 Jan, 12:30 AM", status: "Active" },
-  { id: 7, username: "ODWA", email: "masku@gmail.com", date: "25 Jan, 10:40 PM", status: "Active" },
-  { id: 8, username: "lOWI!", email: "abdul@gmail.com", date: "20 Jan, 10:40 PM", status: "Disabled" },
-  { id: 9, username: "Lalalala", email: "wsmith@gmail.com", date: "15 Jan, 03:29 PM", status: "Disabled" },
-  { id: 10, username: "Yeaaaahh!", email: "ESing@gmail.com", date: "14 Jan, 10:40 PM", status: "Active" },
-];
+var lineChartData = {
+  labels: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  datasets: [
+    {
+      label: "Player Activity",
+      data: [],
+      backgroundColor: "rgba(54, 162, 235, 0.4)",
+      borderColor: "rgba(54, 162, 235, 1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(54, 162, 235, 1)",
+    },
+  ],
+};
 
 const title = "Recent";
 const htitle = "Months";
 const vtitle = "Admin Accounts";
 
-export const AdminManagement = ({ setSelected }) => {
+export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   const [theme, setTheme] = useContext(ThemeContext);
 
+  const [accvalues, setAccValues] = useState([]);
+
+  const [user, setUser] = useContext(UserContext);
+  const [success, setSuccess] = useContext(SuccessContext);
+  const [errors, setErrors] = useContext(AlertsContext);
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [charts, setCharts] = useState("");
+  const [linecharts, setLineCharts] = useState(lineChartData);
+
+  const handleChangePage = (id) => {
+    setSelected("AdminAccount");
+    setSelectedAdmin(id);
+  };
+
+  useEffect(() => {
+    const handleViewAdmins = async () => {
+      setErrors([]);
+      setSuccess(false);
+      const config = {
+        url: `${serverUrl}/account/admin`,
+        method: "GET",
+        data: {},
+      };
+
+      const { res, error } = await API(config);
+      if (res) {
+        console.log(res.data.admins);
+        setIsLoading(false);
+        setUser(res.data.account);
+        setAccValues(res.data.admins);
+        setCharts(res.data.charts);
+        lineChartData.datasets[0].data = res.data.charts;
+        setLineCharts(lineChartData);
+        console.log(res.data.charts[0]);
+      }
+      if (error) {
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
+    };
+    handleViewAdmins();
+  }, []); // Dependencies to rerun effect only when these values change
+
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}>
-      <div className="pt-4">
-        {/* Line chart */}
-        <LineChart values={values} title={title} htitle={htitle} vtitle={vtitle} />
-
-        {/* Admin Accounts Title and Add Account Button */}
-        <div className="flex justify-between items-center my-4 ">
-          <h1 className="text-2xl font-semibold">Admin Accounts</h1>
-          <button id="add-account"
-            onClick={() => { setSelected("AddAdminAccount"); }}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 sm:px-4 sm:py-2 rounded text-xs sm:text-sm md:text-md"
-          >
-            + Add Account
-          </button>
-        </div>
-
-        {/* DataTable */}
-        <DataTable setSelected={setSelected} accvalues={accvalues} />
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
+    >
+      {/* Admin Accounts Title and Add Account Button */}
+      <div
+        className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
+          theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
+        } mb-4`} // Added margin-bottom to add space between title and data table
+      >
+        <h1 className="text-2xl font-semibold">Admin</h1>
+        <button
+          id="add-account"
+          onClick={() => {
+            setSelected("AddAdminAccount"); // This sets the selected view to AddAdminAccount
+          }}
+          className={`hover:bg-green-700 bg-green-500 text-white rounded-lg px-4 py-2 text-sm md:text-md`}
+        >
+          + Add Account
+        </button>
       </div>
+
+      {/* LineChart Section */}
+      <div className="flex justify-center items-center pt-4 mt-4 mb-8">
+        {/* Line chart */}
+        <div
+          className={`place-content-center rounded-xl p-5 shadow-md flex flex-wrap flex-col gap-5 w-full max-w-2xl max-h-96 ${
+            theme === "night" ? "bg-night" : "bg-fantasy"
+          }`}
+        >
+          <LineChart title_text={"Recents"} data={linecharts} />
+        </div>
+      </div>
+      {/* DataTable */}
+      <DataTable selectedCallback={handleChangePage} accvalues={accvalues} />
     </div>
   );
 };

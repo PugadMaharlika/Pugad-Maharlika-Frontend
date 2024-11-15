@@ -30,6 +30,11 @@ import { AddOffer } from "./admin/AddOffer";
 import { UpdateOffer } from "./admin/UpdateOffer";
 import NotificationTable from "../components/ui/NotificationTable";
 import AdminDashboard from "./admin/AdminDashboard";
+import { AdminManagement } from "./admin/AdminManagement";
+import { AddAdminAccount } from "./admin/AddAdminAccount";
+import { AdminAccount } from "./admin/AdminAccount";
+import PlayerManagement from "./user/PlayerManagement";
+import PlayerAccount from "./user/PlayerAccount";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -45,6 +50,7 @@ function Main({ theme, toggleTheme }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [offerselected, setOfferselected] = useState(null);
   const navigate = useNavigate();
+  const [selectedadmin, setSelectedAdmin] = useState(null);
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -165,6 +171,7 @@ function Main({ theme, toggleTheme }) {
           title={"Dashboard"}
           handleSelectedButton={handleSelectedButton}
         />
+        {user && user.role === "S" && displaySuperAdminNav()}
         <DrawerButton
           icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
           selected={selected}
@@ -290,7 +297,6 @@ function Main({ theme, toggleTheme }) {
               sideBarOpen ? "overflow-y-auto" : "overflow-hidden"
             } gap-1 p-0 `}
           >
-            {user && user.role === "S" && displaySuperAdminNav()}
             {user && user.role === "P" ? displayUserNav() : displayAdminNav()}
           </nav>
           <div className="flex-grow"></div>
@@ -307,16 +313,26 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
+          <NavBar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            toggleSideBar={toggleSideBar}
+          />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
-              {selected === "Dashboard" && user.role === "P" && <Dashboard theme={theme} />}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
+              {selected === "Dashboard" && user.role === "P" && (
+                <Dashboard theme={theme} />
+              )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
                 <Offer
@@ -325,6 +341,29 @@ function Main({ theme, toggleTheme }) {
                   user={user}
                   setOfferselected={setOfferselected}
                 />
+              )}
+              {selected === "Admin" && user.role === "S" && (
+                <AdminManagement
+                  theme={theme}
+                  setSelectedAdmin={setSelectedAdmin}
+                  setSelected={setSelected}
+                />
+              )}
+              {selected === "AddAdminAccount" && user.role === "S" && (
+                <AddAdminAccount theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "AdminAccount" && user.role === "S" && (
+                <AdminAccount
+                  theme={theme}
+                  selectedadmin={selectedadmin}
+                  setSelected={setSelected}
+                />
+              )}
+              {selected === "Player" && user.role !== "P" && (
+                <PlayerManagement theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "PlayerAccount" && user.role !== "P" && (
+                <PlayerAccount theme={theme} setSelected={setSelected} />
               )}
               {selected === "AddOffer" && (
                 <AddOffer theme={theme} setSelected={setSelected} />
@@ -391,18 +430,32 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
                 <Transactions theme={theme} setSelected={setSelected} />
               )}
-              {selected === "Receipt" && <Invoice theme={theme} setSelected={setSelected} />}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
+              {selected === "Receipt" && (
+                <Invoice theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "Reports" && (
+                <Reports theme={theme} setSelected={setSelected} />
+              )}
               {selected === "FeedBackDetails" && (
                 <FeedBackDetails theme={theme} setSelected={setSelected} />
               )}

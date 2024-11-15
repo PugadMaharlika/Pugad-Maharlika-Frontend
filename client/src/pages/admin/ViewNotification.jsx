@@ -42,7 +42,10 @@ export const ViewNotification = ({
         setNotification(res.data.notification);
         console.log(res);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleViewNotification();
   }, []);
@@ -70,7 +73,10 @@ export const ViewNotification = ({
       setSelected("Notification");
       setErrors(["Notification deleted successfully!"]);
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   return (

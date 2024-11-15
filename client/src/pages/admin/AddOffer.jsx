@@ -13,6 +13,7 @@ export const AddOffer = ({ setSelected }) => {
   const [value, setValue] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
@@ -31,7 +32,7 @@ export const AddOffer = ({ setSelected }) => {
     console.log(url);
     setErrors([]);
     setSuccess(false);
-    setSelected("Offer");
+    
     if (!name || !value || !price || !description) {
       setErrors(["All fields are required..."]);
       return;
@@ -46,6 +47,7 @@ export const AddOffer = ({ setSelected }) => {
         value,
         price,
         description,
+        type,
       },
     };
 
@@ -54,8 +56,12 @@ export const AddOffer = ({ setSelected }) => {
       setSuccess(true);
       setUser(res.data.account);
       setErrors(["Offer added successfully!"]);
+      setSelected("Offer");
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   const handleOfferImg = async () => {
@@ -64,7 +70,9 @@ export const AddOffer = ({ setSelected }) => {
   };
 
   return (
+    
     <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-full px-4 md:px-8 h-full">
+      
       <div className="flex justify-between items-center py-4">
         <h1 className="text-xl md:text-3xl font-bold">Add Offer</h1>
         <button
@@ -77,8 +85,11 @@ export const AddOffer = ({ setSelected }) => {
           <i className="fa-solid fa-circle-chevron-left text-2xl md:text-3xl"></i>
         </button>
       </div>
-
-      <div className="flex flex-col md:flex-row bg-white items-center w-full p-4 md:p-8 rounded-lg shadow-lg">
+       <div
+      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+      }`}
+    >
         {/* Image uploading */}
         <div className="flex flex-col items-center mb-5 md:mb-0 w-full md:w-1/3">
           <div className="relative">
@@ -132,6 +143,16 @@ export const AddOffer = ({ setSelected }) => {
             onChange={(e) => setPrice(e.target.value)}
             className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
           />
+
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
+          >
+            <option value="G">Gold</option>
+            <option value="P">Perlas</option>
+          </select>
+
           <textarea
             placeholder="Details"
             value={description}

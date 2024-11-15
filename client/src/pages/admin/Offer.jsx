@@ -34,7 +34,10 @@ export const Offer = ({ setSelected, setOfferselected }) => {
         setUser(res.data.account);
         setOffers(res.data.offers);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleOffer();
   }, []);

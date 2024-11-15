@@ -51,7 +51,10 @@ export const AddNotification = ({ setSelected }) => {
       setErrors(["Notification added successfully!"]);
       setSelected("Notification");
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   return (

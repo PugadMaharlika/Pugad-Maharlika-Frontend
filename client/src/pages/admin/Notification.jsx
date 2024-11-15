@@ -22,26 +22,12 @@ export const Notification = ({
   const [isLoading, setIsLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState("");
   const [search, setSearch] = useState("");
+  const [type, setType] = useState("All");
+
   // UseEffect for View All notification
   useEffect(() => {
-    const handleViewNotification = async () => {
-      setErrors([]);
-      setSuccess(false);
-      const config = {
-        url: `${serverUrl}/notification/view`,
-        method: "GET",
-        data: {},
-      };
-
-      const { res, error } = await API(config);
-      if (res) {
-        setIsLoading(false);
-        setUser(res.data.account);
-        setNotification(res.data.notifications);
-      }
-      if (error) console.log(error);
-    };
     handleViewNotification();
+    
   }, []); // Dependencies to rerun effect only when these values change
 
   const handleViewNotification = async () => {
@@ -55,14 +41,19 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
+
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notifications);
     }
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+    
   };
 
-  // UseEffect For Search Notification
+  //HANDLER For Search Notification
   const handleSearchNotification = async () => {
     if (search == "") {
       handleViewNotification();
@@ -83,17 +74,17 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
-      console.log(res.data.notification);
+
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notification);
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
-
+  // PLAYER SEARCH BY YEAR
   const handleYearSearch = async (year) => {
     setErrors([]);
     setSuccess(false);
@@ -106,16 +97,51 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
-      console.log(res.data.notification);
+     
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notification);
     }
     if (error) {
       console.log(error);
-      setErrors([error.response.data.errors.map((error) => error.msg)]);
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
+
+  // HANDLE NOTIFICATION TYPE SEARCH
+  useEffect(() => {
+    const handleNotificationType = async () => {
+      setErrors([]);
+      setSuccess(false);
+      console.log("TYPE: ", type);
+  
+      const config = {
+        url: `${serverUrl}/notification/notification-type?note_type=${type}`,
+        method: "GET",
+        data: {},
+      };
+  
+      const { res, error } = await API(config);
+      if (res) {
+
+        setIsLoading(false);
+        setUser(res.data.account);
+        setNotification(res.data.notification);
+      }
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
+    };
+    if(type !== "All"){
+      handleNotificationType();
+    }
+    else{
+      handleViewNotification();
+    }
+   
+  },[type]);
+
 
   return (
     <div
@@ -164,6 +190,25 @@ export const Notification = ({
                   <i className="fa-solid fa-magnifying-glass p-2 "></i>
                 </button>
               </div>
+              {/*Search by Notification type */}
+              <div className="w-full mt-5 sm:w-1/2 flex justify-end ml-auto mr-1">
+                <select
+                  value={type}
+                  onChange={(e) => {    
+                                  
+                    const selectedType = e.target.value
+                    setType(selectedType);
+                   
+
+                  }
+                  }
+                  className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
+                >
+                  <option default value="All">All</option>
+                  <option value="G">Global</option>
+                  <option value="P">Player</option>
+                </select>
+              </div>
             </div>
           ) : (
             <div className="w-full sm:w-1/2 flex justify-end ml-auto mr-10">
@@ -181,7 +226,7 @@ export const Notification = ({
                   setSelectedYear(selectedOption); // Set the selected year
                 }}
               >
-                <option value="selectYear">Select Year</option>
+                <option default value="selectYear">Select Year</option>
 
                 {Array.from({ length: 5 }, (_, i) => {
                   const year = new Date().getFullYear() - i;

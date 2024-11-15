@@ -1,13 +1,6 @@
 import React from "react";
 
-function DrawerButton({
-  icon,
-  theme,
-  selected,
-  sideBarOpen,
-  title,
-  handleSelectedButton,
-}) {
+function DrawerButton({ icon, theme, selected, sideBarOpen, title, handleSelectedButton }) {
   return (
     <button
       id={`btn_drawer_${title}`}
@@ -15,7 +8,7 @@ function DrawerButton({
         handleSelectedButton(title);
       }}
       tabIndex="0"
-      className={`flex  justify-start flex-grow  p-3 rounded-lg text-center  leading-tight transition-all btn ${
+      className={`flex  justify-start flex-grow  p-3 rounded-lg max-h-10 text-center  leading-tight transition-all btn ${
         selected === title && theme === "night"
           ? "btn-outline border-gray-400 bg-blue-900 text-white "
           : "border-none bg-base-100"

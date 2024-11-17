@@ -16,6 +16,7 @@ export const AddAdminAccount = ({ setSelected }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
+  const [Theme] = useContext(ThemeContext);
 
   const handleAddAdmin = async () => {
     setErrors([]);
@@ -67,16 +68,24 @@ export const AddAdminAccount = ({ setSelected }) => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg flex shadow-lg relative">
+    <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
+      <div
+        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold bg-${Theme}`}
+      >
+        <h1 className="text-2xl font-bold">Add Admin</h1>
         <button
+          id="btn_back"
           onClick={() => {
             setSelected("Admin");
           }}
-          className="absolute top-4 left-4 text-black hover:text-gray-600"
+          className="rounded-lg px-4"
         >
           <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
         </button>
+      </div>
+      <div
+        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 rounded-lg shadow-lg gap-6 bg-${Theme}`}
+      >
         <div className="w-1/2 p-4">
           <h2 className="text-2xl font-bold mb-4">Add Admin Account</h2>
           <input

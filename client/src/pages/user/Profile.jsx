@@ -40,13 +40,7 @@ const Profile = ({ theme }) => {
   };
 
   const handleProfile = async () => {
-    const result = await UploadImage(
-      profile,
-      setSuccess,
-      setErrors,
-      handleUpdateImage,
-      user,
-    );
+    const result = await UploadImage(profile, setSuccess, setErrors, handleUpdateImage, user);
   };
 
   const handlePutRequest = async (route, data, success) => {
@@ -79,7 +73,7 @@ const Profile = ({ theme }) => {
     await handlePutRequest(
       "/profile/update-username",
       { username: username },
-      "Success! username has been changed",
+      "Success! username has been changed"
     );
   };
 
@@ -92,16 +86,12 @@ const Profile = ({ theme }) => {
     await handlePutRequest(
       "/profile/update-password",
       { currentpassword: password, newpassword: newpassword },
-      "Success! password has been changed",
+      "Success! password has been changed"
     );
   };
 
   const handleDisable = async () => {
-    await handlePutRequest(
-      "/profile/disable-account",
-      {},
-      "Success! account is now disabled",
-    );
+    await handlePutRequest("/profile/disable-account", {}, "Success! account is now disabled");
 
     localStorage.setItem("user", null);
     localStorage.setItem("authToken", null);
@@ -215,7 +205,7 @@ const Profile = ({ theme }) => {
         <hr className="mt-4 mb-8" />
 
         <div className="mb-10">
-          <p className="py-2   font-semibold">Disable Account</p>
+          <p className="py-2 font-semibold">Disable Account</p>
           <p className="inline-flex items-center rounded-full bg-rose-100 px-4 py-1 text-rose-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -232,9 +222,8 @@ const Profile = ({ theme }) => {
             Proceed with caution
           </p>
           <p className="mt-2">
-            Please confirm that you want to disable this account, as it will be
-            permanently deleted and the associated email address will no longer
-            be available for creating a new account.
+            Please confirm that you want to disable this account, as it will be permanently deleted
+            and the associated email address will no longer be available for creating a new account.
           </p>
 
           <button

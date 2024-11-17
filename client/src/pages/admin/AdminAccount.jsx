@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import shane from "../../assets/James-Reid.jpg";
 import { SuccessContext } from "../../context/Success";
 import { AlertsContext } from "../../context/Alerts";
+import { ThemeContext } from "../../context/Theme";
+import logo from "../../assets/logo1.png";
 import API from "../../service/API";
 
 export const AdminAccount = ({ setSelected, selectedadmin }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dateCreated, setDateCreated] = useState("");
@@ -18,28 +18,36 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
   const [errors, setErrors] = useContext(AlertsContext);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [useraccount, setUserAccount] = useState({});
+  const [theme, setTheme] = useContext(ThemeContext);
 
   useEffect(() => {
-    console.log(selectedadmin);
-    const handleViewAdmins = async () => {
-      setErrors([]);
-      setSuccess(false);
-      const config = {
-        url: `${serverUrl}/account/view`,
-        method: "POST",
-        data: { id: selectedadmin.acc_id },
-      };
-
-      const { res, error } = await API(config);
-      if (res) {
-        setUserAccount(res.data.useraccount);
-      }
-      if (error) {
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      }
-    };
     handleViewAdmins();
   }, []);
+
+  const handleViewAdmins = async () => {
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/account/view`,
+      method: "POST",
+      data: { id: selectedadmin.acc_id },
+    };
+
+    const { res, error } = await API(config);
+    if (res) {
+      setUserAccount(res.data.useraccount);
+      setUsername(res.data.useraccount.acc_username);
+      setEmail(res.data.useraccount.acc_email);
+      setDateCreated(res.data.useraccount.date_created);
+      setWins(res.data.useraccount.acc_win);
+      setLoses(res.data.useraccount.acc_lose);
+      setGold(res.data.useraccount.acc_gold);
+      setPerlas(res.data.useraccount.acc_balance);
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
 
   useEffect(() => {
     const handleEnabler = async () => {
@@ -53,7 +61,7 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
 
       const { res, error } = await API(config);
       if (res) {
-        setUserAccount(res.data.useraccount);
+        handleViewAdmins();
       }
       if (error) {
         setErrors(error.response.data.errors.map((error) => error.msg));
@@ -62,14 +70,31 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
     handleEnabler();
   }, [status]);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const handleUpdateAdmin = async () => {
+    setErrors([]);
+    setSuccess(false);
+    if (!gold || !perlas) {
+    } else if (gold.length > 9 || perlas.length > 9 || gold < 0 || perlas < 0) {
+      setSuccess(false);
+      setErrors(["Please enter a valid amount!"]);
+      return;
+    }
+
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/account/update`,
+      method: "PUT",
+      data: { id: selectedadmin.acc_id, gold: gold ? gold : 0, perlas: perlas ? perlas : 0 },
+    };
+
+    const { res, error } = await API(config);
+    if (res) {
+      setSuccess(true);
+      setErrors(["Updated successfully!"]);
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
 
@@ -77,19 +102,30 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
     setStatus((prevStatus) => !prevStatus);
   };
 
-  return (
-    <div className="flex justify-center items-start mt-10">
-      <div className="max-w-6xl w-full bg-white p-8 rounded-lg shadow-lg flex flex-col md:flex-row">
-        {/* Left Column: Profile Image */}
-        <div className="w-full md:w-1/3 p-4 flex flex-col items-center">
-          <h2 className="text-2xl font-bold mb-4">Account Info</h2>
-          <button
-            onClick={() => setSelected("Admin")}
-            className="absolute top-4 left-4 text-black hover:text-gray-600"
-          >
-            <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
-          </button>
+  const handleNumberChange = (callBack, number) => {
+    const cleanedNumber = number.replace(/^0+/, "");
+    callBack(cleanedNumber);
+  };
 
+  return (
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+      }`}
+    >
+      <div className="flex justify-between w-full">
+        <h1 className="text-2xl font-bold">Admin Account</h1>
+        <button
+          id="btn_back_AddNotification"
+          onClick={() => setSelected("Admin")}
+          className="rounded-lg px-4"
+        >
+          <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
+        </button>
+      </div>
+      <div className="max-w-6xl w-full p-8 rounded-lg flex flex-col md:flex-row">
+        {/* Left Column: Profile Image */}
+        <div className="w-full md:w-1/3 flex flex-col items-center">
           {/* Image Holder */}
           <div className="mb-4">
             {useraccount && useraccount.acc_profile ? (
@@ -99,17 +135,17 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
                 className="w-full h-auto rounded-lg mb-4"
               />
             ) : (
-              <img src={shane} alt="Default" className="w-full h-auto rounded-lg mb-4" />
+              <img src={logo} alt="Default" className="w-full h-auto rounded-lg mb-4" />
             )}
           </div>
-          <input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" />
         </div>
 
         {/* Middle Column: Username, Email, Wins, Loses */}
         <div className="w-full md:w-1/3 p-4">
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Username</label>
+            <label className="block  mb-1">Username</label>
             <input
+              disabled
               type="text"
               value={useraccount && useraccount.acc_username}
               placeholder="Username"
@@ -118,8 +154,9 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Email</label>
+            <label className="block    mb-1">Email</label>
             <input
+              disabled
               type="email"
               value={useraccount && useraccount.acc_email}
               placeholder="Email"
@@ -128,8 +165,9 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Wins</label>
+            <label className="block    mb-1">Wins</label>
             <input
+              disabled
               type="text"
               value={useraccount && useraccount.acc_win}
               placeholder="Wins"
@@ -138,8 +176,9 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Loses</label>
+            <label className="block    mb-1">Loses</label>
             <input
+              disabled
               type="text"
               value={useraccount && useraccount.acc_lose}
               placeholder="Loses"
@@ -151,12 +190,15 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
         {/* Right Column: Win Rate, Gold, Perlas, Date Created, and Buttons */}
         <div className="w-full md:w-1/3 p-4">
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Win Rate</label>
+            <label className="block    mb-1">Win Rate</label>
             <input
+              disabled
               type="text"
               value={
                 (useraccount &&
-                  (useraccount.acc_win / (useraccount.acc_win + useraccount.acc_lose)) * 100) ||
+                  Math.trunc(
+                    (useraccount.acc_win / (useraccount.acc_win + useraccount.acc_lose)) * 100
+                  )) ||
                 0
               }
               placeholder="Win Rate"
@@ -165,27 +207,29 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Gold</label>
+            <label className="block mb-1">Gold</label>
             <input
-              type="text"
-              value={useraccount && useraccount.acc_gold}
+              type="number"
+              value={gold}
+              onChange={(e) => handleNumberChange(setGold, e.target.value)}
               placeholder="Gold"
               className="w-full p-2 rounded-lg border"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Perlas</label>
+            <label className="block mb-1">Perlas</label>
             <input
-              type="text"
-              value={useraccount && useraccount.acc_balance}
+              type="number"
+              value={perlas}
+              onChange={(e) => handleNumberChange(setPerlas, e.target.value)}
               placeholder="Perlas"
               className="w-full p-2 rounded-lg border"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Date Created</label>
+            <label className="block    mb-1">Date Created</label>
             <input
               disabled
               type="text"
@@ -211,7 +255,10 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
               {status ? "Deactivate" : "Activate"}
             </button>
 
-            <button className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">
+            <button
+              onClick={handleUpdateAdmin}
+              className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded"
+            >
               Save
             </button>
           </div>

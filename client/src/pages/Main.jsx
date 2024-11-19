@@ -35,6 +35,8 @@ import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
 import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
+import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
+import UserLogsChart from "./admin/UserLogsChart";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -369,6 +371,12 @@ function Main({ theme, toggleTheme }) {
                   selectedadmin={selectedadmin}
                   setSelected={setSelected}
                 />
+              )}
+              {selected === "SalesAndRevenueChart" && user.role !== "P" && (
+                <SalesAndRevenueChart theme={theme} />
+              )}
+              {selected === "UserLogsChart" && user.role !== "P" && (
+                <UserLogsChart theme={theme} />
               )}
               {selected === "Player" && user.role !== "P" && (
                 <PlayerManagement

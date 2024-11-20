@@ -97,51 +97,45 @@ export const Transactions = ({
     }
   };
 
-  const handleSearchItemOrOffer = async () => {
-    if (search === "") {
-      fetchTransactions();
-      return;
-    }
-    setErrors([]);
-    setSuccess(false);
+  useEffect(() => {
+    const handleSearchItemOrOffer = async () => {
+      setErrors([]);
+      setSuccess(false);
 
-    if (!search.trim()) {
-      return;
-    }
+      const config = {
+        url: `${serverUrl}/transaction/search/itemtype?his_type=${selectedOption}`,
+        method: "GET",
+      };
 
-    const config = {
-      url: `${serverUrl}/transaction/search/itemtype?query=${search}`,
-      method: "GET",
-    };
+      try {
+        const { res, error } = await API(config);
 
-    try {
-      const { res, error } = await API(config);
-
-      if (res) {
-        if (res.data.transactionSearchItemType) {
-          setTransactions([res.data.transactionSearchItemType]);
-          setUser(res.data.account);
-        } else {
-          setErrors(["No results found"]);
+        if (res) {
+          if (res.data.transactionSearchItemType) {
+            setTransactions([res.data.transactionSearchItemType]);
+            setUser(res.data.account);
+          } else {
+            setErrors(["No results found"]);
+          }
         }
-      }
 
-      if (error) {
-        console.log(error);
-        setErrors([
-          error.response?.data?.errors?.map((err) => err.msg) ||
-            "An error occurred",
-        ]);
+        if (error) {
+          console.log(error);
+          setErrors([
+            error.response?.data?.errors?.map((err) => err.msg) ||
+              "An error occurred",
+          ]);
+        }
+      } catch (err) {
+        setErrors(["Failed to fetch results"]);
+        console.error(err);
       }
-    } catch (err) {
-      setErrors(["Failed to fetch results"]);
-      console.error(err);
-    }
-  };
+    };
+    handleSearchItemOrOffer();
+  }, [selectedOption]);
 
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
-    handleSearchItemOrOffer(); // Trigger search immediately when dropdown changes
   };
 
   return (
@@ -180,13 +174,13 @@ export const Transactions = ({
             </div>
             <select
               className="border border-gray-300 p-2 rounded-r-lg"
-              onChange={handleSelectChange}
+              onChange={(e) => handleSelectChange(e)}
             >
               <option disabled selected>
                 Choose Type
               </option>
-              <option>Item</option>
-              <option>Offer</option>
+              <option value="I">Item</option>
+              <option value="O">Offer</option>
             </select>
           </div>
 

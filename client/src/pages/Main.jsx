@@ -46,6 +46,8 @@ function Main({ theme, toggleTheme }) {
   const [offerselected, setOfferselected] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [transactionSelected, setTransactionSelected] = useState([]);
+  const [feedback, setFeedback] = useState([]);
+
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -446,7 +448,11 @@ function Main({ theme, toggleTheme }) {
                 <Reports theme={theme} setSelected={setSelected} />
               )}
               {selected === "FeedBackDetails" && (
-                <FeedBackDetails theme={theme} setSelected={setSelected} />
+                <FeedBackDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  feedback={feedback}
+                />
               )}
             </div>
           </div>

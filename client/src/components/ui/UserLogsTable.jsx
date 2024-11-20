@@ -1,37 +1,8 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const UserLogsTable = ({ setSelected }) => {
+export const UserLogsTable = ({ setSelected, userlog }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const Sampledata = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Authorized",
-      origin: "Offers",
-      ipad: "192.168.1.1",
-      description: "Add",
-      datecreate: "2022-01-01",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Authorized",
-      origin: "Items",
-      ipad: "192.168.1.1",
-      description: "Add",
-      datecreate: "2022-02-15",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Unauthorized",
-      origin: "Offers",
-      ipad: "192.168.1.1",
-      description: "Update",
-      datecreate: "2022-02-15",
-    },
-  ];
 
   return (
     <div
@@ -44,7 +15,7 @@ export const UserLogsTable = ({ setSelected }) => {
           <table className="table-auto w-full mt-8 text-center ">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Username</th>
                 <th>Type</th>
                 <th>Origin</th>
                 <th>IP Address</th>
@@ -53,26 +24,19 @@ export const UserLogsTable = ({ setSelected }) => {
               </tr>
             </thead>
             <tbody>
-              {Sampledata.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2">{item.name}</td>
-                  <td className="px-4 py-2">{item.type}</td>
-                  <td className="px-4 py-2">{item.origin}</td>
-                  <td className="px-4 py-2">{item.ipad}</td>
-                  <td className="px-4 py-2">{item.description}</td>
-                  <td className="px-4 py-2">{item.datecreate}</td>
-                </tr>
-              ))}
+              {userlog &&
+                userlog.map((userlog) => (
+                  <tr key={userlog.id}>
+                    <td className="px-4 py-2">{userlog.acc_username}</td>
+                    <td className="px-4 py-2">{userlog.log_type}</td>
+                    <td className="px-4 py-2">{userlog.log_origin}</td>
+                    <td className="px-4 py-2">{userlog.log_ip_address}</td>
+                    <td className="px-4 py-2">{userlog.log_description}</td>
+                    <td className="px-4 py-2">{userlog.date_created}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
-        </div>
-        {/* Pagination */}
-        <div className="flex justify-end mt-5">
-          <div className="flex items-center">
-            <button className="py-2 px-4 mr-2">&lt;</button>
-            <button className="py-2 px-4">1</button>
-            <button className="py-2 px-4 ml-2">&gt;</button>
-          </div>
         </div>
       </div>
     </div>

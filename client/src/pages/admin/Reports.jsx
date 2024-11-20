@@ -1,12 +1,71 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { TransactionTable } from "../../components/ui/TransactionTable";
 import { FeedbackTable } from "../../components/ui/FeedBackTable";
 import { UserLogsTable } from "../../components/ui/UserLogsTable";
 import { FeedBackDetails } from "../../pages/admin/FeedBackDetails";
 import LineChart from "../../components/ui/LineChart";
 import TopItem from "../../components/ui/TopTables";
+import { AlertsContext } from "../../context/Alerts";
+import { SuccessContext } from "../../context/Success";
+import { UserContext } from "../../context/User";
+import API from "../../service/API";
+import axios from "axios";
+
+const lineChartData = {
+  labels: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
+    },
+  ],
+};
+
+const lineChartRevenueData = {
+  labels: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
+    },
+  ],
+};
 
 export const Reports = ({
   setSelected,
@@ -15,69 +74,210 @@ export const Reports = ({
 }) => {
   const [selectedYear, setSelectedYear] = useState("");
   const [theme] = useContext(ThemeContext);
-
+  const [success, setSuccess] = useContext(SuccessContext);
+  const [errors, setErrors] = useContext(AlertsContext);
+  const [user, setUser] = useContext(UserContext);
+  const authToken = localStorage.getItem("authToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [feedback, setFeedback] = useState([]);
+  const [userlog, setUserLog] = useState([]);
+  const [topItem, settopItem] = useState([]);
+  const [topOffer, settopOffer] = useState([]);
+  const [totalSales, settotalSales] = useState([]);
+  const [lineChart, setLineChart] = useState(lineChartData);
+  const [lineChartRevenue, setLineChartRevenue] =
+    useState(lineChartRevenueData);
+  const [totaRevenue, settotalRevenue] = useState([]);
   const years = Array.from(
     { length: endYear - startYear + 1 },
     (_, i) => startYear + i
   );
 
-  const handleChange = (e) => {
-    setSelectedYear(e.target.value);
+  const fetchFeedback = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/feedback`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.feedbackData) {
+        setFeedback(res.data.feedbackData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
   };
 
-  const sampleData = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Global",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Player",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Global",
-    },
-  ];
+  const fetchUserLogs = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/userlog`,
+      method: "GET",
+      data: {},
+    };
 
-  const lineChartData = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    datasets: [
-      {
-        label: "",
-        data: [0, 20, 30, 40, 50, 60, 30, 40, 20, 50, 55, 15],
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 2,
-        pointBackgroundColor: "rgba(75,192,192,1)",
-      },
-    ],
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.userlogData) {
+        setUserLog(res.data.userlogData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
+  };
+
+  const fetchTopItems = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/topitem`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.topitemData) {
+        settopItem(res.data.topitemData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
+  };
+
+  const fetchTopOffer = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/topoffer`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.topofferData) {
+        settopOffer(res.data.topofferData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
+  };
+
+  const fetchtotalSales = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalsales`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totalsalesData) {
+        console.log(res.data.totalsalesData[0].total_sales_array);
+        settotalSales([res.data.totalsalesData]);
+        lineChartData.datasets[0].data =
+          res.data.totalsalesData[0].total_sales_array;
+        setLineChart(lineChartData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
+  };
+
+  const fetchtotalRevenue = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalrevenue`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totalrevenueData) {
+        console.log(res.data.totalrevenueData[0].monthly_totals);
+        settotalRevenue([res.data.totalrevenueData]);
+        lineChartRevenueData.datasets[0].data =
+          res.data.totalrevenueData[0].monthly_totals;
+        setLineChartRevenue(lineChartRevenueData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeedback();
+    fetchUserLogs();
+    fetchTopItems();
+    fetchTopOffer();
+    fetchtotalSales();
+    fetchtotalRevenue();
+
+    return () => {
+      setFeedback([]);
+      setUserLog();
+      settopItem();
+      settopOffer();
+      settotalSales();
+      settotalRevenue();
+    };
+  }, []);
+
+  const handleChange = (e) => {
+    setSelectedYear(e.target.value);
   };
 
   return (
@@ -92,7 +292,7 @@ export const Reports = ({
               <select
                 value={selectedYear}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg border border-gray-300"
+                className="w-full p-2 rounded-lg border border-gray-300 overflow-y-auto max-h-10"
               >
                 <option value="" disabled>
                   Select a year
@@ -115,12 +315,15 @@ export const Reports = ({
           <div
             className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
           >
-            <LineChart data={lineChartData} />
+            <LineChart data={lineChart} title_text={"Total of Sales"} />
           </div>
           <div
             className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
           >
-            <LineChart data={lineChartData} />
+            <LineChart
+              data={lineChartRevenue}
+              title_text={"Total of Revenue"}
+            />
           </div>
         </div>
 
@@ -128,15 +331,23 @@ export const Reports = ({
           <div>
             <label className="text-2xl font-bold">Top 5 Items</label>
             <TopItem
-              sampleData={sampleData}
-              column={{ column1: "Item", column2: "Sold" }}
+              column={{
+                column1: "Item",
+                column2: "Unit Sold",
+                column3: "Date Created",
+              }}
+              topItem={topItem}
             />
           </div>
           <div>
             <label className="text-2xl font-bold">Top 5 Offers</label>
             <TopItem
-              sampleData={sampleData}
-              column={{ column1: "Item", column2: "Sold" }}
+              column={{
+                column1: "Offer",
+                column2: "Unit Sold",
+                column3: "Date Created",
+              }}
+              topItem={topOffer}
             />
           </div>
         </div>
@@ -167,7 +378,7 @@ export const Reports = ({
           />
         </div>
         <div>
-          <FeedbackTable setSelected={setSelected} />
+          <FeedbackTable setSelected={setSelected} feedback={feedback} />
         </div>
 
         <div
@@ -191,7 +402,7 @@ export const Reports = ({
             />
           </div>
           <div>
-            <UserLogsTable setSelected={setSelected} />
+            <UserLogsTable setSelected={setSelected} userlog={userlog} />
           </div>
         </div>
       </div>

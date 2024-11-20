@@ -30,6 +30,13 @@ import { AddOffer } from "./admin/AddOffer";
 import { UpdateOffer } from "./admin/UpdateOffer";
 import NotificationTable from "../components/ui/NotificationTable";
 import AdminDashboard from "./admin/AdminDashboard";
+import { AdminManagement } from "./admin/AdminManagement";
+import { AddAdminAccount } from "./admin/AddAdminAccount";
+import { AdminAccount } from "./admin/AdminAccount";
+import PlayerManagement from "./admin/PlayerManagement";
+import PlayerAccount from "./admin/PlayerAccount";
+import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
+import UserLogsChart from "./admin/UserLogsChart";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -47,6 +54,8 @@ function Main({ theme, toggleTheme }) {
   const [transactions, setTransactions] = useState([]);
   const [transactionSelected, setTransactionSelected] = useState([]);
   const [feedback, setFeedback] = useState([]);
+  const [selectedadmin, setSelectedAdmin] = useState(null);
+  const [selectedplayer, setSelectedPlayer] = useState(null);
 
   const navigate = useNavigate();
 
@@ -141,7 +150,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -153,7 +162,7 @@ function Main({ theme, toggleTheme }) {
     return (
       <>
         <DrawerButton
-          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          icon={<i className="fa-solid fa-user-tie"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
@@ -168,15 +177,16 @@ function Main({ theme, toggleTheme }) {
     return (
       <>
         <DrawerButton
-          icon={<i className="fa-solid fa-house-chimney"></i>}
+          icon={<i className="fa-solid fa-house-chimney pl-0.5 md-pl-0"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
           title={"Dashboard"}
           handleSelectedButton={handleSelectedButton}
         />
+        {user && user.role === "S" && displaySuperAdminNav()}
         <DrawerButton
-          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          icon={<i className="fa-solid fa-users pl-0.5 md-pl-0"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
@@ -242,7 +252,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -300,7 +310,6 @@ function Main({ theme, toggleTheme }) {
               sideBarOpen ? "overflow-y-auto" : "overflow-hidden"
             } gap-1 p-0 `}
           >
-            {user && user.role === "S" && displaySuperAdminNav()}
             {user && user.role === "P" ? displayUserNav() : displayAdminNav()}
           </nav>
           <div className="flex-grow"></div>
@@ -320,6 +329,7 @@ function Main({ theme, toggleTheme }) {
           <NavBar
             theme={theme}
             toggleTheme={toggleTheme}
+            setSelected={setSelected}
             toggleSideBar={toggleSideBar}
           />
           <div
@@ -335,7 +345,7 @@ function Main({ theme, toggleTheme }) {
                 <AdminDashboard theme={theme} />
               )}
               {selected === "Dashboard" && user.role === "P" && (
-                <Dashboard theme={theme} />
+                <Dashboard setSelected={setSelected} theme={theme} />
               )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
@@ -344,6 +354,43 @@ function Main({ theme, toggleTheme }) {
                   setSelected={setSelected}
                   user={user}
                   setOfferselected={setOfferselected}
+                />
+              )}
+              {selected === "Admin" && user.role === "S" && (
+                <AdminManagement
+                  theme={theme}
+                  setSelectedAdmin={setSelectedAdmin}
+                  setSelected={setSelected}
+                />
+              )}
+              {selected === "AddAdminAccount" && user.role === "S" && (
+                <AddAdminAccount theme={theme} setSelected={setSelected} />
+              )}
+              {selected === "AdminAccount" && user.role === "S" && (
+                <AdminAccount
+                  theme={theme}
+                  selectedadmin={selectedadmin}
+                  setSelected={setSelected}
+                />
+              )}
+              {selected === "SalesAndRevenueChart" && user.role !== "P" && (
+                <SalesAndRevenueChart theme={theme} />
+              )}
+              {selected === "UserLogsChart" && user.role !== "P" && (
+                <UserLogsChart theme={theme} />
+              )}
+              {selected === "Player" && user.role !== "P" && (
+                <PlayerManagement
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedPlayer={setSelectedPlayer}
+                />
+              )}
+              {selected === "PlayerAccount" && user.role !== "P" && (
+                <PlayerAccount
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedplayer={selectedplayer}
                 />
               )}
               {selected === "AddOffer" && (

@@ -305,7 +305,10 @@ export const Reports = ({
               </select>
             </div>
             <div className="flex-grow"></div>
-            <button className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600">
+            <button
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+              onClick={() => window.open("/sales-revenue-chart", "_blank")}
+            >
               Generate
             </button>
           </div>
@@ -387,6 +390,14 @@ export const Reports = ({
           }`}
         >
           <label className="text-2xl font-bold">User Logs</label>
+          <div className="flex-grow"></div>{" "}
+          {/* Added this div to push the button to the right */}
+          <button
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+            onClick={() => window.open("/user-logs-chart", "_blank")}
+          >
+            Generate
+          </button>
         </div>
         <div className="flex flex-col mb-10">
           <div className="flex items-center space-x-4 mb-4">

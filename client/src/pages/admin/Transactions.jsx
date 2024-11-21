@@ -114,8 +114,6 @@ export const Transactions = ({
           if (res.data.transactionSearchItemType) {
             setTransactions([res.data.transactionSearchItemType]);
             setUser(res.data.account);
-          } else {
-            setErrors(["No results found"]);
           }
         }
 

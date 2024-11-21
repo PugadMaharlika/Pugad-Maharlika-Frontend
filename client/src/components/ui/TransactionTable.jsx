@@ -39,9 +39,9 @@ export const TransactionTable = ({
                 <td className="px-4 py-2">{transaction.acc_username}</td>
                 <td className="px-4 py-2">
                   {transaction.his_type === "I"
-                    ? "I"
+                    ? "Item"
                     : transaction.his_type === "O"
-                      ? "O"
+                      ? "Offer"
                       : ""}
                 </td>
                 <td className="px-4 py-2">{transaction.his_mode}</td>

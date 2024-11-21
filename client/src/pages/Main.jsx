@@ -33,8 +33,10 @@ import AdminDashboard from "./admin/AdminDashboard";
 import { AdminManagement } from "./admin/AdminManagement";
 import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
-import PlayerManagement from "./user/PlayerManagement";
-import PlayerAccount from "./user/PlayerAccount";
+import PlayerManagement from "./admin/PlayerManagement";
+import PlayerAccount from "./admin/PlayerAccount";
+import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
+import UserLogsChart from "./admin/UserLogsChart";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -51,8 +53,11 @@ function Main({ theme, toggleTheme }) {
   const [offerselected, setOfferselected] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [transactionSelected, setTransactionSelected] = useState([]);
-  const navigate = useNavigate();
+  const [feedback, setFeedback] = useState([]);
   const [selectedadmin, setSelectedAdmin] = useState(null);
+  const [selectedplayer, setSelectedPlayer] = useState(null);
+
+  const navigate = useNavigate();
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -145,7 +150,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -157,7 +162,7 @@ function Main({ theme, toggleTheme }) {
     return (
       <>
         <DrawerButton
-          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          icon={<i className="fa-solid fa-user-tie"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
@@ -172,7 +177,7 @@ function Main({ theme, toggleTheme }) {
     return (
       <>
         <DrawerButton
-          icon={<i className="fa-solid fa-house-chimney"></i>}
+          icon={<i className="fa-solid fa-house-chimney pl-0.5 md-pl-0"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
@@ -181,7 +186,7 @@ function Main({ theme, toggleTheme }) {
         />
         {user && user.role === "S" && displaySuperAdminNav()}
         <DrawerButton
-          icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
+          icon={<i className="fa-solid fa-users pl-0.5 md-pl-0"></i>}
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
@@ -247,7 +252,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Theme"}
+          title={"Mode"}
           handleSelectedButton={() => {
             toggleTheme();
           }}
@@ -321,16 +326,27 @@ function Main({ theme, toggleTheme }) {
         </div>
         {/* NavigationBar */}
         <div className="flex flex-col rounded-lg h-svh w-svw">
-          <NavBar theme={theme} toggleTheme={toggleTheme} toggleSideBar={toggleSideBar} />
+          <NavBar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            setSelected={setSelected}
+            toggleSideBar={toggleSideBar}
+          />
           <div
             className={`relative  flex-2 flex-grow overflow-auto max-h-full ${
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
-              {selected === "Dashboard" && user.role === "P" && <Dashboard theme={theme} />}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
+              {selected === "Dashboard" && user.role === "P" && (
+                <Dashboard setSelected={setSelected} theme={theme} />
+              )}
               {selected === "Profile" && <Profile theme={theme} />}
               {selected === "Offer" && (
                 <Offer
@@ -357,13 +373,29 @@ function Main({ theme, toggleTheme }) {
                   setSelected={setSelected}
                 />
               )}
+              {selected === "SalesAndRevenueChart" && user.role !== "P" && (
+                <SalesAndRevenueChart theme={theme} />
+              )}
+              {selected === "UserLogsChart" && user.role !== "P" && (
+                <UserLogsChart theme={theme} />
+              )}
               {selected === "Player" && user.role !== "P" && (
-                <PlayerManagement theme={theme} setSelected={setSelected} />
+                <PlayerManagement
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedPlayer={setSelectedPlayer}
+                />
               )}
               {selected === "PlayerAccount" && user.role !== "P" && (
-                <PlayerAccount theme={theme} setSelected={setSelected} />
+                <PlayerAccount
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedplayer={selectedplayer}
+                />
               )}
-              {selected === "AddOffer" && <AddOffer theme={theme} setSelected={setSelected} />}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ViewOffer" && (
                 <ViewOffer
                   theme={theme}
@@ -426,12 +458,22 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
                 <Transactions
@@ -449,13 +491,15 @@ function Main({ theme, toggleTheme }) {
                   transactionSelected={transactionSelected}
                 />
               )}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
-              {/* {selected === "Receipt" && (
-                <Invoice theme={theme} setSelected={setSelected} />
-              )} */}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
+              {selected === "Reports" && (
+                <Reports theme={theme} setSelected={setSelected} />
+              )}
               {selected === "FeedBackDetails" && (
-                <FeedBackDetails theme={theme} setSelected={setSelected} />
+                <FeedBackDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  feedback={feedback}
+                />
               )}
             </div>
           </div>

@@ -57,7 +57,9 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
 
   return (
     <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-8 sm:w-full h-full gap-5">
-      <div className="flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold">
+      <div
+        className={`flex w-full rounded-xl h-16 shadow-md p-4 pl-4 justify-between py-4 font-bold bg-${theme}`}
+      >
         <h1 className="text-3xl font-bold">Item Details</h1>
         <button
           id="btn_back_item_details"
@@ -70,7 +72,9 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
         </button>
       </div>
 
-      <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden w-full">
+      <div
+        className={`mx-auto rounded-xl shadow-md overflow-hidden w-full bg-${theme}`}
+      >
         <div className="md:flex">
           <div className="md:flex-shrink-0">
             <img

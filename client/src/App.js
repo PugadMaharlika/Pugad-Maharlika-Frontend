@@ -5,14 +5,20 @@ import Alerts from "./context/Alerts";
 import Success from "./context/Success";
 import User from "./context/User";
 import Main from "./pages/Main";
+import SalesAndRevenueChart from "./pages/admin/SalesAndRevenueChart";
+import UserLogsChart from "./pages/admin/UserLogsChart";
+
 import { ThemeContext } from "./context/Theme";
+
 function App() {
   const [cookie, setCookie] = useState(localStorage.getItem("cookie"));
   const [theme, setTheme] = useContext(ThemeContext);
+
   const handleCoookie = () => {
     setCookie("allowed");
     localStorage.setItem("cookie", "allowed");
   };
+
   const toggleTheme = () => {
     setTheme(theme === "night" ? "fantasy" : "night");
   };
@@ -42,6 +48,16 @@ function App() {
               <Route
                 path="/app"
                 element={<Main theme={theme} toggleTheme={toggleTheme} />}
+              />
+              {/* Add new route for SalesAndRevenueChart */}
+              <Route
+                path="/sales-revenue-chart"
+                element={<SalesAndRevenueChart theme={theme} />}
+              />
+              {/* Add new route for UserLogsChart */}
+              <Route
+                path="/user-logs-chart"
+                element={<UserLogsChart theme={theme} />}
               />
             </Routes>
           </Success>

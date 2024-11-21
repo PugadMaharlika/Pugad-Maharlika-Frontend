@@ -24,7 +24,7 @@ var lineChartData = {
   ],
   datasets: [
     {
-      label: "Player Activity",
+      label: "Admin Registration",
       data: [],
       backgroundColor: "rgba(54, 162, 235, 0.4)",
       borderColor: "rgba(54, 162, 235, 1)",
@@ -34,15 +34,9 @@ var lineChartData = {
   ],
 };
 
-const title = "Recent";
-const htitle = "Months";
-const vtitle = "Admin Accounts";
-
 export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-
   const [accvalues, setAccValues] = useState([]);
-
   const [user, setUser] = useContext(UserContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -58,35 +52,59 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   };
 
   useEffect(() => {
-    const handleViewAdmins = async () => {
-      setErrors([]);
-      setSuccess(false);
-      const config = {
-        url: `${serverUrl}/account/admin`,
-        method: "GET",
-        data: {},
-      };
-
-      const { res, error } = await API(config);
-      if (res) {
-        console.log(res.data.admins);
-        setIsLoading(false);
-        setUser(res.data.account);
-        setAccValues(res.data.admins);
-        setCharts(res.data.charts);
-        lineChartData.datasets[0].data = res.data.charts;
-        setLineCharts(lineChartData);
-        console.log(res.data.charts[0]);
-      }
-      if (error) {
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      }
-    };
     handleViewAdmins();
   }, []); // Dependencies to rerun effect only when these values change
+  const handleViewAdmins = async () => {
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/account/admin`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+    if (res) {
+      console.log(res.data.admins);
+      setIsLoading(false);
+      setAccValues(res.data.admins);
+      setCharts(res.data.charts);
+      lineChartData.datasets[0].data = res.data.charts;
+      setLineCharts(lineChartData);
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
+  const handleSearchAdmin = async () => {
+    setErrors([]);
+    setSuccess(false);
+    if (!search) {
+      handleViewAdmins();
+    }
+
+    setErrors([]);
+    setSuccess(false);
+
+    const config = {
+      url: `${serverUrl}/account/search`,
+      method: "POST",
+      data: { search: search, isAdmins: true },
+    };
+
+    const { res, error } = await API(config);
+    if (res) {
+      setAccValues(res.data.users);
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
 
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}>
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
+    >
       {/* Admin Accounts Title and Add Account Button */}
       <div
         className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
@@ -116,8 +134,31 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
           <LineChart title_text={"Recents"} data={linecharts} />
         </div>
       </div>
-      {/* DataTable */}
-      <DataTable selectedCallback={handleChangePage} accvalues={accvalues} />
+      {/* Search Input */}
+      <div className="w-full sm:w-full p-1 py-1 px-7 mb-4 sm:mb-0">
+        <div
+          className={`flex col-span-8 flex-col overflow-hidden rounded-lg shadow-lg text-xs md:text-md w-64 px-8 sm:w-full py-10 mb-5 bg-${theme}`}
+        >
+          <div className="flex items-center border rounded-md w-full">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="p-2 w-full rounded-l-md outline-none"
+            />
+            {/* Search Icon on the right */}
+            <button onClick={handleSearchAdmin}>
+              <i className="fa-solid fa-magnifying-glass p-2"></i>
+            </button>
+          </div>
+          {/* DataTable */}
+          <DataTable
+            selectedCallback={handleChangePage}
+            accvalues={accvalues}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import oneal from "../assets/oneal_profile.png";
 import logo from "../assets/logo1.png";
 import { UserContext } from "../context/User";
 
-function NavBar({ theme, toggleTheme, toggleSideBar }) {
+function NavBar({ theme, toggleTheme, setSelected, toggleSideBar }) {
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [user, setUser] = useContext(UserContext);
   useEffect(() => {
@@ -35,12 +35,18 @@ function NavBar({ theme, toggleTheme, toggleSideBar }) {
         </div>
         {user && user.profile ? (
           <img
+            onClick={() => {
+              setSelected("Profile");
+            }}
             className="rounded-full btn btn-circle object-cover border-inherit mr-2"
             src={user && user.profile}
             alt="mockup"
           />
         ) : (
           <img
+            onClick={() => {
+              setSelected("Profile");
+            }}
             className="rounded-full btn btn-circle border-inherit mr-2"
             src={logo}
             alt="mockup"

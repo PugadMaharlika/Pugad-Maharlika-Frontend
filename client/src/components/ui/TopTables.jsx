@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TopItem = ({ sampleData, column }) => {
+export const TopItem = ({ column, topItem }) => {
   const [theme, setTheme] = useContext(ThemeContext);
 
   return (
@@ -17,15 +17,18 @@ export const TopItem = ({ sampleData, column }) => {
               <tr>
                 <th>{column.column1}</th>
                 <th>{column.column2}</th>
+                <th>{column.column3}</th>
               </tr>
             </thead>
             <tbody>
-              {sampleData.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2">{item.name}</td>
-                  <td className="px-4 py-2">{item.type}</td>
-                </tr>
-              ))}
+              {topItem &&
+                topItem.map((topItems) => (
+                  <tr key={topItems.id}>
+                    <td className="px-4 py-2">{topItems.item_name}</td>
+                    <td className="px-4 py-2">{topItems.unit_sold}</td>
+                    <td className="px-4 py-2">{topItems.date_created}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -33,4 +36,5 @@ export const TopItem = ({ sampleData, column }) => {
     </div>
   );
 };
+
 export default TopItem;

@@ -24,7 +24,7 @@ var lineChartData = {
   ],
   datasets: [
     {
-      label: "Player Activity",
+      label: "Player Registration",
       data: [],
       backgroundColor: "rgba(54, 162, 235, 0.4)",
       borderColor: "rgba(54, 162, 235, 1)",
@@ -90,7 +90,7 @@ const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
     const config = {
       url: `${serverUrl}/account/search`,
       method: "POST",
-      data: { search: search, isAdmins: true },
+      data: { search: search, isAdmins: false },
     };
 
     const { res, error } = await API(config);
@@ -103,7 +103,9 @@ const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
   };
 
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}>
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
+    >
       {/* Player Accounts Title and Add Player Button */}
       <div
         className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
@@ -143,7 +145,10 @@ const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
             </button>
           </div>
           {/* DataTable */}
-          <DataTable selectedCallback={handleChangePage} accvalues={accvalues} />
+          <DataTable
+            selectedCallback={handleChangePage}
+            accvalues={accvalues}
+          />
         </div>
       </div>
     </div>

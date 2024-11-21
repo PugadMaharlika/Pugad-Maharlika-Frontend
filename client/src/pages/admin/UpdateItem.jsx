@@ -17,6 +17,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [details, setDetails] = useState("");
   const [itemType, setItemType] = useState("S");
   const [itemholder, setItemHolder] = useState("diego silang");
+  const [reeleaseItem, setReleaseItem] = useState("Unreleased");
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -108,6 +109,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         setDetails(response.data.item.item_desc);
         setItemHolder(response.data.item.item_holder);
         setDisplayItem(response.data.item.item_sprite); // Set initial displayItem state with fetched image
+        setReleaseItem(response.data.item.item_enabled);
       } catch (error) {
         console.error(error);
         setSuccess(false);
@@ -209,6 +211,14 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 onChange={(e) => setDetails(e.target.value)}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               ></textarea>
+              <select
+                value={itemholder}
+                onChange={(e) => setReleaseItem(e.target.value)}
+                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
+              >
+                <option value="True">Unrelease</option>
+                <option value="">Release</option>
+              </select>
               <div className="flex w-full justify-end">
                 <button
                   className="bg-green-500 px-6 py-2 text-white rounded-lg"

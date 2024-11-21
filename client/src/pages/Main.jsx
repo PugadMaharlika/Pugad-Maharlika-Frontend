@@ -53,6 +53,7 @@ function Main({ theme, toggleTheme }) {
   const [offerselected, setOfferselected] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [transactionSelected, setTransactionSelected] = useState([]);
+  const [feedback, setFeedback] = useState([]);
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
 
@@ -494,7 +495,11 @@ function Main({ theme, toggleTheme }) {
                 <Reports theme={theme} setSelected={setSelected} />
               )}
               {selected === "FeedBackDetails" && (
-                <FeedBackDetails theme={theme} setSelected={setSelected} />
+                <FeedBackDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  feedback={feedback}
+                />
               )}
             </div>
           </div>

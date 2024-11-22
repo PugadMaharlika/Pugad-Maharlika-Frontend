@@ -166,11 +166,11 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       setUser(res.data.account);
       setErrors(["Offer updated successfully!"]);
       setSuccess(true);
-      setSelected("Offer");
+      //setSelected("Offer");
     }
 
     if (error) {
-      console.log(error);
+      console.log(error.response.data.errors);
       setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
@@ -198,9 +198,10 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
         </div>
 
         <div
-      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-      }`}>
+          className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           <div className="flex flex-col items-center mb-5 w-1/3">
             <div className="relative">
               <img

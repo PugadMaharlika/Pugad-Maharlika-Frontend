@@ -53,7 +53,8 @@ export const AddItem = ({ setSelected }) => {
     if (res) {
       setUser(res.data.account);
       setSuccess(true);
-      setErrors(["Image uploaded successfully"]);
+      setErrors(["Item uploaded successfully"]);
+      setSelected("Items");
     }
     if (error) console.log(error);
   };

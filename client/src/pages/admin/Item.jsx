@@ -20,9 +20,6 @@ export const Item = ({ setSelected, setSelectedItem }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        setErrors([]);
-        setSuccess(false);
-
         await axios
           .get(
             `${serverUrl}/item/view`,

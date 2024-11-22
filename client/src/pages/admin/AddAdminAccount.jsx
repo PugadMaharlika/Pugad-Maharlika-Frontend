@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from "react"; // Ensure hooks are imported here
 import { ThemeContext } from "../../context/Theme";
 import { UserContext } from "../../context/User";
 import { SuccessContext } from "../../context/Success";
@@ -12,11 +12,18 @@ export const AddAdminAccount = ({ setSelected }) => {
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+  // State hooks
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
-  const [Theme] = useContext(ThemeContext);
+  const [firstName, setFirstName] = useState("");
+  const [middleInitial, setMiddleInitial] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  // Tooltip visibility state
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleAddAdmin = async () => {
     setErrors([]);
@@ -24,19 +31,31 @@ export const AddAdminAccount = ({ setSelected }) => {
     const config = {
       url: `${serverUrl}/account/addadmin`,
       method: "POST",
-      data: { email: email, username: username, password: password },
+      data: {
+        email: email,
+        username: username,
+        password: password,
+        firstName: firstName,
+        middleInitial: middleInitial,
+        lastName: lastName,
+      },
     };
+
     if (
-      username.trim() == "" ||
-      email.trim() == "" ||
-      password.trim() == "" ||
-      confirmpassword.trim() == ""
+      username.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmpassword.trim() === "" ||
+      firstName.trim() === "" ||
+      middleInitial.trim() === "" ||
+      lastName.trim() === ""
     ) {
       setErrors(["Please fill in all the fields"]);
       return;
     }
-    if (password != confirmpassword) {
-      setErrors(["Passwords Does NOT match"]);
+
+    if (password !== confirmpassword) {
+      setErrors(["Passwords do not match"]);
       return;
     }
 
@@ -44,7 +63,7 @@ export const AddAdminAccount = ({ setSelected }) => {
     if (res) {
       setSuccess(true);
       setUser(res.data.account);
-      var templateParams = {
+      const templateParams = {
         username: username,
         siteURL: res.data.url,
         id: res.data.id,
@@ -62,7 +81,6 @@ export const AddAdminAccount = ({ setSelected }) => {
       setErrors(["Created Successfully, Check Email for Activation"]);
     }
     if (error) {
-      console.log(error);
       setErrors(error.response.data.errors.map((error) => error.msg));
     }
   };
@@ -70,7 +88,7 @@ export const AddAdminAccount = ({ setSelected }) => {
   return (
     <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
       <div
-        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold bg-${Theme}`}
+        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold bg-${theme}`}
       >
         <h1 className="text-2xl font-bold">Add Admin</h1>
         <button
@@ -84,7 +102,7 @@ export const AddAdminAccount = ({ setSelected }) => {
         </button>
       </div>
       <div
-        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 rounded-lg shadow-lg gap-6 bg-${Theme}`}
+        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 rounded-lg shadow-lg gap-6 bg-${theme}`}
       >
         <div className="w-1/2 p-4">
           <h2 className="text-2xl font-bold mb-4">Add Admin Account</h2>
@@ -103,12 +121,51 @@ export const AddAdminAccount = ({ setSelected }) => {
             className="w-full mb-4 p-2 rounded-lg border border-gray-300"
           />
           <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             className="w-full mb-4 p-2 rounded-lg border border-gray-300"
           />
+          <input
+            type="text"
+            placeholder="Middle Initial"
+            value={middleInitial}
+            onChange={(e) => setMiddleInitial(e.target.value)}
+            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
+          />
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full mb-4 p-2 rounded-lg border border-gray-300 pr-10" // Added padding-right to ensure space for the icon
+            />
+            {/* Tooltip Icon */}
+            <span
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              className="absolute right-2 top-1/3 transform -translate-y-1/2 text-2xl cursor-pointer text-gray-500 hover:text-gray-700" // Adjusted right to move it a little to the left
+            >
+              <i className="fa-solid fa-circle-question"></i>
+            </span>
+            {/* Tooltip Text */}
+            {showTooltip && (
+              <div className="absolute right-10 top-0 mt-2 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
+                Password must have a special character (! @ # $ % ^ & *) and a
+                number.
+              </div>
+            )}
+          </div>
+
           <input
             type="password"
             placeholder="Confirm Password"

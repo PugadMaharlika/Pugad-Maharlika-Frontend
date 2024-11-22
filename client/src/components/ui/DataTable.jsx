@@ -1,11 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../context/Theme";
 
 const DataTable = ({ accvalues, selectedCallback }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
   const [theme] = useContext(ThemeContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5; // Number of rows per page
+
+  // Calculate the indices for slicing
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  // Paginated data
+  const paginatedData = accvalues.slice(startIndex, endIndex);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(accvalues.length / rowsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [accvalues]);
+
+  // Handlers for pagination
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   // Theme-based styles
   const textColor = theme === "night" ? "text-white" : "text-black";
@@ -26,8 +48,8 @@ const DataTable = ({ accvalues, selectedCallback }) => {
             </tr>
           </thead>
           <tbody>
-            {accvalues.length > 0 ? (
-              accvalues.map((item) => (
+            {paginatedData.length > 0 ? (
+              paginatedData.map((item) => (
                 <tr
                   key={item.id}
                   className={item.acc_enabled === false ? "bg-red-700 text-white" : ""}
@@ -42,7 +64,7 @@ const DataTable = ({ accvalues, selectedCallback }) => {
                   </td>
                   <td className="px-4 py-2">{item.acc_username}</td>
                   <td className="px-4 py-2">{item.acc_email}</td>
-                  <td className="px-4 py-2">{item.date_created}</td>
+                  <td className="px-4 py-2">{new Date(item.date_created).toLocaleString()}</td>
                 </tr>
               ))
             ) : (
@@ -54,6 +76,41 @@ const DataTable = ({ accvalues, selectedCallback }) => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+
+      <div className="flex justify-between space-x-4 mt-5">
+        {/* Table Legend */}
+        <div className="flex justify-left">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-red-700"></div>
+              <span className="text-xs">Disabled</span>
+            </div>
+          </div>
+        </div>
+        <span className="px-4 py-2 ">
+          Page {currentPage} of {totalPages}
+        </span>
+        <div className="flex gap-3">
+          <button
+            onClick={handlePrevPage}
+            className={`px-4 py-2 rounded ${currentPage === 1 ? "bg-gray-500 text-white" : "bg-blue-900 text-white"}`}
+            disabled={currentPage === 1}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </button>
+          <button
+            onClick={handleNextPage}
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </div>
   );

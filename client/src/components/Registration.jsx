@@ -18,6 +18,9 @@ function Registration({ theme }) {
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
 
+  // Tooltip visibility state
+  const [showTooltip, setShowTooltip] = useState(false);
+
   const handleRegistration = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -134,19 +137,30 @@ function Registration({ theme }) {
                 <i className="fa-solid fa-shield-halved mr-2"></i>
                 Password
               </label>
+
               <div className="flex flex-row gap-5 w-full">
                 <input
                   type="password"
                   name="password"
                   id="reg_password"
                   placeholder="••••••••"
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
                   className="flex-2 bg-gray-50 border border-gray-300 text-night text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <div className="relative">
+                  {/* Tooltip Text */}
+                  {showTooltip && (
+                    <div className="absolute right-[-50] top-0 mt-2 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
+                      Password must have a special character (! @ # $ % ^ & *) and a number.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+
             <div>
               <label htmlFor="confirm" className="block mb-2 text-sm font-medium">
                 <i className="fa-solid fa-shield-halved mr-2"></i>

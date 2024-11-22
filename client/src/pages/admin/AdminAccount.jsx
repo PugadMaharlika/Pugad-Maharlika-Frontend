@@ -143,6 +143,19 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
         {/* Middle Column: Username, Email, Wins, Loses */}
         <div className="w-full md:w-1/3 p-4">
           <div className="mb-4">
+            <label className="block  mb-1">Name</label>
+            <input
+              disabled
+              type="text"
+              value={
+                useraccount &&
+                useraccount.acc_fname + " " + useraccount.acc_mname + " " + useraccount.acc_lname
+              }
+              placeholder="Username"
+              className="w-full p-2 rounded-lg border"
+            />
+          </div>
+          <div className="mb-4">
             <label className="block  mb-1">Username</label>
             <input
               disabled

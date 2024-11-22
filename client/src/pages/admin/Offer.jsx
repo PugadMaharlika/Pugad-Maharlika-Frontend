@@ -42,15 +42,11 @@ export const Offer = ({ setSelected, setOfferselected }) => {
     handleOffer();
   }, []);
   return (
-    <div
-      className={`col-span-8 overflow-hidden rounded-lg text-xs sm:text-sm md:text-md w-full sm:w-full px-4 sm:px-6 md:px-8`}
-    >
+    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
       <div
-        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold ${
-          theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-        }`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
-        <h1 className="text-2xl font-bold">Offer</h1>
+        OFFERS
         {user.role !== "P" && (
           <button
             id="btn_ViewOffer"

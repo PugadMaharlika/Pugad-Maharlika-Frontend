@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import logo from "../../assets/logo1.png";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -102,7 +103,6 @@ const SalesAndRevenueChart = ({ theme }) => {
           textColor: "#1F2937", // Dark text color for the light theme
         };
 
-  // Sample data for top items and offers
   const topOffers = [
     { item: "Offer 1", sold: 150 },
     { item: "Offer 2", sold: 120 },
@@ -124,9 +124,35 @@ const SalesAndRevenueChart = ({ theme }) => {
         color: themeColors.textColor,
         borderRadius: "10px",
         maxWidth: "900px",
-        margin: "0 auto", // Centers the chart container horizontally
+        margin: "0 auto",
       }}
     >
+      {/* Logo and Title Section */}
+      <div
+        className="header"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ height: "50px", marginRight: "15px" }}
+        />
+        <h1
+          style={{
+            fontWeight: "bold",
+            fontSize: "1.8rem",
+            margin: 0,
+            color: themeColors.textColor,
+          }}
+        >
+          Pugad Maharlika
+        </h1>
+      </div>
+
       <Line data={data} options={options} />
 
       {/* Bottom Tables Section */}
@@ -140,19 +166,14 @@ const SalesAndRevenueChart = ({ theme }) => {
         {/* Top Offers Table */}
         <div
           style={{
-            width: "48%", // Set width to make space for the second table
+            width: "48%",
             backgroundColor: themeColors.bgColor,
             borderRadius: "10px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             padding: "15px",
           }}
         >
-          <h3
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
+          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>
             Top Offers
           </h3>
           <table
@@ -182,21 +203,14 @@ const SalesAndRevenueChart = ({ theme }) => {
         {/* Top Items Table */}
         <div
           style={{
-            width: "48%", // Set width to make space for the first table
+            width: "48%",
             backgroundColor: themeColors.bgColor,
             borderRadius: "10px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             padding: "15px",
           }}
         >
-          <h3
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
-            Top Items
-          </h3>
+          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Top Items</h3>
           <table
             style={{
               width: "100%",

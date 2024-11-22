@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from "../../assets/logo1.png";
 
 const UserLogsChart = ({ theme }) => {
   const [logs, setLogs] = useState([
@@ -110,6 +111,32 @@ const UserLogsChart = ({ theme }) => {
         margin: "0 auto", // Centers the container horizontally
       }}
     >
+      {/* Logo and Title Section */}
+      <div
+        className="header"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ height: "50px", marginRight: "15px" }}
+        />
+        <h1
+          style={{
+            fontWeight: "bold",
+            fontSize: "1.8rem",
+            margin: 0,
+            color: themeColors.textColor,
+          }}
+        >
+          Pugad Maharlika
+        </h1>
+      </div>
+
       <h2 style={{ textAlign: "center", fontWeight: "bold" }}>User Logs</h2>
 
       <table

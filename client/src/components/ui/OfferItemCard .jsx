@@ -125,7 +125,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     const { res, error } = await API(config);
     if (res) {
       setUser(res.data.account);
-      setErrors(["OFfer purchased"]);
+      setErrors(["Offer purchased"]);
       setSuccess(true);
     }
 

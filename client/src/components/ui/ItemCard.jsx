@@ -53,7 +53,8 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
         alt="card"
       />
       <div className="p-4">
-        <h1 className={"font-bold text-xl mb-2"}>{item.item_name}</h1>
+        <h1 className="font-bold text-xl mb-2">{item.item_name}</h1>
+
         <div className="mt-4 flex flex-col sm:flex-row">
           {user.role === "P" ? (
             <button

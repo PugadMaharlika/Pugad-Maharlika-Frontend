@@ -82,7 +82,7 @@ function AdminDashboard() {
   return (
     <div className="w-full h-full flex flex-col flex-grow gap-5">
       <div
-        className={`flex w-full text-md rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
         DASHBOARD
       </div>

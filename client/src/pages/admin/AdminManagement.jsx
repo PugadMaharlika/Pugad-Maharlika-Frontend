@@ -102,16 +102,13 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   };
 
   return (
-    <div
-      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
-    >
+    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
       {/* Admin Accounts Title and Add Account Button */}
+
       <div
-        className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
-          theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
-        } mb-4`} // Added margin-bottom to add space between title and data table
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
-        <h1 className="text-2xl font-semibold">Admin</h1>
+        ADMINS
         <button
           id="add-account"
           onClick={() => {
@@ -153,10 +150,7 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
             </button>
           </div>
           {/* DataTable */}
-          <DataTable
-            selectedCallback={handleChangePage}
-            accvalues={accvalues}
-          />
+          <DataTable selectedCallback={handleChangePage} accvalues={accvalues} />
         </div>
       </div>
     </div>

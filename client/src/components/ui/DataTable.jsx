@@ -4,7 +4,7 @@ import { ThemeContext } from "../../context/Theme";
 const DataTable = ({ accvalues, selectedCallback }) => {
   const [theme] = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2; // Number of rows per page
+  const rowsPerPage = 5; // Number of rows per page
 
   // Calculate the indices for slicing
   const startIndex = (currentPage - 1) * rowsPerPage;

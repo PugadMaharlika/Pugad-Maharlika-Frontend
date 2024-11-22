@@ -17,11 +17,12 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
 
   return (
     <div
-      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-80 bg-${theme}`}
+      className={`relative max-w-xs shadow-lg rounded-lg overflow-hidden m-4 w-60 h-80 bg-${theme}`}
     >
       <div className="absolute top-2 right-2">
         {user.role == "P" ? (
           <button
+            className=""
             style={{ display: "none" }}
             id="btn_update"
             onClick={() => {
@@ -32,28 +33,26 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
             <i className="fas fa-edit"></i>
           </button>
         ) : (
-          <button
-            id="btn_update"
-            onClick={() => {
-              setSelectedItem(item.item_id);
-              setSelected("UpdateItem");
-            }}
-            className=" hover:text-yellow-500 font-bold px-1 rounded"
-          >
-            <i className="fas fa-edit"></i>
-          </button>
+          <div className="tooltip text-white tooltip-bottom" data-tip="Edit">
+            <button
+              id="btn_update"
+              onClick={() => {
+                setSelectedItem(item.item_id);
+                setSelected("UpdateItem");
+              }}
+              className={`btn btn-square font-bold px-1 rounded`}
+            >
+              <i className="fa-solid fa-file-pen"></i>
+            </button>
+          </div>
         )}
       </div>
 
-      <img
-        className="w-full h-52 object-cover"
-        src={item && item.item_sprite}
-        alt="card"
-      />
+      <img className="w-full h-52 object-cover" src={item && item.item_sprite} alt="card" />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{item.name}</h1>
         <p className="text-base">{item.item_desc}</p>
-        <div className="mt-4 flex flex-col sm:flex-row">
+        <div className="mt-4 flex flex-col sm:flex-row justify-end">
           {user.role === "P" ? (
             <button
               id="btn_item_details"

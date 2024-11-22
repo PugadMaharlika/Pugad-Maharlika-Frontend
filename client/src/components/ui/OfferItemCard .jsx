@@ -137,7 +137,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
 
   return (
     <div
-      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto ${
+      className={`relative max-w-xs shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto ${
         theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
       }`}
     >
@@ -152,26 +152,24 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
 
       <div className="absolute top-2 right-2">
         {user.role != "P" && (
-          <button
-            id="btn_update"
-            onClick={() => {
-              setOfferselected(offer.ofr_id);
-              setSelected("UpdateOffer");
-            }}
-            className=" hover:text-yellow-500 font-bold px-1 rounded"
-          >
-            <i className="fas fa-edit"></i>
-          </button>
+          <div className="tooltip text-white tooltip-bottom" data-tip="Edit">
+            <button
+              id="btn_update"
+              onClick={() => {
+                setOfferselected(offer.ofr_id);
+                setSelected("UpdateOffer");
+              }}
+              className={`btn btn-square  hover font-bold px-1 rounded`}
+            >
+              <i className="fa-solid fa-file-pen"></i>
+            </button>
+          </div>
         )}
       </div>
-      <img
-        className="w-full h-52 object-cover"
-        src={offer && offer.ofr_sprite}
-        alt="card"
-      />
+      <img className="w-full h-52 object-cover" src={offer && offer.ofr_sprite} alt="card" />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{offer.ofr_name}</h1>
-        <p className="text-base flex items-center font-medium font-sans text-xl">
+        <p className="flex items-center font-medium font-sans text-xl">
           {/* Image aligned to the left and resized */}
           <img
             src={offer.ofr_type === "P" ? perlas : ginto}
@@ -180,7 +178,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
           />
           {offer.ofr_value}
         </p>
-        <p className="text-base text-lg">{offer.ofr_desc}</p>
+        <p className="text-lg">{offer.ofr_desc}</p>
 
         <p className="text-base pt-3 font-light">₱ {offer.ofr_price}</p>
 

@@ -17,13 +17,14 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [details, setDetails] = useState("");
   const [itemType, setItemType] = useState("S");
   const [itemholder, setItemHolder] = useState("diego silang");
-  const [reeleaseItem, setReleaseItem] = useState("Unreleased");
+  const [reeleaseItem, setReleaseItem] = useState(false);
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
   const [itemId, setItemId] = useState("");
   const [items, setItems] = useState("");
+  const [status, setStatus] = useState(false);
 
   const authToken = localStorage.getItem("authToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -48,7 +49,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
       !image
     ) {
       setSuccess(true);
-      setErrors(["404 Item updated successfully"]);
+      setErrors(["Item updated successfully"]);
       return;
     }
 
@@ -63,6 +64,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         details: details,
         itemholder: itemholder,
         url: url ? url : items.item_sprite,
+        reeleaseItem: reeleaseItem,
       },
     };
 
@@ -70,8 +72,27 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     if (res) {
       console.log(res);
       setUser(res.data.account);
+
       setSuccess(true);
       setErrors(["Item updated successfully"]);
+    }
+    if (error) console.log(error);
+  };
+
+  const handleReleaseItem = async (url) => {
+    const config = {
+      url: `${serverUrl}/item/release`,
+      method: "PUT",
+      data: {
+        id: selectedItem,
+        reeleaseItem: reeleaseItem,
+      },
+    };
+
+    const { res, error } = await API(config);
+    if (res) {
+      console.log(res);
+      setUser(res.data.account);
     }
     if (error) console.log(error);
   };
@@ -84,6 +105,9 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     }
   };
 
+  useEffect(() => {
+    handleReleaseItem();
+  }, [reeleaseItem]);
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -128,6 +152,10 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     };
   }, []);
 
+  const handleToggleStatus = () => {
+    setReleaseItem((prevStatus) => !prevStatus);
+  };
+
   return (
     <>
       <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
@@ -146,7 +174,11 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
           </button>
         </div>
 
-        <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
+        <div
+      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+      }`}
+    >
           {/* Image uploading */}
           <div className="flex flex-col items-center w-full md:w-1/3">
             <div className="relative">
@@ -211,20 +243,25 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 onChange={(e) => setDetails(e.target.value)}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               ></textarea>
-              <select
-                value={itemholder}
-                onChange={(e) => setReleaseItem(e.target.value)}
-                className="w-full border border-gray-300 p-2 rounded-lg mb-4"
-              >
-                <option value="True">Unrelease</option>
-                <option value="">Release</option>
-              </select>
-              <div className="flex w-full justify-end">
+              <div className="flex w-full justify-end gap-5">
+                <button
+                  onClick={() => {
+                    handleToggleStatus();
+                  }}
+                  className={`py-2 px-4 rounded text-white ${
+                    reeleaseItem
+                      ? "bg-red-500 hover:bg-red-700"
+                      : "bg-green-500 hover:bg-green-700"
+                  }`}
+                >
+                  {reeleaseItem ? "Deactivate" : "Activate"}
+                </button>
+
                 <button
                   className="bg-green-500 px-6 py-2 text-white rounded-lg"
                   onClick={handleItem}
                 >
-                  Update
+                  Save
                 </button>
               </div>
             </div>

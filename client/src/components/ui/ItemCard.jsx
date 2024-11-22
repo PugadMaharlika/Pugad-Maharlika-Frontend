@@ -50,9 +50,9 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
 
       <img className="w-full h-52 object-cover" src={item && item.item_sprite} alt="card" />
       <div className="p-4">
-        <h1 className="font-bold text-xl mb-2">{item.name}</h1>
-        <p className="text-base">{item.item_desc}</p>
-        <div className="mt-4 flex flex-col sm:flex-row justify-end">
+        <h1 className="font-bold text-xl mb-2">{item.item_name}</h1>
+
+        <div className="mt-4 flex flex-col sm:flex-row">
           {user.role === "P" ? (
             <button
               id="btn_item_details"

@@ -125,7 +125,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     const { res, error } = await API(config);
     if (res) {
       setUser(res.data.account);
-      setErrors(["OFfer purchased"]);
+      setErrors(["Offer purchased"]);
       setSuccess(true);
     }
 
@@ -139,7 +139,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     <div
       className={`relative max-w-xs shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto ${
         theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
-      }`}
+      } ${offer.ofr_enabled ? "border-green-500" : "border-red-500"} border-2`}
     >
       <LoadingSpinner
         theme={theme}

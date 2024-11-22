@@ -35,6 +35,8 @@ import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
 import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
+import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
+import UserLogsChart from "./admin/UserLogsChart";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -51,6 +53,7 @@ function Main({ theme, toggleTheme }) {
   const [offerselected, setOfferselected] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [transactionSelected, setTransactionSelected] = useState([]);
+  const [feedback, setFeedback] = useState([]);
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
 
@@ -334,9 +337,13 @@ function Main({ theme, toggleTheme }) {
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
               {selected === "Dashboard" && user.role === "P" && (
                 <Dashboard setSelected={setSelected} theme={theme} />
               )}
@@ -366,6 +373,12 @@ function Main({ theme, toggleTheme }) {
                   setSelected={setSelected}
                 />
               )}
+              {selected === "SalesAndRevenueChart" && user.role !== "P" && (
+                <SalesAndRevenueChart theme={theme} />
+              )}
+              {selected === "UserLogsChart" && user.role !== "P" && (
+                <UserLogsChart theme={theme} />
+              )}
               {selected === "Player" && user.role !== "P" && (
                 <PlayerManagement
                   theme={theme}
@@ -380,7 +393,9 @@ function Main({ theme, toggleTheme }) {
                   selectedplayer={selectedplayer}
                 />
               )}
-              {selected === "AddOffer" && <AddOffer theme={theme} setSelected={setSelected} />}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ViewOffer" && (
                 <ViewOffer
                   theme={theme}
@@ -443,12 +458,22 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
                 <Transactions
@@ -466,13 +491,15 @@ function Main({ theme, toggleTheme }) {
                   transactionSelected={transactionSelected}
                 />
               )}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
-              {/* {selected === "Receipt" && (
-                <Invoice theme={theme} setSelected={setSelected} />
-              )} */}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
+              {selected === "Reports" && (
+                <Reports theme={theme} setSelected={setSelected} />
+              )}
               {selected === "FeedBackDetails" && (
-                <FeedBackDetails theme={theme} setSelected={setSelected} />
+                <FeedBackDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  feedback={feedback}
+                />
               )}
             </div>
           </div>

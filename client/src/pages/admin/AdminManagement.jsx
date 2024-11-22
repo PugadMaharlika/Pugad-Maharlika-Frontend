@@ -24,7 +24,7 @@ var lineChartData = {
   ],
   datasets: [
     {
-      label: "Player Activity",
+      label: "Admin Registration",
       data: [],
       backgroundColor: "rgba(54, 162, 235, 0.4)",
       borderColor: "rgba(54, 162, 235, 1)",
@@ -102,7 +102,9 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   };
 
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}>
+    <div
+      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full`}
+    >
       {/* Admin Accounts Title and Add Account Button */}
       <div
         className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
@@ -151,7 +153,10 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
             </button>
           </div>
           {/* DataTable */}
-          <DataTable selectedCallback={handleChangePage} accvalues={accvalues} />
+          <DataTable
+            selectedCallback={handleChangePage}
+            accvalues={accvalues}
+          />
         </div>
       </div>
     </div>

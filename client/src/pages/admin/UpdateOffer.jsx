@@ -198,9 +198,10 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
         </div>
 
         <div
-      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-      }`}>
+          className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           <div className="flex flex-col items-center mb-5 w-1/3">
             <div className="relative">
               <img
@@ -287,7 +288,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
                   }}
                   className="hover:bg-red-700   bg-red-500 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 "
                 >
-                  <i class="fa-solid fa-trash mr-2"></i>
+                  <i className="fa-solid fa-trash mr-2"></i>
                   {offer && offer.ofr_enabled ? "Unreleased" : "Released"}
                 </button>
               </div>

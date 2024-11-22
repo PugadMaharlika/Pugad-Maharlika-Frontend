@@ -288,7 +288,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
                   }}
                   className="hover:bg-red-700   bg-red-500 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 "
                 >
-                  <i class="fa-solid fa-trash mr-2"></i>
+                  <i className="fa-solid fa-trash mr-2"></i>
                   {offer && offer.ofr_enabled ? "Unreleased" : "Released"}
                 </button>
               </div>

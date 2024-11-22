@@ -17,7 +17,9 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
 
   return (
     <div
-      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-80 bg-${theme}`}
+      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-80 bg-${theme} ${
+        item.item_enabled ? "border-green-500" : "border-red-500"
+      } border-2`}
     >
       <div className="absolute top-2 right-2">
         {user.role == "P" ? (
@@ -38,7 +40,7 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
               setSelectedItem(item.item_id);
               setSelected("UpdateItem");
             }}
-            className=" hover:text-yellow-500 font-bold px-1 rounded"
+            className="hover:text-yellow-500 font-bold px-1 rounded"
           >
             <i className="fas fa-edit"></i>
           </button>
@@ -52,7 +54,7 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
       />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{item.item_name}</h1>
-       
+
         <div className="mt-4 flex flex-col sm:flex-row">
           {user.role === "P" ? (
             <button

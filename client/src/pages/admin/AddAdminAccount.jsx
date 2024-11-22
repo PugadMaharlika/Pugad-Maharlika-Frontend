@@ -35,9 +35,9 @@ export const AddAdminAccount = ({ setSelected }) => {
         email: email,
         username: username,
         password: password,
-        firstName: firstName,
-        middleInitial: middleInitial,
-        lastName: lastName,
+        fname: firstName,
+        mname: middleInitial,
+        lname: lastName,
       },
     };
 
@@ -104,7 +104,7 @@ export const AddAdminAccount = ({ setSelected }) => {
         </button>
       </div>
       <div
-        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 mt-4 rounded-lg shadow-lg gap-6 bg-${Theme}`}
+        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 mt-4 rounded-lg shadow-lg gap-6 bg-${theme}`}
       >
         <div className="w-1/2 p-4">
           <h2 className="text-2xl font-bold mb-4">Add Admin Account</h2>

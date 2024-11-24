@@ -57,7 +57,7 @@ export const PlayerAccount = ({ setSelected, selectedplayer }) => {
       const config = {
         url: `${serverUrl}/account/enabler`,
         method: "POST",
-        data: { id: selectedplayer.acc_id, status: status },
+        data: { id: selectedplayer.acc_id, status: status, type: "P" },
       };
 
       const { res, error } = await API(config);
@@ -86,7 +86,12 @@ export const PlayerAccount = ({ setSelected, selectedplayer }) => {
     const config = {
       url: `${serverUrl}/account/update`,
       method: "PUT",
-      data: { id: selectedplayer.acc_id, gold: gold ? gold : 0, perlas: perlas ? perlas : 0 },
+      data: {
+        id: selectedplayer.acc_id,
+        gold: gold ? gold : 0,
+        perlas: perlas ? perlas : 0,
+        type: "P",
+      },
     };
 
     const { res, error } = await API(config);

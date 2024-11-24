@@ -166,7 +166,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       setUser(res.data.account);
       setErrors(["Offer updated successfully!"]);
       setSuccess(true);
-      //setSelected("Offer");
+      setSelected("Offer");
     }
 
     if (error) {

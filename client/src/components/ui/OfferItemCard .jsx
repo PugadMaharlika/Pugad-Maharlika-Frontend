@@ -166,7 +166,11 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
           </div>
         )}
       </div>
-      <img className="w-full h-52 object-cover" src={offer && offer.ofr_sprite} alt="card" />
+      <img
+        className="w-full h-52 object-cover"
+        src={offer && offer.ofr_sprite}
+        alt="card"
+      />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{offer.ofr_name}</h1>
         <p className="flex items-center font-medium font-sans text-xl">

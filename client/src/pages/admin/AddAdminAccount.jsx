@@ -35,9 +35,9 @@ export const AddAdminAccount = ({ setSelected }) => {
         email: email,
         username: username,
         password: password,
-        firstName: firstName,
-        middleInitial: middleInitial,
-        lastName: lastName,
+        fname: firstName,
+        mname: middleInitial,
+        lname: lastName,
       },
     };
 
@@ -86,11 +86,13 @@ export const AddAdminAccount = ({ setSelected }) => {
   };
 
   return (
-    <div className="flex flex-col col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-64 px-8 sm:w-full h-full gap-5">
+    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
+      {/* Admin Accounts Title and Add Account Button */}
+
       <div
-        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold bg-${theme}`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
-        <h1 className="text-2xl font-bold">Add Admin</h1>
+        ADD ADMIN
         <button
           id="btn_back"
           onClick={() => {
@@ -102,7 +104,7 @@ export const AddAdminAccount = ({ setSelected }) => {
         </button>
       </div>
       <div
-        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 rounded-lg shadow-lg gap-6 bg-${theme}`}
+        className={`flex flex-col md:flex-row items-center justify-center w-full p-6 mt-4 rounded-lg shadow-lg gap-6 bg-${theme}`}
       >
         <div className="w-1/2 p-4">
           <h2 className="text-2xl font-bold mb-4">Add Admin Account</h2>
@@ -160,8 +162,7 @@ export const AddAdminAccount = ({ setSelected }) => {
             {/* Tooltip Text */}
             {showTooltip && (
               <div className="absolute right-10 top-0 mt-2 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
-                Password must have a special character (! @ # $ % ^ & *) and a
-                number.
+                Password must have a special character (! @ # $ % ^ & *) and a number.
               </div>
             )}
           </div>

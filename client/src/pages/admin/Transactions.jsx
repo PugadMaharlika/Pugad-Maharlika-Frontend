@@ -8,11 +8,7 @@ import { UserContext } from "../../context/User";
 import API from "../../service/API";
 import axios from "axios";
 
-export const Transactions = ({
-  setSelected,
-  setTransactionSelected,
-  transactionSelected,
-}) => {
+export const Transactions = ({ setSelected, setTransactionSelected, transactionSelected }) => {
   const [theme] = useContext(ThemeContext);
   const [transactions, setTransactions] = useState([]);
   const [success, setSuccess] = useContext(SuccessContext);
@@ -90,10 +86,7 @@ export const Transactions = ({
 
     if (error) {
       console.log(error);
-      setErrors([
-        error.response?.data?.errors?.map((error) => error.msg) ||
-          "An error occurred",
-      ]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
     }
   };
 
@@ -119,10 +112,7 @@ export const Transactions = ({
 
         if (error) {
           console.log(error);
-          setErrors([
-            error.response?.data?.errors?.map((err) => err.msg) ||
-              "An error occurred",
-          ]);
+          setErrors([error.response?.data?.errors?.map((err) => err.msg) || "An error occurred"]);
         }
       } catch (err) {
         setErrors(["Failed to fetch results"]);
@@ -138,22 +128,18 @@ export const Transactions = ({
 
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
         <div
-          className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 py-4 font-bold items-center mb-4 ${
-            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-          }`}
+          className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
         >
-          <h1 className="text-2xl font-bold">Transaction</h1>
+          TRANSACTIONS
         </div>
         <div
-          className={`flex flex-col overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 mb-5 ${
-            theme === "night"
-              ? "bg-night  text-white "
-              : "bg-fantasy text-black"
+          className={`flex flex-col overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 mt-4 sm:w-full py-10 mb-5 ${
+            theme === "night" ? "bg-night  text-white " : "bg-fantasy text-black"
           }`}
         >
-          <div className="flex">
+          <div className="flex ">
             <div className="w-full sm:w-full p-1 py-1 px-7 mb-4 sm:mb-0">
               <div className="flex items-center border rounded-md w-full">
                 {/* Search Input */}

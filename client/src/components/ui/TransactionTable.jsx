@@ -1,12 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TransactionTable = ({
-  transactions,
-  setSelected,
-  setTransactionSelected,
-}) => {
+export const TransactionTable = ({ transactions, setSelected, setTransactionSelected }) => {
   const [theme, setTheme] = useContext(ThemeContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5; // Number of rows per page
+
+  // Calculate the indices for slicing
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  // Paginated data
+  const paginatedData = transactions.slice(startIndex, endIndex);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(transactions.length / rowsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [transactions]);
+
+  // Handlers for pagination
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <div className="p-6 w-full">
@@ -22,7 +43,7 @@ export const TransactionTable = ({
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {paginatedData.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="px-4 py-2 justify-center">
                   <button
@@ -45,11 +66,38 @@ export const TransactionTable = ({
                       : ""}
                 </td>
                 <td className="px-4 py-2">{transaction.his_mode}</td>
-                <td className="px-4 py-2">{transaction.date_created}</td>
+                <td className="px-4 py-2">{new Date(transaction.date_created).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination */}
+
+      <div className="flex justify-between space-x-4 mt-5">
+        {/* Table Legend */}
+        <div className="flex justify-left"></div>
+        <span className="px-4 py-2 ">
+          Page {currentPage} of {totalPages}
+        </span>
+        <div className="flex gap-3">
+          <button
+            onClick={handlePrevPage}
+            className={`px-4 py-2 rounded ${currentPage === 1 ? "bg-gray-500 text-white" : "bg-blue-900 text-white"}`}
+            disabled={currentPage === 1}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </button>
+          <button
+            onClick={handleNextPage}
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </div>
   );

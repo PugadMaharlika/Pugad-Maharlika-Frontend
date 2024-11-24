@@ -12,7 +12,7 @@ export const Notification = ({
   setNotificationselected,
 }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const [notifications, setNotification] = useState(null);
+  const [notifications, setNotification] = useState([]);
   const [user, setUser] = useContext(UserContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -27,7 +27,6 @@ export const Notification = ({
   // UseEffect for View All notification
   useEffect(() => {
     handleViewNotification();
-    
   }, []); // Dependencies to rerun effect only when these values change
 
   const handleViewNotification = async () => {
@@ -41,7 +40,6 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
-
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notifications);
@@ -50,7 +48,6 @@ export const Notification = ({
       console.log(error);
       setErrors(error.response.data.errors.map((error) => error.msg));
     }
-    
   };
 
   //HANDLER For Search Notification
@@ -74,7 +71,6 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
-
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notification);
@@ -97,7 +93,6 @@ export const Notification = ({
 
     const { res, error } = await API(config);
     if (res) {
-     
       setIsLoading(false);
       setUser(res.data.account);
       setNotification(res.data.notification);
@@ -114,16 +109,15 @@ export const Notification = ({
       setErrors([]);
       setSuccess(false);
       console.log("TYPE: ", type);
-  
+
       const config = {
         url: `${serverUrl}/notification/notification-type?note_type=${type}`,
         method: "GET",
         data: {},
       };
-  
+
       const { res, error } = await API(config);
       if (res) {
-
         setIsLoading(false);
         setUser(res.data.account);
         setNotification(res.data.notification);
@@ -133,26 +127,19 @@ export const Notification = ({
         setErrors(error.response.data.errors.map((error) => error.msg));
       }
     };
-    if(type !== "All"){
+    if (type !== "All") {
       handleNotificationType();
-    }
-    else{
+    } else {
       handleViewNotification();
     }
-   
-  },[type]);
-
+  }, [type]);
 
   return (
-    <div
-      className={`col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-4 container w-full`}
-    >
+    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
       <div
-        className={`flex flex-col sm:flex-row justify-between items-center w-full rounded-xl h-auto sm:h-16 shadow-md py-2 sm:p-3 font-bold ${
-          theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
-        }`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
-        <h1 className="text-2xl font-bold">Notification</h1>
+        NOTIFICATIONS
         {user.role !== "P" && (
           <div className="flex justify-end w-full sm:w-auto mt-4 sm:mt-0">
             <button
@@ -169,7 +156,7 @@ export const Notification = ({
       </div>
 
       <div
-        className={`col-span-6 overflow-hidden rounded-lg shadow-lg text-xs md:text-md w-full py-2 sm:py-6  sm:mt-10 ${
+        className={`col-span-6 overflow-hidden rounded-lg shadow-lg text-xs md:text-md w-full py-2 sm:py-6 mt-4 ${
           theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
         }`}
       >
@@ -194,17 +181,15 @@ export const Notification = ({
               <div className="w-full mt-5 sm:w-1/2 flex justify-end ml-auto mr-1">
                 <select
                   value={type}
-                  onChange={(e) => {    
-                                  
-                    const selectedType = e.target.value
+                  onChange={(e) => {
+                    const selectedType = e.target.value;
                     setType(selectedType);
-                   
-
-                  }
-                  }
+                  }}
                   className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
                 >
-                  <option default value="All">All</option>
+                  <option default value="All">
+                    All
+                  </option>
                   <option value="G">Global</option>
                   <option value="P">Player</option>
                 </select>
@@ -226,7 +211,9 @@ export const Notification = ({
                   setSelectedYear(selectedOption); // Set the selected year
                 }}
               >
-                <option default value="selectYear">Select Year</option>
+                <option default value="selectYear">
+                  Select Year
+                </option>
 
                 {Array.from({ length: 5 }, (_, i) => {
                   const year = new Date().getFullYear() - i;

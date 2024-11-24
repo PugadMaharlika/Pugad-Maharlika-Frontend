@@ -174,7 +174,11 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
           </button>
         </div>
 
-        <div className="flex bg-white items-center justify-center w-full p-8 rounded-lg shadow-lg">
+        <div
+      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+      }`}
+    >
           {/* Image uploading */}
           <div className="flex flex-col items-center w-full md:w-1/3">
             <div className="relative">

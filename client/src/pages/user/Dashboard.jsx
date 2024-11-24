@@ -23,6 +23,9 @@ import miguel from "../../assets/characters/default_miguel.png";
 import pedro from "../../assets/characters/default_pedro.png";
 import spaniard from "../../assets/characters/default_spaniard.png";
 
+import diegoMaharlika from "../../assets/characters/diego_pinoy.png";
+import gabrielaMaharlika from "../../assets/characters/gabriela_pinoy.png";
+
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function Dashboard({ setSelected }) {
@@ -33,9 +36,12 @@ function Dashboard({ setSelected }) {
   const [user, setUser] = useContext(UserContext);
   const [leaderboard, setLeaderboard] = useState([]);
   const [characters, setCharacters] = useState([]);
+  const [skins, setSkins] = useState([]);
+  const [displayCharacter, setDisplayCharacter] = useState(true);
+
   const all_characters = {
-    "Diego Silang": gabriela,
-    "Gabriela Silang": diego,
+    "Diego Silang": diego,
+    "Gabriela Silang": gabriela,
     "Tinguan Warrior": archer,
     "Becbec Follower": follower,
     "Filipino Elites": elite,
@@ -45,6 +51,10 @@ function Dashboard({ setSelected }) {
     Spaniards: spaniard,
   };
 
+  const all_skins = {
+    "Diego Silang - Maharlika": diegoMaharlika,
+    "Gabriela Silang - Maharlika": gabrielaMaharlika,
+  };
   useEffect(() => {
     const fetchData = async () => {
       const config = {
@@ -59,11 +69,12 @@ function Dashboard({ setSelected }) {
           setLoading(false);
           setUser(res.data.account);
           setLeaderboard(res.data.leaderboard);
-          console.log(res.data.account);
           const char_names = res.data.account.progress.characters.map(
             (obj) => Object.values(obj)[0]
           );
           setCharacters(char_names);
+          setSkins(res.data.account.progress.skins);
+          console.log(res.data.account.progress.skins);
         }
         if (error) {
           console.log(error);
@@ -79,7 +90,7 @@ function Dashboard({ setSelected }) {
   return (
     <div className="w-full h-full flex flex-col flex-grow gap-5">
       <div
-        className={`flex w-full text-md rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
         DASHBOARD
       </div>
@@ -122,7 +133,7 @@ function Dashboard({ setSelected }) {
           <AutoCarousel images={images} setSelected={setSelected} />
         </div>
         <div
-          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md xl:max-w-lg  bg-${theme}`}
+          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-md xl2:max-w-lg  bg-${theme}`}
         >
           <p className="text-sm font-bold">Leaderboard</p>
           <div className="overflow-x-auto">
@@ -175,15 +186,40 @@ function Dashboard({ setSelected }) {
               ></progress>
             </div>
           </div>
-          <div className={`flex w-full flex-col h-52 rounded-xl p-4 shadow-md bg-${theme}`}>
-            <p className="text-sm font-bold pb-2 w-14 text-nowrap">Unlocked Characters</p>
-            <div className="flex w-full gap-2 max-w-full overflow-x-auto overflow-y-hidden pb-2">
-              {characters &&
+          <div className={`flex w-full flex-col h-52 `}>
+            <div className="flex flex-row gap-1 mb-2 ">
+              <button
+                onClick={() => {
+                  setDisplayCharacter(true);
+                }}
+                className={`text-sm font-bold text-nowrap rounded-lg w-32 h-10 ${displayCharacter && "bg-blue-500 text-white"}`}
+              >
+                <i class="fa-solid fa-person"></i> Characters
+              </button>
+              <button
+                onClick={() => {
+                  setDisplayCharacter(false);
+                }}
+                className={`text-sm font-bold text-nowrap rounded-lg w-32 h-10  ${!displayCharacter && "bg-blue-500 text-white"}`}
+              >
+                <i className="fa-solid fa-hat-wizard"></i> Skins
+              </button>
+            </div>
+            <div
+              className={`flex w-full gap-2 max-w-full overflow-x-auto rounded-xl p-4 shadow-md overflow-y-hidden pb-2 bg-${theme}`}
+            >
+              {displayCharacter &&
+                characters &&
                 characters.map((character, index) => (
                   <img
                     className=" h-32 object-contain rounded-lg"
                     src={all_characters[character]}
                   />
+                ))}
+              {!displayCharacter &&
+                skins &&
+                skins.map((skin, index) => (
+                  <img className=" h-32 object-contain rounded-lg" src={all_skins[skin]} />
                 ))}
             </div>
           </div>

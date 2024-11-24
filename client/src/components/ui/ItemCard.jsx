@@ -17,7 +17,7 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
 
   return (
     <div
-      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-80 bg-${theme} ${
+      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto bg-${theme} ${
         item.item_enabled ? "border-green-500" : "border-red-500"
       } border-2`}
     >

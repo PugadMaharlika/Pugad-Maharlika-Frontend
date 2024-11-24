@@ -6,7 +6,6 @@ import logo from "../../assets/logo1.png";
 import API from "../../service/API";
 
 export const PlayerAccount = ({ setSelected, selectedplayer }) => {
-  console.log(selectedplayer);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dateCreated, setDateCreated] = useState("");

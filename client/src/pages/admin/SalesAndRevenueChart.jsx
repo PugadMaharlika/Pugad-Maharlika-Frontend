@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import logo from "../../assets/logo1.png";
 import {
@@ -10,7 +10,11 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
+import { AlertsContext } from "../../context/Alerts";
+import { SuccessContext } from "../../context/Success";
+import API from "../../service/API";
 
 // Register necessary components for Chart.js
 ChartJS.register(
@@ -20,49 +24,40 @@ ChartJS.register(
   PointElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
+
+var LineChartData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
+    {
+      label: "Sales",
+      data: [],
+      borderColor: "#42A5F5",
+      backgroundColor: "rgba(66, 165, 245, 0.2)",
+      fill: true,
+    },
+    {
+      label: "Revenue",
+      data: [],
+      borderColor: "#66BB6A",
+      backgroundColor: "rgba(102, 187, 106, 0.2)",
+      fill: true,
+    },
+  ],
+};
 
 const SalesAndRevenueChart = ({
   theme,
   generatedBy = "N/A",
   printedDate = new Date().toLocaleDateString(),
 }) => {
-  const [data, setData] = useState({
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Sales",
-        data: [120, 150, 200, 180, 250, 300, 350, 400, 450, 500, 550, 600],
-        borderColor: "#42A5F5",
-        backgroundColor: "rgba(66, 165, 245, 0.2)",
-        fill: true,
-      },
-      {
-        label: "Revenue",
-        data: [
-          1000, 1200, 1500, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000,
-          3200,
-        ],
-        borderColor: "#66BB6A",
-        backgroundColor: "rgba(102, 187, 106, 0.2)",
-        fill: true,
-      },
-    ],
-  });
+  const [lineChart, setLineChart] = useState(LineChartData);
+  const [errors, setErrors] = useContext(AlertsContext);
+
+  const [data, setData] = useState();
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
 
   const [options, setOptions] = useState({
     responsive: true,
@@ -91,6 +86,12 @@ const SalesAndRevenueChart = ({
     },
   });
 
+  useEffect(() => {
+    fetchtotalSales();
+    return () => {
+      fetchtotalSales();
+    };
+  }, []);
   // Theme color definitions
   const themeColors =
     theme === "night"
@@ -102,6 +103,55 @@ const SalesAndRevenueChart = ({
           bgColor: "#FFFFFF", // White background for the light theme
           textColor: "#1F2937", // Dark text color for the light theme
         };
+
+  const fetchtotalSales = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalsales`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      const updatedData = { ...lineChart }; // Make a copy of the current state
+      updatedData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
+
+      setLineChart(updatedData); // Update state with the new data
+      fetchtotalRevenue();
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
+
+  const fetchtotalRevenue = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalrevenue`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totalrevenueData) {
+        const updatedData = { ...lineChart }; // Make a copy of the current state
+        updatedData.datasets[1].data = res.data.totalrevenueData[0].monthly_totals;
+
+        setLineChart(updatedData); // Update state with the new data
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
 
   return (
     <div
@@ -124,11 +174,7 @@ const SalesAndRevenueChart = ({
           marginBottom: "10px",
         }}
       >
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ height: "50px", marginRight: "15px" }}
-        />
+        <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "15px" }} />
         <h1
           style={{
             fontWeight: "bold",
@@ -159,7 +205,7 @@ const SalesAndRevenueChart = ({
       </div>
 
       {/* Chart */}
-      <Line data={data} options={options} />
+      {lineChart && <Line data={lineChart} options={options} />}
 
       {/* Bottom Tables Section */}
       <div
@@ -179,9 +225,7 @@ const SalesAndRevenueChart = ({
             padding: "15px",
           }}
         >
-          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>
-            Top Offers
-          </h3>
+          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Top Offers</h3>
           <table
             style={{
               width: "100%",

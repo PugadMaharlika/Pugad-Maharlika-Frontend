@@ -111,7 +111,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offer"}
+          title={"Offers"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -119,7 +119,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Notification"}
+          title={"Notifications"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -206,7 +206,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offer"}
+          title={"Offers"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -214,7 +214,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Notification"}
+          title={"Notifications"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton

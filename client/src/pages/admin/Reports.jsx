@@ -85,7 +85,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -108,7 +108,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -134,7 +134,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -155,7 +155,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -178,7 +178,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -201,7 +201,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -226,7 +226,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -251,7 +251,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
   // Function to create the Excel file
@@ -339,7 +339,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
         acc_type: log.acc_type,
         log_type: log.log_type,
         log_origin: log.log_origin,
-        log_ip_address: log.log_ip_address,
+        log_ip_address: log.log_ip_address.split(",")[0].trim(),
         log_description: log.log_description,
         date_created: new Date(log.date_created).toLocaleString(),
       });
@@ -440,45 +440,45 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             </button>
           </div>
         </div>
-
-        <div className="flex mb-5 gap-5 justify-center mt-4">
-          <div
-            className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
-          >
-            <LineChart data={lineChart} title_text={"Yearly Sales"} />
+        <div>
+          <div className="flex mb-5 gap-5 justify-center mt-4">
+            <div
+              className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
+            >
+              <LineChart data={lineChart} title_text={"Yearly Sales"} />
+            </div>
+            <div
+              className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
+            >
+              <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+            </div>
           </div>
-          <div
-            className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
-          >
-            <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+
+          <div className="flex gap-40 justify-center">
+            <div>
+              <label className="text-2xl font-bold">Top 5 Items</label>
+              <TopItem
+                column={{
+                  column1: "Item",
+                  column2: "Unit Sold",
+                  column3: "Date Created",
+                }}
+                topItem={topItem}
+              />
+            </div>
+            <div>
+              <label className="text-2xl font-bold">Top 5 Offers</label>
+              <TopItem
+                column={{
+                  column1: "Offer",
+                  column2: "Unit Sold",
+                  column3: "Date Created",
+                }}
+                topItem={topOffer}
+              />
+            </div>
           </div>
         </div>
-
-        <div className="flex gap-40 justify-center">
-          <div>
-            <label className="text-2xl font-bold">Top 5 Items</label>
-            <TopItem
-              column={{
-                column1: "Item",
-                column2: "Unit Sold",
-                column3: "Date Created",
-              }}
-              topItem={topItem}
-            />
-          </div>
-          <div>
-            <label className="text-2xl font-bold">Top 5 Offers</label>
-            <TopItem
-              column={{
-                column1: "Offer",
-                column2: "Unit Sold",
-                column3: "Date Created",
-              }}
-              topItem={topOffer}
-            />
-          </div>
-        </div>
-
         <div
           className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 py-4 font-bold items-center mb-4 gap-5 ${
             theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"

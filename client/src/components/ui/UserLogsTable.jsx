@@ -55,7 +55,7 @@ export const UserLogsTable = ({ setSelected, userlog }) => {
                     <td className="px-4 py-2">{userlog.acc_username}</td>
                     <td className="px-4 py-2">{userlog.log_type}</td>
                     <td className="px-4 py-2">{userlog.log_origin}</td>
-                    <td className="px-4 py-2">{userlog.log_ip_address}</td>
+                    <td className="px-4 py-2">{userlog.log_ip_address.split(",")[0].trim()}</td>
                     <td className="px-4 py-2">{userlog.log_description}</td>
                     <td className="px-4 py-2">{new Date(userlog.date_created).toLocaleString()}</td>
                   </tr>

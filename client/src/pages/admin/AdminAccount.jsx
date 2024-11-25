@@ -49,26 +49,22 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
     }
   };
 
-  useEffect(() => {
-    const handleEnabler = async () => {
-      setErrors([]);
-      setSuccess(false);
-      const config = {
-        url: `${serverUrl}/account/enabler`,
-        method: "POST",
-        data: { id: selectedadmin.acc_id, status: status, type: "A" },
-      };
-
-      const { res, error } = await API(config);
-      if (res) {
-        handleViewAdmins();
-      }
-      if (error) {
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      }
+  const handleEnabler = async () => {
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/account/enabler`,
+      method: "POST",
+      data: { id: selectedadmin.acc_id, status: !status, type: "A" },
     };
-    handleEnabler();
-  }, [status]);
+    const { res, error } = await API(config);
+    if (res) {
+      handleViewAdmins();
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
 
   const handleUpdateAdmin = async () => {
     setErrors([]);
@@ -264,6 +260,7 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
           <div className="flex justify-end mt-4 space-x-4">
             <button
               onClick={() => {
+                handleEnabler();
                 handleToggleStatus();
               }}
               className={`py-2 px-4 rounded text-white ${

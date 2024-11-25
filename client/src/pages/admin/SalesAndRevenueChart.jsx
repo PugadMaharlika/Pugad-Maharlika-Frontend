@@ -1,49 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import logo from "../../assets/logo1.png";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-} from "chart.js";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
+import { UserContext } from "../../context/User";
+import LineChart from "../../components/ui/LineChart";
 import API from "../../service/API";
 
-// Register necessary components for Chart.js
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
-
-var LineChartData = {
+const lineChartData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
-      label: "Sales",
+      label: "",
       data: [],
-      borderColor: "#42A5F5",
-      backgroundColor: "rgba(66, 165, 245, 0.2)",
-      fill: true,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
     },
+  ],
+};
+
+const lineChartRevenueData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
     {
-      label: "Revenue",
+      label: "",
       data: [],
-      borderColor: "#66BB6A",
-      backgroundColor: "rgba(102, 187, 106, 0.2)",
-      fill: true,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
     },
   ],
 };
@@ -53,44 +40,23 @@ const SalesAndRevenueChart = ({
   generatedBy = "N/A",
   printedDate = new Date().toLocaleDateString(),
 }) => {
-  const [lineChart, setLineChart] = useState(LineChartData);
+  const [lineChart, setLineChart] = useState(lineChartData);
+  const [lineChartRevenue, setLineChartRevenue] = useState(lineChartRevenueData);
+  const [user, setUser] = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState([]);
   const [errors, setErrors] = useContext(AlertsContext);
-
   const [data, setData] = useState();
   const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const [options, setOptions] = useState({
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Sales and Revenue Chart",
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Month",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Amount",
-        },
-      },
-    },
-  });
+  const reloadComponent = () => {
+    setReloadKey((prevKey) => prevKey + 1);
+  };
 
   useEffect(() => {
+    fetchCurrentUser();
     fetchtotalSales();
-    return () => {
-      fetchtotalSales();
-    };
+    fetchtotalRevenue();
   }, []);
   // Theme color definitions
   const themeColors =
@@ -114,11 +80,12 @@ const SalesAndRevenueChart = ({
     const { res, error } = await API(config);
 
     if (res) {
-      const updatedData = { ...lineChart }; // Make a copy of the current state
-      updatedData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
-
-      setLineChart(updatedData); // Update state with the new data
-      fetchtotalRevenue();
+      if (res.data.totalsalesData) {
+        lineChartData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
+        setLineChart(lineChartData);
+      } else {
+        setErrors(["No data found"]);
+      }
     }
 
     if (error) {
@@ -138,13 +105,32 @@ const SalesAndRevenueChart = ({
 
     if (res) {
       if (res.data.totalrevenueData) {
-        const updatedData = { ...lineChart }; // Make a copy of the current state
-        updatedData.datasets[1].data = res.data.totalrevenueData[0].monthly_totals;
-
-        setLineChart(updatedData); // Update state with the new data
+        lineChartRevenueData.datasets[0].data = res.data.totalrevenueData[0].monthly_totals;
+        setLineChartRevenue(lineChartRevenueData);
       } else {
         setErrors(["No data found"]);
       }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    const config = {
+      url: `${serverUrl}/account/view-account`,
+      method: "POST",
+      data: {
+        id: user.id,
+      },
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      setCurrentUser(res.data.useraccount);
     }
 
     if (error) {
@@ -197,15 +183,28 @@ const SalesAndRevenueChart = ({
         }}
       >
         <p>
-          <strong>Generated by:</strong> {generatedBy}
+          <strong>Generated by:</strong>{" "}
+          {currentUser &&
+            currentUser.acc_fname + " " + currentUser.acc_mname + " " + currentUser.acc_lname}
         </p>
         <p>
-          <strong>Date Printed:</strong> {printedDate}
+          <strong>Date Printed:</strong> {new Date().toLocaleString()}
         </p>
       </div>
 
       {/* Chart */}
-      {lineChart && <Line data={lineChart} options={options} />}
+      <div className="flex mb-5 gap-5 justify-center mt-4">
+        <div
+          className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
+        >
+          <LineChart data={lineChart} title_text={"Yearly Sales"} />
+        </div>
+        <div
+          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
+        >
+          <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+        </div>
+      </div>
 
       {/* Bottom Tables Section */}
       <div

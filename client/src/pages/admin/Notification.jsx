@@ -185,7 +185,7 @@ export const Notification = ({
                     const selectedType = e.target.value;
                     setType(selectedType);
                   }}
-                  className="p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500 float-right"
+                  className="p-2 rounded-lg mb-4 border  border-gray-300 focus:border-green-500"
                 >
                   <option default value="All">
                     All

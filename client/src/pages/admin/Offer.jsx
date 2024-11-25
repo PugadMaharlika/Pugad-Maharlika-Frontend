@@ -31,7 +31,7 @@ export const Offer = ({ setSelected, setOfferselected }) => {
       const { res, error, loading } = await API(config);
       if (res) {
         setIsloading(false);
-        setUser(res.data.account);
+
         setOffers(res.data.offers);
       }
       if (error) {
@@ -42,7 +42,7 @@ export const Offer = ({ setSelected, setOfferselected }) => {
     handleOffer();
   }, []);
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
+    <div className={`col-span-8 overflow-hidden rounded-lg w-full`}>
       <div
         className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >

@@ -1,9 +1,39 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { AlertsContext } from "../../context/Alerts";
+import { SuccessContext } from "../../context/Success";
+import API from "../../service/API";
 
-export const Invoice = ({ setSelected }) => {
+export const Receipt = ({ setSelected, transactionSelected }) => {
   const [theme] = useContext(ThemeContext);
+  const [transaction, setTransaction] = useState([]);
+  const [success, setSuccess] = useContext(SuccessContext);
+  const [errors, setErrors] = useContext(AlertsContext);
+  const authToken = localStorage.getItem("authToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [isloading, setIsloading] = useState(true);
+
+  useEffect(() => {
+    const handleViewReceipt = async () => {
+      setErrors([]);
+      setSuccess(false);
+      const config = {
+        url: `${serverUrl}/transaction/viewreceipt`,
+        method: "POST",
+        data: { his_id: transactionSelected },
+      };
+
+      const { res, error } = await API(config);
+      if (res) {
+        setTransaction(res.data.transaction);
+        setIsloading(false);
+      }
+      if (error) console.log(error);
+    };
+    handleViewReceipt();
+  }, []);
 
   return (
     <>
@@ -19,14 +49,6 @@ export const Invoice = ({ setSelected }) => {
           <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
         </button>
 
-        {/* Upper right button */}
-        <button
-          className="absolute top-4 right-4 bg-green-500 text-white px-2 rounded"
-          onClick={() => console.log("Right Button Clicked")}
-        >
-          <i className="fa-solid fa-arrow-down text-3xl"></i>
-        </button>
-
         <h1 className="font-bold text-2xl my-4 text-center text-blue-600">
           Pugad Maharlika
         </h1>
@@ -35,17 +57,19 @@ export const Invoice = ({ setSelected }) => {
         <div className="flex justify-between mb-6">
           <h1 className="text-lg font-bold">Invoice</h1>
           <div className="text-gray-700">
-            <div>Date: 01/05/2023</div>
-            <div>Invoice #: INV12345</div>
+            <div>Date: {transaction && transaction.date_created}</div>
+            <div>Invoice #: {transaction && transaction.his_id}</div>
           </div>
         </div>
 
         <div className="mb-8">
           <h2 className="text-lg font-bold mb-4">Bill To:</h2>
-          <div className="text-gray-700 mb-2">John Doe</div>
-          <div className="text-gray-700 mb-2">123 Main St.</div>
-          <div className="text-gray-700 mb-2">Anytown, USA 12345</div>
-          <div className="text-gray-700">johndoe@example.com</div>
+          <div className="text-gray-700 mb-2">
+            {transaction && transaction.acc_username}
+          </div>
+          <div className="text-gray-700">
+            {transaction && transaction.acc_email}
+          </div>
         </div>
 
         <table className="w-full mb-8">
@@ -55,24 +79,28 @@ export const Invoice = ({ setSelected }) => {
               <th className="text-right font-bold text-gray-700">Amount</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td className="text-left text-gray-700">Product 1</td>
-              <td className="text-right text-gray-700">$100.00</td>
-            </tr>
-            <tr>
-              <td className="text-left text-gray-700">Product 2</td>
-              <td className="text-right text-gray-700">$50.00</td>
-            </tr>
-            <tr>
-              <td className="text-left text-gray-700">Product 3</td>
-              <td className="text-right text-gray-700">$75.00</td>
-            </tr>
-          </tbody>
+          <tr>
+            <td className="text-left text-gray-700">
+              {transaction.his_type === "O"
+                ? transaction.ofr_name
+                : transaction.item_name}
+            </td>
+            <td className="text-right text-gray-700">
+              ₱
+              {transaction.his_type === "O"
+                ? transaction.ofr_price
+                : transaction.item_value}
+            </td>
+          </tr>
           <tfoot>
             <tr>
               <td className="text-left font-bold text-gray-700">Total</td>
-              <td className="text-right font-bold text-gray-700">$225.00</td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price
+                  : transaction.item_value}
+              </td>
             </tr>
           </tfoot>
         </table>
@@ -86,4 +114,4 @@ export const Invoice = ({ setSelected }) => {
   );
 };
 
-export default Invoice;
+export default Receipt;

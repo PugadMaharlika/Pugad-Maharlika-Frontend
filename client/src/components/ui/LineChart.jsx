@@ -19,22 +19,21 @@ ChartJS.register(
   PointElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
-const LineChart = ({ sidetitle, title, data }) => {
-  // // Chart options
+const LineChart = ({ title_text, data }) => {
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: "top",
       },
       title: {
-        position: "left",
+        position: "top",
         display: true,
-        text: "Monthly Sales Data",
+        text: title_text,
       },
     },
     scales: {

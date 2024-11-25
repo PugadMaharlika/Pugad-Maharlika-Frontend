@@ -1,13 +1,6 @@
 import React from "react";
 
-const ConfirmationDialog = ({
-  theme,
-  handleAction,
-  id,
-  message,
-  buttonText,
-  is_danger,
-}) => {
+const ConfirmationDialog = ({ theme, handleAction, id, message, buttonText, is_danger }) => {
   return (
     <>
       <dialog
@@ -19,9 +12,7 @@ const ConfirmationDialog = ({
             theme === "night" ? "bg-night text-white" : "bg-fantasy text-night"
           }`}
         >
-          <h5 className="text-md w-full text-center space-y-4 font-medium mb-5 ">
-            {message}
-          </h5>
+          <h5 className="text-md w-full text-center space-y-4 font-medium mb-5 ">{message}</h5>
 
           <div className="flex flex-row gap-2">
             <button

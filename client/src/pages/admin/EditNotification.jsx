@@ -42,9 +42,17 @@ export const EditNotification = ({
         setTitle(notif.note_title);
         setMessage(notif.note_message);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleViewNotification();
+
+    // Optionally return a cleanup function
+    return () => {
+      setNotification([]); // Example cleanup, adjust as needed
+    };
   }, []);
 
   const handleUpdateNotification = async () => {
@@ -75,7 +83,11 @@ export const EditNotification = ({
       setSuccess(true);
     }
 
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
   };
 
   return (

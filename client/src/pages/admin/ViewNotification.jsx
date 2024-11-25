@@ -28,6 +28,7 @@ export const ViewNotification = ({
     const handleViewNotification = async () => {
       setErrors([]);
       setSuccess(false);
+
       const config = {
         url: `${serverUrl}/notification/view-note?note_id=${notificationselected}`,
         method: "GET",
@@ -41,7 +42,10 @@ export const ViewNotification = ({
         setNotification(res.data.notification);
         console.log(res);
       }
-      if (error) console.log(error);
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
     };
     handleViewNotification();
   }, []);
@@ -50,6 +54,31 @@ export const ViewNotification = ({
     setSelected("EditNotification");
     setNotificationselected(note_id);
   };
+
+  const handleDeleteNotification = async () => {
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/notification/delete`,
+      method: "PUT",
+      data: {
+        note_id: notification.note_id,
+      },
+    };
+
+    const { res, error, loading } = await API(config);
+    if (res) {
+      setIsloading(false);
+      console.log(res);
+      setSelected("Notification");
+      setErrors(["Notification deleted successfully!"]);
+    }
+    if (error) {
+      console.log(error);
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
+
   return (
     <div
       className={`col-span-8 overflow-hidden rounded-lg shadow-lg  text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
@@ -88,7 +117,12 @@ export const ViewNotification = ({
             </button>
           )}
           <div className="ml-2">
-            <button className="hover:bg-red-700   bg-red-500 text-white rounded-lg px-4 py-2 mt-4 ">
+            <button
+              className="hover:bg-red-700   bg-red-500 text-white rounded-lg px-4 py-2 mt-4 "
+              onClick={() => {
+                handleDeleteNotification();
+              }}
+            >
               <i className="fa-solid fa-trash mr-2"></i>
               Delete
             </button>

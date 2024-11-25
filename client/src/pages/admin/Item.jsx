@@ -20,9 +20,6 @@ export const Item = ({ setSelected, setSelectedItem }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        setErrors([]);
-        setSuccess(false);
-
         await axios
           .get(
             `${serverUrl}/item/view`,
@@ -33,10 +30,9 @@ export const Item = ({ setSelected, setSelectedItem }) => {
                 "x-refresh-token": refreshToken,
               },
             },
-            {},
+            {}
           )
           .then((response) => {
-            console.log(response);
             setItems(response.data.items);
             setUser(response.data.account);
             setSuccess(true); // Set success only if the request succeeds
@@ -61,37 +57,32 @@ export const Item = ({ setSelected, setSelectedItem }) => {
   }, []); // Dependencies to rerun effect only when these values change
 
   return (
-    <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md px-8 flex-grow h-full">
+    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
       <div
-        className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 justify-between py-4 font-bold ${
-          theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-        }`}
+        className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
-        <h1 className="text-2xl font-bold">Items</h1>
+        ITEMS
         <button
           id="btn_add_item"
           onClick={() => {
             setSelected("AddItem");
           }}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-blue-600"
         >
           Add Item
         </button>
       </div>
-      <div className="flex flex-wrap place gap-1">
+      <div className="flex flex-row flex-wrap gap-2">
         {items &&
           items.map((item) => (
             <ItemCard
-              key={item.item_id} // Assuming each item has a unique `id`
+              key={item.item_id}
               setSelected={setSelected}
               user={user}
               item={item}
               setSelectedItem={setSelectedItem}
             />
           ))}
-        <div className="flex flex-wrap overflow-y-auto h-auto">
-          <div className="flex flex-wrap w-full"></div>
-        </div>
       </div>
     </div>
   );

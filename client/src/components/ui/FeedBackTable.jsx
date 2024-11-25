@@ -1,31 +1,8 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const FeedbackTable = ({ setSelected }) => {
+export const FeedbackTable = ({ setSelected, feedback }) => {
   const [theme, setTheme] = useContext(ThemeContext);
-  const Sampledata = [
-    {
-      id: 1,
-      name: "Johny Bravo",
-      type: "Bugs",
-      title: "Passing Through Walls",
-      dateupdate: "2022-01-01",
-    },
-    {
-      id: 2,
-      name: "Johny Maskulado",
-      type: "Feedback",
-      title: "Buttons won’t click",
-      dateupdate: "2022-02-15",
-    },
-    {
-      id: 3,
-      name: "Johny Brave",
-      type: "Performance Audio",
-      title: "Music can’t be heard",
-      dateupdate: "2022-03-20",
-    },
-  ];
 
   return (
     <div
@@ -46,35 +23,30 @@ export const FeedbackTable = ({ setSelected }) => {
               </tr>
             </thead>
             <tbody>
-              {Sampledata.map((item) => (
-                <tr key={item.id}>
-                  <td className="px-4 py-2 justify-center">
-                    <button
-                      id="btn_view_feedback"
-                      onClick={() => {
-                        setSelected("FeedBackDetails");
-                      }}
-                      className="hover:text-blue-700  font-bold py-2 px-4 rounded"
-                    >
-                      <i class="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                  <td className="px-4 py-2">{item.name}</td>
-                  <td className="px-4 py-2">{item.type}</td>
-                  <td className="px-4 py-2">{item.title}</td>
-                  <td className="px-4 py-2">{item.dateupdate}</td>
-                </tr>
-              ))}
+              {feedback &&
+                feedback.map((Fback) => {
+                  return (
+                    <tr key={Fback.id}>
+                      <td className="px-4 py-2 justify-center">
+                        <button
+                          id="btn_view_feedback"
+                          onClick={() => {
+                            setSelected("FeedBackDetails");
+                          }}
+                          className="hover:text-blue-700  font-bold py-2 px-4 rounded"
+                        >
+                          <i className="fa-solid fa-eye"></i>
+                        </button>
+                      </td>
+                      <td className="px-4 py-2">{Fback.acc_username}</td>
+                      <td className="px-4 py-2">{Fback.fdbk_type}</td>
+                      <td className="px-4 py-2">{Fback.fdbk_title}</td>
+                      <td className="px-4 py-2">{Fback.date_created}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
-        </div>
-        {/* Pagination */}
-        <div className="flex justify-end mt-5">
-          <div className="flex items-center">
-            <button className="py-2 px-4 mr-2">&lt;</button>
-            <button className="py-2 px-4">1</button>
-            <button className="py-2 px-4 ml-2">&gt;</button>
-          </div>
         </div>
       </div>
     </div>

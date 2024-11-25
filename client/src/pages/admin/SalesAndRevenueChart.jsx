@@ -1,96 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import logo from "../../assets/logo1.png";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { AlertsContext } from "../../context/Alerts";
+import { SuccessContext } from "../../context/Success";
+import { UserContext } from "../../context/User";
+import LineChart from "../../components/ui/LineChart";
+import API from "../../service/API";
 
-// Register necessary components for Chart.js
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend
-);
+const lineChartData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
+    },
+  ],
+};
+
+const lineChartRevenueData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(75,192,192,1)",
+    },
+  ],
+};
 
 const SalesAndRevenueChart = ({
   theme,
   generatedBy = "N/A",
   printedDate = new Date().toLocaleDateString(),
 }) => {
-  const [data, setData] = useState({
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Sales",
-        data: [120, 150, 200, 180, 250, 300, 350, 400, 450, 500, 550, 600],
-        borderColor: "#42A5F5",
-        backgroundColor: "rgba(66, 165, 245, 0.2)",
-        fill: true,
-      },
-      {
-        label: "Revenue",
-        data: [
-          1000, 1200, 1500, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000,
-          3200,
-        ],
-        borderColor: "#66BB6A",
-        backgroundColor: "rgba(102, 187, 106, 0.2)",
-        fill: true,
-      },
-    ],
-  });
+  const [lineChart, setLineChart] = useState(lineChartData);
+  const [lineChartRevenue, setLineChartRevenue] = useState(lineChartRevenueData);
+  const [user, setUser] = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState([]);
+  const [errors, setErrors] = useContext(AlertsContext);
+  const [data, setData] = useState();
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const [options, setOptions] = useState({
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Sales and Revenue Chart",
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Month",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Amount",
-        },
-      },
-    },
-  });
+  const reloadComponent = () => {
+    setReloadKey((prevKey) => prevKey + 1);
+  };
 
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchtotalSales();
+    fetchtotalRevenue();
+  }, []);
   // Theme color definitions
   const themeColors =
     theme === "night"
@@ -102,6 +69,75 @@ const SalesAndRevenueChart = ({
           bgColor: "#FFFFFF", // White background for the light theme
           textColor: "#1F2937", // Dark text color for the light theme
         };
+
+  const fetchtotalSales = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalsales`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totalsalesData) {
+        lineChartData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
+        setLineChart(lineChartData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
+
+  const fetchtotalRevenue = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalrevenue`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totalrevenueData) {
+        lineChartRevenueData.datasets[0].data = res.data.totalrevenueData[0].monthly_totals;
+        setLineChartRevenue(lineChartRevenueData);
+      } else {
+        setErrors(["No data found"]);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    const config = {
+      url: `${serverUrl}/account/view-account`,
+      method: "POST",
+      data: {
+        id: user.id,
+      },
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      setCurrentUser(res.data.useraccount);
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+    }
+  };
 
   return (
     <div
@@ -124,11 +160,7 @@ const SalesAndRevenueChart = ({
           marginBottom: "10px",
         }}
       >
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ height: "50px", marginRight: "15px" }}
-        />
+        <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "15px" }} />
         <h1
           style={{
             fontWeight: "bold",
@@ -151,15 +183,28 @@ const SalesAndRevenueChart = ({
         }}
       >
         <p>
-          <strong>Generated by:</strong> {generatedBy}
+          <strong>Generated by:</strong>{" "}
+          {currentUser &&
+            currentUser.acc_fname + " " + currentUser.acc_mname + " " + currentUser.acc_lname}
         </p>
         <p>
-          <strong>Date Printed:</strong> {printedDate}
+          <strong>Date Printed:</strong> {new Date().toLocaleString()}
         </p>
       </div>
 
       {/* Chart */}
-      <Line data={data} options={options} />
+      <div className="flex mb-5 gap-5 justify-center mt-4">
+        <div
+          className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
+        >
+          <LineChart data={lineChart} title_text={"Yearly Sales"} />
+        </div>
+        <div
+          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
+        >
+          <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+        </div>
+      </div>
 
       {/* Bottom Tables Section */}
       <div
@@ -179,9 +224,7 @@ const SalesAndRevenueChart = ({
             padding: "15px",
           }}
         >
-          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>
-            Top Offers
-          </h3>
+          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Top Offers</h3>
           <table
             style={{
               width: "100%",

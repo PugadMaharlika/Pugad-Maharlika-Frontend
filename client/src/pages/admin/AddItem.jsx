@@ -16,7 +16,7 @@ export const AddItem = ({ setSelected }) => {
   const [value, setValue] = useState("");
   const [details, setDetails] = useState("");
   const [itemType, setItemType] = useState("S");
-  const [itemholder, setItemHolder] = useState("diego silang");
+  const [itemholder, setItemHolder] = useState("Diego Silang");
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -36,12 +36,13 @@ export const AddItem = ({ setSelected }) => {
   };
 
   const handleInsertItem = async (url) => {
+    const item_name = itemholder + " - " + name;
     const config = {
       url: `${serverUrl}/item/add`,
       method: "POST",
       data: {
         url: url,
-        name: name,
+        name: item_name,
         value: value,
         itemType: itemType,
         details: details,
@@ -83,10 +84,10 @@ export const AddItem = ({ setSelected }) => {
         </div>
 
         <div
-      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-      }`}
-    >
+          className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           {/* Image uploading */}
           <div className="flex flex-col items-center w-full md:w-1/3">
             <div className="relative">
@@ -108,9 +109,7 @@ export const AddItem = ({ setSelected }) => {
                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
-            <p className="mt-2 text-gray-600 text-sm text-center">
-              Click to upload a new image
-            </p>
+            <p className="mt-2 text-gray-600 text-sm text-center">Click to upload a new image</p>
           </div>
 
           {/* Form fields */}
@@ -143,14 +142,17 @@ export const AddItem = ({ setSelected }) => {
             </select>
             <select
               value={itemholder}
-              onChange={(e) => setItemHolder(e.target.value)}
+              onChange={(e) => {
+                console.log(e.target.value);
+                return setItemHolder(e.target.value);
+              }}
               className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
             >
               <option value="" disabled>
                 Item Holder
               </option>
-              <option value="diego silang">Diego Silang</option>
-              <option value="gabriela silang">Gabriela Silang</option>
+              <option value="Diego Silang">Diego Silang</option>
+              <option value="Gabriela Silang">Gabriela Silang</option>
             </select>
             <textarea
               placeholder="Details"
@@ -159,10 +161,7 @@ export const AddItem = ({ setSelected }) => {
               className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
             ></textarea>
             <div className="flex justify-end w-5/6 mx-auto">
-              <button
-                className="bg-green-500 px-6 py-2 text-white rounded-lg"
-                onClick={handleItem}
-              >
+              <button className="bg-green-500 px-6 py-2 text-white rounded-lg" onClick={handleItem}>
                 Add
               </button>
             </div>

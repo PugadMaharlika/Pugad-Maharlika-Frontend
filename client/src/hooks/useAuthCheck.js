@@ -26,7 +26,7 @@ function useAuthCheck() {
             "x-auth-token": authToken,
             "x-refresh-token": refreshToken,
           },
-        },
+        }
       )
       .then((response) => {
         setUser(response.data.account);

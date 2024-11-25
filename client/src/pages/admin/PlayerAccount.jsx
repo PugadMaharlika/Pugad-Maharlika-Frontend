@@ -6,7 +6,6 @@ import logo from "../../assets/logo1.png";
 import API from "../../service/API";
 
 export const PlayerAccount = ({ setSelected, selectedplayer }) => {
-  console.log(selectedplayer);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dateCreated, setDateCreated] = useState("");
@@ -50,26 +49,22 @@ export const PlayerAccount = ({ setSelected, selectedplayer }) => {
     }
   };
 
-  useEffect(() => {
-    const handleEnabler = async () => {
-      setErrors([]);
-      setSuccess(false);
-      const config = {
-        url: `${serverUrl}/account/enabler`,
-        method: "POST",
-        data: { id: selectedplayer.acc_id, status: status },
-      };
-
-      const { res, error } = await API(config);
-      if (res) {
-        handleViewPlayer();
-      }
-      if (error) {
-        setErrors(error.response.data.errors.map((error) => error.msg));
-      }
+  const handleEnabler = async () => {
+    setErrors([]);
+    setSuccess(false);
+    const config = {
+      url: `${serverUrl}/account/enabler`,
+      method: "POST",
+      data: { id: selectedplayer.acc_id, status: !status, type: "P" },
     };
-    handleEnabler();
-  }, [status]);
+    const { res, error } = await API(config);
+    if (res) {
+      handleViewPlayer();
+    }
+    if (error) {
+      setErrors(error.response.data.errors.map((error) => error.msg));
+    }
+  };
 
   const handleUpdatePlayer = async () => {
     setErrors([]);
@@ -86,7 +81,12 @@ export const PlayerAccount = ({ setSelected, selectedplayer }) => {
     const config = {
       url: `${serverUrl}/account/update`,
       method: "PUT",
-      data: { id: selectedplayer.acc_id, gold: gold ? gold : 0, perlas: perlas ? perlas : 0 },
+      data: {
+        id: selectedplayer.acc_id,
+        gold: gold ? gold : 0,
+        perlas: perlas ? perlas : 0,
+        type: "P",
+      },
     };
 
     const { res, error } = await API(config);
@@ -247,6 +247,7 @@ export const PlayerAccount = ({ setSelected, selectedplayer }) => {
           <div className="flex justify-end mt-4 space-x-4">
             <button
               onClick={() => {
+                handleEnabler();
                 handleToggleStatus();
               }}
               className={`py-2 px-4 rounded text-white ${

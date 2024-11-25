@@ -159,7 +159,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
                 setOfferselected(offer.ofr_id);
                 setSelected("UpdateOffer");
               }}
-              className={`btn btn-square  hover font-bold px-1 rounded`}
+              className={`btn btn-square opacity-60 hover:opacity-100 font-bold px-1 rounded`}
             >
               <i className="fa-solid fa-file-pen"></i>
             </button>

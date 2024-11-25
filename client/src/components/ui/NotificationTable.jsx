@@ -7,6 +7,7 @@ const NotificationTable = ({
   setNotificationselected,
 }) => {
   const [theme, setTheme] = useContext(ThemeContext);
+  console.log(notifications);
 
   const handleviewnotification = (note_id) => {
     setSelected("ViewNotification");

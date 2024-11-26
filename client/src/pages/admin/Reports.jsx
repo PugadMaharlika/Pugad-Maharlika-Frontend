@@ -113,14 +113,11 @@ export const Reports = ({
     if (res) {
       if (res.data.feedbackData) {
         setFeedback(res.data.feedbackData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -136,14 +133,11 @@ export const Reports = ({
     if (res) {
       if (res.data.userlogData) {
         setUserLog(res.data.userlogData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -162,14 +156,11 @@ export const Reports = ({
     if (res) {
       if (res.data.userlogData) {
         setUserLog(res.data.userlogData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -190,7 +181,6 @@ export const Reports = ({
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -206,14 +196,11 @@ export const Reports = ({
     if (res) {
       if (res.data.topitemData) {
         settopItem(res.data.topitemData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -236,7 +223,6 @@ export const Reports = ({
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 

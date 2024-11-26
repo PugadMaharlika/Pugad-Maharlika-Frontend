@@ -1,8 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-const NotificationTable = ({ setSelected, notifications, setNotificationselected }) => {
+const NotificationTable = ({
+  setSelected,
+  notifications,
+  setNotificationselected,
+}) => {
   const [theme, setTheme] = useContext(ThemeContext);
+  console.log(notifications);
 
   const handleviewnotification = (note_id) => {
     setSelected("ViewNotification");
@@ -67,7 +72,9 @@ const NotificationTable = ({ setSelected, notifications, setNotificationselected
                       {notification.note_type == "G" ? "Global" : "Player"}
                     </td>
                     <td className="px-4 py-2">
-                      {new Date(notification.note_date_created).toLocaleString()}
+                      {new Date(
+                        notification.note_date_created
+                      ).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -94,7 +101,9 @@ const NotificationTable = ({ setSelected, notifications, setNotificationselected
           <button
             onClick={handleNextPage}
             className={`px-4 py-2 rounded ${
-              currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
+              currentPage === totalPages
+                ? "bg-gray-500 text-white"
+                : "bg-blue-900 text-white"
             }`}
             disabled={currentPage === totalPages}
           >

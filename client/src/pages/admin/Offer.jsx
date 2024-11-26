@@ -31,7 +31,7 @@ export const Offer = ({ setSelected, setOfferselected }) => {
       const { res, error, loading } = await API(config);
       if (res) {
         setIsloading(false);
-        setUser(res.data.account);
+
         setOffers(res.data.offers);
       }
       if (error) {
@@ -42,7 +42,7 @@ export const Offer = ({ setSelected, setOfferselected }) => {
     handleOffer();
   }, []);
   return (
-    <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
+    <div className={`col-span-8 overflow-hidden rounded-lg w-full`}>
       <div
         className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
       >
@@ -53,12 +53,25 @@ export const Offer = ({ setSelected, setOfferselected }) => {
             onClick={() => {
               setSelected("AddOffer");
             }}
-            className="hover:bg-green-700 bg-green-500 text-white rounded-lg px-4 py-2 text-sm md:text-md"
+            className="hover:bg-green-700 bg-green-500 text-white rounded-lg px-4 py-2 text-sm md:text-md "
           >
             Add Offer
           </button>
         )}
       </div>
+      {user.role !== "P" && (
+        <p className="flex flex-row flex-grow text-xs ml-3 py-3 gap-3">
+          Legend
+          <div className="flex items-center space-x-2 ">
+            <div className="w-3 h-3 bg-red-500"></div>
+            <span className="text-xs">Unreleased</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-500"></div>
+            <span className="text-xs">Released</span>
+          </div>
+        </p>
+      )}
 
       {/* Responsive ItemCard Section */}
       <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center sm:items-start w-full mt-4">

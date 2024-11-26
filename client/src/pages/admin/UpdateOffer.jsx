@@ -166,7 +166,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
       setUser(res.data.account);
       setErrors(["Offer updated successfully!"]);
       setSuccess(true);
-      //setSelected("Offer");
+      setSelected("Offer");
     }
 
     if (error) {
@@ -176,8 +176,7 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
   };
 
   const handleOfferImg = async () => {
-    if (image)
-      await UploadImage(image, setSuccess, setErrors, handleUpdateOffer, user);
+    if (image) await UploadImage(image, setSuccess, setErrors, handleUpdateOffer, user);
     else handleUpdateOffer();
   };
 
@@ -281,15 +280,13 @@ export const UpdateOffer = ({ setSelected, offerselected }) => {
                 <button
                   onClick={() => {
                     {
-                      offer && offer.ofr_enabled
-                        ? handleUnrelease()
-                        : handleRelease();
+                      offer && offer.ofr_enabled ? handleUnrelease() : handleRelease();
                     }
                   }}
-                  className="hover:bg-red-700   bg-red-500 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 "
+                  className={` text-white font-bold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 ${offer && offer.ofr_enabled ? "hover:bg-red-700   bg-red-500" : "hover:bg-green-700   bg-green-500"} `}
                 >
                   <i className="fa-solid fa-trash mr-2"></i>
-                  {offer && offer.ofr_enabled ? "Unreleased" : "Released"}
+                  {offer && offer.ofr_enabled ? "Unrelease" : "Release"}
                 </button>
               </div>
             </div>

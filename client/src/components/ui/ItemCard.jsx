@@ -17,7 +17,7 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
 
   return (
     <div
-      className={`relative max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto bg-${theme} ${
+      className={`relative max-w-xs shadow-lg rounded-lg overflow-hidden m-4 w-60 h-auto bg-${theme} ${
         item.item_enabled ? "border-green-500" : "border-red-500"
       } border-2`}
     >
@@ -34,16 +34,18 @@ const ItemCard = ({ setSelected, item, setSelectedItem }) => {
             <i className="fas fa-edit"></i>
           </button>
         ) : (
-          <button
-            id="btn_update"
-            onClick={() => {
-              setSelectedItem(item.item_id);
-              setSelected("UpdateItem");
-            }}
-            className="hover:text-yellow-500 font-bold px-1 rounded"
-          >
-            <i className="fas fa-edit"></i>
-          </button>
+          <div className="tooltip text-white tooltip-bottom" data-tip="Edit">
+            <button
+              id="btn_update"
+              onClick={() => {
+                setSelectedItem(item.item_id);
+                setSelected("UpdateItem");
+              }}
+              className={`btn btn-square opacity-60 hover:opacity-100 font-bold px-1 rounded`}
+            >
+              <i className="fa-solid fa-file-pen"></i>
+            </button>
+          </div>
         )}
       </div>
 

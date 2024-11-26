@@ -17,7 +17,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
   const [details, setDetails] = useState("");
   const [itemType, setItemType] = useState("S");
   const [itemholder, setItemHolder] = useState("diego silang");
-  const [reeleaseItem, setReleaseItem] = useState(false);
+  const [reeleaseItem, setReleaseItem] = useState(true);
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -70,7 +70,6 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
 
     const { res, error } = await API(config);
     if (res) {
-      console.log(res);
       setUser(res.data.account);
 
       setSuccess(true);
@@ -79,13 +78,14 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     if (error) console.log(error);
   };
 
-  const handleReleaseItem = async (url) => {
+  const handleReleaseItem = async () => {
+    setReleaseItem(!reeleaseItem);
     const config = {
       url: `${serverUrl}/item/release`,
       method: "PUT",
       data: {
         id: selectedItem,
-        reeleaseItem: reeleaseItem,
+        reeleaseItem: !reeleaseItem,
       },
     };
 
@@ -105,9 +105,6 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
     }
   };
 
-  useEffect(() => {
-    handleReleaseItem();
-  }, [reeleaseItem]);
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -175,10 +172,10 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         </div>
 
         <div
-      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-      }`}
-    >
+          className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          }`}
+        >
           {/* Image uploading */}
           <div className="flex flex-col items-center w-full md:w-1/3">
             <div className="relative">
@@ -246,7 +243,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
               <div className="flex w-full justify-end gap-5">
                 <button
                   onClick={() => {
-                    handleToggleStatus();
+                    handleReleaseItem();
                   }}
                   className={`py-2 px-4 rounded text-white ${
                     reeleaseItem
@@ -254,7 +251,7 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                       : "bg-green-500 hover:bg-green-700"
                   }`}
                 >
-                  {reeleaseItem ? "Deactivate" : "Activate"}
+                  {reeleaseItem ? "Unrelease" : "Release"}
                 </button>
 
                 <button

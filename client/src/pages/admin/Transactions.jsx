@@ -78,7 +78,6 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
     if (res) {
       if (res.data.transactionSearchID) {
         setTransactions([res.data.transactionSearchID]);
-        setUser(res.data.account);
       } else {
         setErrors(["ID not found"]);
       }
@@ -106,7 +105,6 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
         if (res) {
           if (res.data.transactionSearchItemType) {
             setTransactions([res.data.transactionSearchItemType]);
-            setUser(res.data.account);
           }
         }
 

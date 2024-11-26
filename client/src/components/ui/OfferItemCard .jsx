@@ -28,6 +28,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     isProcessingRef.current = isProcessing;
   }, [isProcessing]); // Update ref whenever isProcessing changes
 
+  //
   const handlePurchaseOffer = async (offer) => {
     setErrors([]);
     setSuccess(false);
@@ -68,10 +69,10 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     setSuccess(false);
     const options = {
       method: "GET",
-      url: ` https://api.paymongo.com/v1/links/${id}`, // Replace with the actual link ID
+      url: ` https://api.paymongo.com/v1/links/${id}`, // link ID
       headers: {
         accept: "application/json",
-        authorization: "Basic c2tfdGVzdF9KZUVTdjJFemR3SEtOajhZdUxZRkdMUjc6", // Replace with your actual API key
+        authorization: "Basic c2tfdGVzdF9KZUVTdjJFemR3SEtOajhZdUxZRkdMUjc6", //  API key
       },
     };
 
@@ -159,14 +160,18 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
                 setOfferselected(offer.ofr_id);
                 setSelected("UpdateOffer");
               }}
-              className={`btn btn-square  hover font-bold px-1 rounded`}
+              className={`btn btn-square opacity-60 hover:opacity-100 font-bold px-1 rounded`}
             >
               <i className="fa-solid fa-file-pen"></i>
             </button>
           </div>
         )}
       </div>
-      <img className="w-full h-52 object-cover" src={offer && offer.ofr_sprite} alt="card" />
+      <img
+        className="w-full h-52 object-cover"
+        src={offer && offer.ofr_sprite}
+        alt="card"
+      />
       <div className="p-4">
         <h1 className="font-bold text-xl mb-2">{offer.ofr_name}</h1>
         <p className="flex items-center font-medium font-sans text-xl">

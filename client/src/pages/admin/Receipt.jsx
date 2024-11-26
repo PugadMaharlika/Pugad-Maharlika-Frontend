@@ -1,8 +1,10 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AlertsContext } from "../../context/Alerts";
 import { SuccessContext } from "../../context/Success";
+import jsPDF from "jspdf";
+import * as htmlToImage from "html-to-image";
 import API from "../../service/API";
 
 export const Receipt = ({ setSelected, transactionSelected }) => {
@@ -14,6 +16,42 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
   const refreshToken = localStorage.getItem("refreshToken");
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [isloading, setIsloading] = useState(true);
+
+  const onButtonClick = () => {
+    let domElement = document.getElementById("custom-receipt");
+
+    // Use htmlToImage to generate the image
+    htmlToImage
+      .toPng(domElement)
+      .then(function (dataUrl) {
+        console.log(dataUrl);
+
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+
+        // Adjust the image size and position based on the page dimensions
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth() - 10;
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Adjust the scaling if the content is too large for the page
+        const ratio = Math.min(
+          pdfWidth / imgProps.width,
+          pdfHeight / imgProps.height
+        );
+        const scaledWidth = imgProps.width * ratio;
+        const scaledHeight = imgProps.height * ratio;
+
+        // Add the image to the PDF
+        pdf.addImage(dataUrl, "PNG", 5, 20, scaledWidth, scaledHeight);
+
+        // Save the generated PDF
+        pdf.save("download.pdf");
+      })
+      .catch(function (error) {
+        console.error("Oops, something went wrong!", error);
+      });
+  };
 
   useEffect(() => {
     const handleViewReceipt = async () => {
@@ -33,11 +71,21 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
       if (error) console.log(error);
     };
     handleViewReceipt();
-  }, []);
+  }, [transactionSelected]);
 
   return (
     <>
-      <div className="relative bg-white border rounded-lg shadow-lg px-6 py-8 flex-grow min-w-20 mx-auto mt-8">
+      <button
+        onClick={onButtonClick}
+        type="button"
+        className="fixed bottom-5 right-5 z-10 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+      >
+        <i className="fa-regular fa-circle-down"></i> Download
+      </button>
+      <div
+        id="custom-receipt"
+        className="relative bg-white border rounded-lg shadow-lg px-6 py-8 flex-grow min-w-20 mx-auto mt-8"
+      >
         {/* Upper left button */}
         <button
           id="btn_back"

@@ -53,12 +53,25 @@ export const Offer = ({ setSelected, setOfferselected }) => {
             onClick={() => {
               setSelected("AddOffer");
             }}
-            className="hover:bg-green-700 bg-green-500 text-white rounded-lg px-4 py-2 text-sm md:text-md"
+            className="hover:bg-green-700 bg-green-500 text-white rounded-lg px-4 py-2 text-sm md:text-md "
           >
             Add Offer
           </button>
         )}
       </div>
+      {user.role !== "P" && (
+        <p className="flex flex-row flex-grow text-xs ml-3 py-3 gap-3">
+          Legend
+          <div className="flex items-center space-x-2 ">
+            <div className="w-3 h-3 bg-red-500"></div>
+            <span className="text-xs">Unreleased</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-green-500"></div>
+            <span className="text-xs">Released</span>
+          </div>
+        </p>
+      )}
 
       {/* Responsive ItemCard Section */}
       <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center sm:items-start w-full mt-4">

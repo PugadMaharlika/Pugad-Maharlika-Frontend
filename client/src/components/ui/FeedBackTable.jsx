@@ -1,7 +1,11 @@
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const FeedbackTable = ({ setSelected, feedback }) => {
+export const FeedbackTable = ({
+  setSelected,
+  feedback,
+  setselectedfeedbackID,
+}) => {
   const [theme, setTheme] = useContext(ThemeContext);
 
   return (
@@ -32,6 +36,7 @@ export const FeedbackTable = ({ setSelected, feedback }) => {
                           id="btn_view_feedback"
                           onClick={() => {
                             setSelected("FeedBackDetails");
+                            setselectedfeedbackID(Fback.fdbk_id);
                           }}
                           className="hover:text-blue-700  font-bold py-2 px-4 rounded"
                         >

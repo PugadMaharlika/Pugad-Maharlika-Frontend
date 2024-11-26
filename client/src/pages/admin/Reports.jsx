@@ -67,7 +67,12 @@ const lineChartRevenueData = {
   ],
 };
 
-export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().getFullYear() }) => {
+export const Reports = ({
+  setSelected,
+  setselectedfeedbackID,
+  startYear = 2000,
+  endYear = new Date().getFullYear(),
+}) => {
   const [selectedYear, setSelectedYear] = useState("");
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
@@ -82,9 +87,13 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
   const [topOffer, settopOffer] = useState([]);
   const [totalSales, settotalSales] = useState([]);
   const [lineChart, setLineChart] = useState(lineChartData);
-  const [lineChartRevenue, setLineChartRevenue] = useState(lineChartRevenueData);
+  const [lineChartRevenue, setLineChartRevenue] =
+    useState(lineChartRevenueData);
   const [totaRevenue, settotalRevenue] = useState([]);
-  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
 
   const fetchFeedback = async () => {
     const config = {
@@ -105,7 +114,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -128,7 +140,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -151,7 +166,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -174,7 +192,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -191,7 +212,8 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
       if (res.data.totalsalesData) {
         console.log(res.data.totalsalesData[0].total_sales_array);
         settotalSales([res.data.totalsalesData]);
-        lineChartData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
+        lineChartData.datasets[0].data =
+          res.data.totalsalesData[0].total_sales_array;
         setLineChart(lineChartData);
       } else {
         setErrors(["No data found"]);
@@ -200,7 +222,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -217,7 +242,8 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
       if (res.data.totalrevenueData) {
         console.log(res.data.totalrevenueData[0].monthly_totals);
         settotalRevenue([res.data.totalrevenueData]);
-        lineChartRevenueData.datasets[0].data = res.data.totalrevenueData[0].monthly_totals;
+        lineChartRevenueData.datasets[0].data =
+          res.data.totalrevenueData[0].monthly_totals;
         setLineChartRevenue(lineChartRevenueData);
       } else {
         setErrors(["No data found"]);
@@ -226,7 +252,10 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
+      setErrors([
+        error.response?.data?.errors?.map((error) => error.msg) ||
+          "An error occurred",
+      ]);
     }
   };
 
@@ -339,12 +368,22 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             <option>Oldest</option>
           </select>
           <label className="text-l font-bold">From: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+          <input
+            type="date"
+            className="border border-gray-300 p-2 rounded-lg"
+          />
           <label className="text-l font-bold">To: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+          <input
+            type="date"
+            className="border border-gray-300 p-2 rounded-lg"
+          />
         </div>
         <div>
-          <FeedbackTable setSelected={setSelected} feedback={feedback} />
+          <FeedbackTable
+            setSelected={setSelected}
+            feedback={feedback}
+            setselectedfeedbackID={setselectedfeedbackID}
+          />
         </div>
 
         <div
@@ -353,7 +392,8 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
           }`}
         >
           <label className="text-2xl font-bold">User Logs</label>
-          <div className="flex-grow"></div> {/* Added this div to push the button to the right */}
+          <div className="flex-grow"></div>{" "}
+          {/* Added this div to push the button to the right */}
           <button
             className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
             onClick={() => window.open("/user-logs-chart", "_blank")}
@@ -364,9 +404,15 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
         <div className="flex flex-col mb-10">
           <div className="flex items-center space-x-4 mb-4">
             <label className="text-l font-bold">From: </label>
-            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+            <input
+              type="date"
+              className="border border-gray-300 p-2 rounded-lg"
+            />
             <label className="text-l font-bold">To: </label>
-            <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+            <input
+              type="date"
+              className="border border-gray-300 p-2 rounded-lg"
+            />
           </div>
           <div>
             <UserLogsTable setSelected={setSelected} userlog={userlog} />

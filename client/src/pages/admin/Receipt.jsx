@@ -57,7 +57,12 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
         <div className="flex justify-between mb-6">
           <h1 className="text-lg font-bold">Invoice</h1>
           <div className="text-gray-700">
-            <div>Date: {transaction && transaction.date_created}</div>
+            <div>
+              Date:
+              {new Date(
+                transaction && transaction.date_created
+              ).toLocaleString()}
+            </div>
             <div>Invoice #: {transaction && transaction.his_id}</div>
           </div>
         </div>
@@ -92,7 +97,26 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
                 : transaction.item_value}
             </td>
           </tr>
+          <br />
           <tfoot>
+            <tr>
+              <td className="text-left font-bold text-gray-700">SubTotal</td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price - transaction.ofr_price * 0.12
+                  : transaction.item_value * 0.12}
+              </td>
+            </tr>
+            <tr>
+              <td className="text-left font-bold text-gray-700">Vat</td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price * 0.12
+                  : transaction.item_value * 0.12}
+              </td>
+            </tr>
             <tr>
               <td className="text-left font-bold text-gray-700">Total</td>
               <td className="text-right font-bold text-gray-700">
@@ -105,10 +129,7 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
           </tfoot>
         </table>
 
-        <div className="text-gray-700 mb-2">Thank you for your business!</div>
-        <div className="text-gray-700 text-sm">
-          Please remit payment within 30 days.
-        </div>
+        <div className="text-gray-700 mb-2">Thank you for your support!</div>
       </div>
     </>
   );

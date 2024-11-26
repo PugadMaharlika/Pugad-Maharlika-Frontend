@@ -111,12 +111,15 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
         setErrors([]);
         setSuccess(false);
 
-        const response = await axios.get(`${serverUrl}/item/itemdetails?id=${selectedItem}`, {
-          headers: {
-            "x-auth-token": authToken,
-            "x-refresh-token": refreshToken,
-          },
-        });
+        const response = await axios.get(
+          `${serverUrl}/item/itemdetails?id=${selectedItem}`,
+          {
+            headers: {
+              "x-auth-token": authToken,
+              "x-refresh-token": refreshToken,
+            },
+          }
+        );
 
         setItems(response.data.item);
         setUser(response.data.account);
@@ -159,7 +162,11 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
           }`}
         >
           <h1 className="text-3xl font-bold">Update Item</h1>
-          <button id="btn_back" onClick={() => setSelected("Items")} className="rounded-lg px-4">
+          <button
+            id="btn_back"
+            onClick={() => setSelected("Items")}
+            className="rounded-lg px-4"
+          >
             <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
           </button>
         </div>
@@ -190,7 +197,9 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
-            <p className="mt-2 text-gray-600 text-sm text-center">Click to upload a new image</p>
+            <p className="mt-2 text-gray-600 text-sm text-center">
+              Click to upload a new image
+            </p>
           </div>
           <div className="flex items-center gap-5">
             <div className="flex-1">
@@ -237,10 +246,12 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                     handleReleaseItem();
                   }}
                   className={`py-2 px-4 rounded text-white ${
-                    reeleaseItem ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
+                    reeleaseItem
+                      ? "bg-red-500 hover:bg-red-700"
+                      : "bg-green-500 hover:bg-green-700"
                   }`}
                 >
-                  {reeleaseItem ? "Deactivate" : "Activate"}
+                  {reeleaseItem ? "Unrelease" : "Release"}
                 </button>
 
                 <button

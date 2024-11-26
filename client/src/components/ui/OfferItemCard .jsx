@@ -28,6 +28,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     isProcessingRef.current = isProcessing;
   }, [isProcessing]); // Update ref whenever isProcessing changes
 
+  //
   const handlePurchaseOffer = async (offer) => {
     setErrors([]);
     setSuccess(false);
@@ -68,10 +69,10 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
     setSuccess(false);
     const options = {
       method: "GET",
-      url: ` https://api.paymongo.com/v1/links/${id}`, // Replace with the actual link ID
+      url: ` https://api.paymongo.com/v1/links/${id}`, // link ID
       headers: {
         accept: "application/json",
-        authorization: "Basic c2tfdGVzdF9KZUVTdjJFemR3SEtOajhZdUxZRkdMUjc6", // Replace with your actual API key
+        authorization: "Basic c2tfdGVzdF9KZUVTdjJFemR3SEtOajhZdUxZRkdMUjc6", //  API key
       },
     };
 

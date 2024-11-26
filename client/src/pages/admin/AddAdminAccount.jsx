@@ -108,72 +108,120 @@ export const AddAdminAccount = ({ setSelected }) => {
       >
         <div className="w-1/2 p-4">
           <h2 className="text-2xl font-bold mb-4">Add Admin Account</h2>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
-          <input
-            type="text"
-            placeholder="Middle Initial"
-            value={middleInitial}
-            onChange={(e) => setMiddleInitial(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
-          <div className="relative">
+
+          {/* Username Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">
+              Username <span className="text-red-500">*</span>
+            </label>
             <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full mb-4 p-2 rounded-lg border border-gray-300 pr-10" // Added padding-right to ensure space for the icon
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
             />
-            {/* Tooltip Icon */}
-            <span
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              className="absolute right-2 top-1/3 transform -translate-y-1/2 text-2xl cursor-pointer text-gray-500 hover:text-gray-700" // Adjusted right to move it a little to the left
-            >
-              <i className="fa-solid fa-circle-question"></i>
-            </span>
-            {/* Tooltip Text */}
-            {showTooltip && (
-              <div className="absolute right-10 top-0 mt-2 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
-                Password must have a special character (! @ # $ % ^ & *) and a number.
-              </div>
-            )}
           </div>
 
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmpassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full mb-4 p-2 rounded-lg border border-gray-300"
-          />
+          {/* Email Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">
+              Email <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
+            />
+          </div>
+
+          {/* First Name Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">
+              First Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
+            />
+          </div>
+
+          {/* Middle Initial Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">Middle Initial</label>
+            <input
+              type="text"
+              placeholder="Middle Initial"
+              value={middleInitial}
+              onChange={(e) => setMiddleInitial(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
+            />
+          </div>
+
+          {/* Last Name Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
+            />
+          </div>
+
+          {/* Password Input with Tooltip */}
+          <div className="mb-4 relative">
+            <label className="block font-bold mb-1">
+              Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 rounded-lg border border-gray-300 pr-10"
+              />
+              <span
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
+              >
+                <i className="fa-solid fa-circle-question"></i>
+              </span>
+              {/* Tooltip Text */}
+              {showTooltip && (
+                <div className="absolute right-10 top-0 mt-10 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
+                  Password must have a special character (! @ # $ % ^ & *) and a
+                  number.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Confirm Password Input */}
+          <div className="mb-4">
+            <label className="block font-bold mb-1">
+              Confirm Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmpassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300"
+            />
+          </div>
+
+          {/* Add Account Button */}
           <div className="flex justify-between">
             <button
               className="rounded-lg bg-green-500 text-white px-4 py-2 hover:bg-green-600"

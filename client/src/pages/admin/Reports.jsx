@@ -1,6 +1,6 @@
 import React from "react";
 import { ThemeContext } from "../../context/Theme";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { TransactionTable } from "../../components/ui/TransactionTable";
 import { FeedbackTable } from "../../components/ui/FeedBackTable";
 import { UserLogsTable } from "../../components/ui/UserLogsTable";
@@ -16,36 +16,13 @@ import { saveAs } from "file-saver";
 import logo from "../../assets/logo1.png";
 import axios from "axios";
 
-const lineChartData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "",
-      data: [],
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
-      borderWidth: 2,
-      pointBackgroundColor: "rgba(75,192,192,1)",
-    },
-  ],
-};
-
-const lineChartRevenueData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "",
-      data: [],
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
-      borderWidth: 2,
-      pointBackgroundColor: "rgba(75,192,192,1)",
-    },
-  ],
-};
-
-export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().getFullYear() }) => {
-  const [selectedYear, setSelectedYear] = useState("");
+export const Reports = ({
+  setSelected,
+  setselectedfeedbackID,
+  startYear = 2000,
+  endYear = new Date().getFullYear(),
+}) => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [theme] = useContext(ThemeContext);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -59,12 +36,67 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
   const [topOffer, settopOffer] = useState([]);
   const [totalSales, settotalSales] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
-  const [lineChart, setLineChart] = useState(lineChartData);
-  const [lineChartRevenue, setLineChartRevenue] = useState(lineChartRevenueData);
+  const [lineChart, setLineChart] = useState({
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(75,192,192,1)",
+      },
+    ],
+  });
+  const [lineChartRevenue, setLineChartRevenue] = useState({
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(75,192,192,1)",
+      },
+    ],
+  });
+
   const [totaRevenue, settotalRevenue] = useState([]);
-  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i
+  );
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [type, setType] = useState("All");
 
   const fetchFeedback = async () => {
     const config = {
@@ -78,14 +110,11 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     if (res) {
       if (res.data.feedbackData) {
         setFeedback(res.data.feedbackData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -101,14 +130,11 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     if (res) {
       if (res.data.userlogData) {
         setUserLog(res.data.userlogData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -127,14 +153,11 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     if (res) {
       if (res.data.userlogData) {
         setUserLog(res.data.userlogData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -155,7 +178,6 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -171,14 +193,11 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     if (res) {
       if (res.data.topitemData) {
         settopItem(res.data.topitemData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -194,14 +213,11 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     if (res) {
       if (res.data.topofferData) {
         settopOffer(res.data.topofferData);
-      } else {
-        setErrors(["No data found"]);
       }
     }
 
     if (error) {
       console.log(error);
-      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
 
@@ -216,11 +232,16 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (res) {
       if (res.data.totalsalesData) {
-        settotalSales([res.data.totalsalesData]);
-        lineChartData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
-        setLineChart(lineChartData);
-      } else {
-        setErrors(["No data found"]);
+        settotalSales(res.data.totalsalesData[0].sales_per_month);
+        setLineChart((prevData) => ({
+          ...prevData,
+          datasets: [
+            {
+              ...prevData.datasets[0],
+              data: res.data.totalsalesData[0].sales_per_month, // New data
+            },
+          ],
+        }));
       }
     }
 
@@ -241,11 +262,16 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
 
     if (res) {
       if (res.data.totalrevenueData) {
-        settotalRevenue([res.data.totalrevenueData]);
-        lineChartRevenueData.datasets[0].data = res.data.totalrevenueData[0].monthly_totals;
-        setLineChartRevenue(lineChartRevenueData);
-      } else {
-        setErrors(["No data found"]);
+        settotalRevenue(res.data.totalrevenueData[0].monthly_totals);
+        setLineChartRevenue((prevData) => ({
+          ...prevData,
+          datasets: [
+            {
+              ...prevData.datasets[0],
+              data: res.data.totalrevenueData[0].monthly_totals, // New data
+            },
+          ],
+        }));
       }
     }
 
@@ -254,6 +280,68 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
       setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
     }
   };
+
+  const fetchtotalSalesSearch = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalsaleSearch?year=${selectedYear}`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totsaleSearch) {
+        settotalSales(res.data.totsaleSearch);
+        setLineChart((prevData) => ({
+          ...prevData,
+          datasets: [
+            {
+              ...prevData.datasets[0],
+              data: res.data.totsaleSearch,
+            },
+          ],
+        }));
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
+    }
+  };
+
+  const fetchtotalRevenueSearch = async () => {
+    const config = {
+      url: `${serverUrl}/reports/view/totalrevenueSearch?year=${selectedYear}`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.totrevenueSearch) {
+        console.log(res.data.totrevenueSearch);
+        settotalRevenue(res.data.totrevenueSearch);
+        setLineChartRevenue((prevData) => ({
+          ...prevData,
+          datasets: [
+            {
+              ...prevData.datasets,
+              data: res.data.totrevenueSearch,
+            },
+          ],
+        }));
+      }
+    }
+
+    if (error) {
+      console.log(error);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg)]);
+    }
+  };
+
   // Function to create the Excel file
   async function createExcel() {
     const workbook = new ExcelJS.Workbook();
@@ -383,6 +471,35 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     fetchUserLogsDate(toDate);
   };
 
+  // HANDLE Fedback TYPE SEARCH
+  useEffect(() => {
+    const feedbackSearch = async () => {
+      const config = {
+        url: `${serverUrl}/reports/view/feedbackType?type=${type}`,
+        method: "GET",
+        data: {},
+      };
+
+      const { res, error } = await API(config);
+      if (res) {
+        if (res.data.feedbackType) {
+          console.log(res.data.feedbackType);
+          setFeedback(res.data.feedbackType);
+        }
+      }
+      if (error) {
+        console.log(error);
+        setErrors(error.response.data.errors.map((error) => error.msg));
+      }
+    };
+
+    if (type !== "All") {
+      feedbackSearch();
+    } else {
+      fetchFeedback();
+    }
+  }, [type]);
+
   useEffect(() => {
     fetchFeedback();
     fetchUserLogs();
@@ -391,6 +508,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     fetchtotalSales();
     fetchtotalRevenue();
     fetchCurrentUser();
+    localStorage.setItem("reportYear", JSON.stringify(selectedYear));
 
     return () => {
       setFeedback([]);
@@ -403,23 +521,67 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
     };
   }, []);
 
-  const handleChange = (e) => {
-    setSelectedYear(e.target.value);
+  useEffect(() => {
+    fetchtotalSalesSearch();
+    fetchtotalRevenueSearch();
+    return () => {
+      fetchtotalSalesSearch();
+      fetchtotalRevenueSearch();
+    };
+  }, [selectedYear]);
+
+  const handleYearSearch = async (year) => {
+    setErrors([]);
+    setSuccess(false);
+
+    const config = {
+      url: `${serverUrl}/reports/search-year?date_created=${year}`,
+      method: "GET",
+      data: {},
+    };
+
+    try {
+      const { res } = await API(config);
+      if (res) {
+        setUser(res.data.account);
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(
+        error.response?.data?.errors.map((err) => err.msg) || [
+          "An error occurred.",
+        ]
+      );
+    }
+  };
+
+  const handleChange = async (e) => {
+    const year = e.target.value;
+    setSelectedYear(year);
+    localStorage.setItem("reportYear", JSON.stringify(year));
+    if (year) {
+      await handleYearSearch(year); // Call the search function when a year is selected
+    }
+  };
+
+  const handleFeedBackChange = async (e) => {
+    setType(e.target.value);
   };
 
   return (
     <>
       <div className="container mx-auto p-4">
-        <div className={`col-span-8 overflow-hidden rounded-lg sm:w-full`}>
+        <div className={`col-span-8 overflow-hidden rounded-lg`}>
           <div
-            className={`flex w-full flex-col sm:flex-row justify-between items-center rounded-xl h-16 shadow-md  p-4 pl-10 font-bold bg-${theme}`}
+            className={`flex flex-col sm:flex-row sm:justify-between items-center rounded-xl h-auto sm:h-16 shadow-md p-4 sm:pl-10 font-bold bg-${theme}`}
           >
-            <div className="mr-4"> REPORTS </div>
-            <div className=" border-gray-300 p-2 rounded-lg">
+            <div className="mb-2 sm:mb-0 sm:mr-4">REPORTS</div>
+            <div className="w-full sm:w-auto sm:mb-0 border-gray-300 p-2 rounded-lg">
               <select
                 value={selectedYear}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg border border-gray-300 overflow-y-auto max-h-10"
+                className="w-full p-2 rounded-lg border border-gray-300"
               >
                 <option value="" disabled>
                   Select a year
@@ -434,28 +596,46 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             <div className="flex-grow"></div>
             <button
               className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
-              onClick={() => window.open("/sales-revenue-chart", "_blank")}
+              onClick={() => {
+                window.open("/sales-revenue-chart", "_blank");
+                localStorage.setItem(
+                  "report",
+                  JSON.stringify([totalSales, totaRevenue])
+                );
+              }}
             >
               Generate
             </button>
           </div>
         </div>
+
         <div>
-          <div className="flex mb-5 gap-5 justify-center mt-4">
+          <div className="flex flex-wrap gap-5 justify-center mt-4">
             <div
-              className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
+              className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              <LineChart data={lineChart} title_text={"Yearly Sales"} />
+              {lineChart.datasets[0].data && (
+                <div className="w-full h-full flex items-center justify-center">
+                  <LineChart data={lineChart} title_text={"Yearly Sales"} />
+                </div>
+              )}
             </div>
             <div
-              className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
+              className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+              {lineChartRevenue.datasets[0].data && (
+                <div className="w-full h-full flex items-center justify-center">
+                  <LineChart
+                    data={lineChartRevenue}
+                    title_text={"Yearly Revenue"}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex gap-40 justify-center">
-            <div>
+          <div className="flex flex-wrap gap-5 justify-center mt-4">
+            <div className="w-full sm:w-[48%] lg:w-[500px]">
               <label className="text-2xl font-bold">Top 5 Items</label>
               <TopItem
                 column={{
@@ -466,7 +646,7 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
                 topItem={topItem}
               />
             </div>
-            <div>
+            <div className="w-full sm:w-[48%] lg:w-[500px]">
               <label className="text-2xl font-bold">Top 5 Offers</label>
               <TopItem
                 column={{
@@ -479,36 +659,47 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             </div>
           </div>
         </div>
+
         <div
-          className={`flex w-full rounded-xl h-16 shadow-md bg-fantasy p-4 pl-4 py-4 font-bold items-center mb-4 gap-5 ${
-            theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+          className={`flex flex-col sm:flex-row items-center rounded-xl h-auto sm:h-16 shadow-md p-4 font-bold mb-4 gap-5 ${
+            theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
           }`}
         >
           <label className="text-xl font-bold">Feedbacks</label>
-
-          <select className="border border-gray-300 p-2 rounded-r-lg">
-            <option disabled selected>
-              Choose Type
-            </option>
-            <option>Latest</option>
-            <option>Oldest</option>
-          </select>
-          <label className="text-l font-bold">From: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
-          <label className="text-l font-bold">To: </label>
-          <input type="date" className="border border-gray-300 p-2 rounded-lg" />
+          <div className="w-full sm:w-auto">
+            <select
+              value={type}
+              onChange={handleFeedBackChange}
+              className="border border-gray-300 p-2 rounded-lg w-full"
+            >
+              <option disabled selected>
+                Choose Type
+              </option>
+              <option>All</option>
+              <option>Bug</option>
+              <option>Feedback</option>
+              <option>Performance Issue</option>
+              <option>Audio Issue</option>
+              <option>Others</option>
+            </select>
+          </div>
         </div>
+
         <div>
-          <FeedbackTable setSelected={setSelected} feedback={feedback} />
+          <FeedbackTable
+            setSelected={setSelected}
+            feedback={feedback}
+            setselectedfeedbackID={setselectedfeedbackID}
+          />
         </div>
 
         <div
-          className={`flex w-full rounded-xl h-16 shadow-md p-4 font-bold items-center mb-4 ${
+          className={`flex flex-col sm:flex-row items-center rounded-xl h-auto sm:h-16 shadow-md p-4 font-bold mb-4 gap-5 ${
             theme === "night" ? "bg-night text-white" : "bg-fantasy text-black"
           }`}
         >
           <label className="text-2xl font-bold">User Logs</label>
-          <div className="flex-grow"></div> {/* Added this div to push the button to the right */}
+          <div className="flex-grow"></div>
           <button
             className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
             onClick={() => {
@@ -518,22 +709,27 @@ export const Reports = ({ setSelected, startYear = 2000, endYear = new Date().ge
             Generate
           </button>
         </div>
+
         <div className="flex flex-col mb-10">
-          <div className="flex items-center space-x-4 mb-4">
-            <label className="text-l font-bold">From: </label>
-            <input
-              type="date"
-              className="border border-gray-300 p-2 rounded-lg"
-              value={fromDate}
-              onChange={handleFromDateChange}
-            />
-            <label className="text-l font-bold">To: </label>
-            <input
-              type="date"
-              className="border border-gray-300 p-2 rounded-lg"
-              value={toDate}
-              onChange={handleToDateChange}
-            />
+          <div className="flex flex-wrap gap-4 items-center mb-4">
+            <div className="w-full sm:w-auto">
+              <label className="text-l font-bold">From:</label>
+              <input
+                type="date"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={fromDate}
+                onChange={handleFromDateChange}
+              />
+            </div>
+            <div className="w-full sm:w-auto">
+              <label className="text-l font-bold">To:</label>
+              <input
+                type="date"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={toDate}
+                onChange={handleToDateChange}
+              />
+            </div>
           </div>
           <div>
             <UserLogsTable setSelected={setSelected} userlog={userlog} />

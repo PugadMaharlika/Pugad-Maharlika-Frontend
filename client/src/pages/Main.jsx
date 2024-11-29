@@ -56,6 +56,7 @@ function Main({ theme, toggleTheme }) {
   const [feedback, setFeedback] = useState([]);
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
+  const [selectedFeedback, setselectedfeedbackID] = useState(null);
 
   const navigate = useNavigate();
 
@@ -492,13 +493,17 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "Reports" && (
-                <Reports theme={theme} setSelected={setSelected} />
+                <Reports
+                  theme={theme}
+                  setSelected={setSelected}
+                  setselectedfeedbackID={setselectedfeedbackID}
+                />
               )}
               {selected === "FeedBackDetails" && (
                 <FeedBackDetails
                   theme={theme}
                   setSelected={setSelected}
-                  feedback={feedback}
+                  selectedFeedback={selectedFeedback}
                 />
               )}
             </div>

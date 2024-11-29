@@ -680,7 +680,7 @@ export const Reports = ({
               <option>Feedback</option>
               <option>Performance Issue</option>
               <option>Audio Issue</option>
-              <option>Other</option>
+              <option>Others</option>
             </select>
           </div>
         </div>

@@ -201,7 +201,7 @@ export const AddAdminAccount = ({ setSelected }) => {
               {showTooltip && (
                 <div className="absolute right-10 top-0 mt-10 p-2 bg-white border border-gray-300 text-sm text-gray-600 rounded-lg shadow-md w-64">
                   Password must have a special character (! @ # $ % ^ & *) and a
-                  number.
+                  number. Minimum of 8 characters.
                 </div>
               )}
             </div>

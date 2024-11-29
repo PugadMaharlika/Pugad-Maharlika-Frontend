@@ -16,8 +16,6 @@ export const FeedBackDetails = ({ setSelected, selectedFeedback }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [feedback, setFeedbackID] = useState("");
 
-  console.log(selectedFeedback);
-
   useEffect(() => {
     const fetchItems = async () => {
       try {

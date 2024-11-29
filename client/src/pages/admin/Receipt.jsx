@@ -152,17 +152,30 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
               <td className="text-right font-bold text-gray-700">
                 ₱
                 {transaction.his_type === "O"
-                  ? transaction.ofr_price - transaction.ofr_price * 0.12
+                  ? transaction.ofr_price -
+                    transaction.ofr_price * 0.12 -
+                    transaction.ofr_price * 0.025
                   : transaction.item_value * 0.12}
               </td>
             </tr>
             <tr>
-              <td className="text-left font-bold text-gray-700">Vat</td>
+              <td className="text-left font-bold text-gray-700">Vat 12%</td>
               <td className="text-right font-bold text-gray-700">
                 ₱
                 {transaction.his_type === "O"
                   ? transaction.ofr_price * 0.12
                   : transaction.item_value * 0.12}
+              </td>
+            </tr>
+            <tr>
+              <td className="text-left font-bold text-gray-700">
+                Transaction Fee 2.5%
+              </td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price * 0.025
+                  : transaction.item_value * 0.025}
               </td>
             </tr>
             <tr>

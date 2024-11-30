@@ -216,7 +216,14 @@ export const UpdateItem = ({ setSelected, selectedItem }) => {
                 max="99999999999"
                 placeholder="Value"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) <= 0) {
+                    setSuccess(true);
+                    setErrors(["Min of 100"]);
+                  } else {
+                    setValue(e.target.value);
+                  }
+                }}
                 className="w-full border border-gray-300 p-2 rounded-lg mb-4"
               />
               <select

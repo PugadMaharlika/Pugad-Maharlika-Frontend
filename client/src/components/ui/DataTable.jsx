@@ -52,7 +52,9 @@ const DataTable = ({ accvalues, selectedCallback }) => {
               paginatedData.map((item) => (
                 <tr
                   key={item.id}
-                  className={item.acc_enabled === false ? "bg-red-700 text-white" : ""}
+                  className={
+                    item.acc_enabled === false ? "bg-red-700 text-white" : ""
+                  }
                 >
                   <td className="px-4 py-2">
                     <button
@@ -64,7 +66,9 @@ const DataTable = ({ accvalues, selectedCallback }) => {
                   </td>
                   <td className="px-4 py-2">{item.acc_username}</td>
                   <td className="px-4 py-2">{item.acc_email}</td>
-                  <td className="px-4 py-2">{new Date(item.date_created).toLocaleString()}</td>
+                  <td className="px-4 py-2">
+                    {new Date(item.date_created).toLocaleString()}
+                  </td>
                 </tr>
               ))
             ) : (
@@ -85,6 +89,7 @@ const DataTable = ({ accvalues, selectedCallback }) => {
         <div className="flex justify-left">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
+              <span className="text-xs">Legend: </span>
               <div className="w-4 h-4 bg-red-700"></div>
               <span className="text-xs">Disabled</span>
             </div>
@@ -104,7 +109,9 @@ const DataTable = ({ accvalues, selectedCallback }) => {
           <button
             onClick={handleNextPage}
             className={`px-4 py-2 rounded ${
-              currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
+              currentPage === totalPages
+                ? "bg-gray-500 text-white"
+                : "bg-blue-900 text-white"
             }`}
             disabled={currentPage === totalPages}
           >

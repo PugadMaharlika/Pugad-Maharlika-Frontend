@@ -35,7 +35,10 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
         // Adjust the scaling if the content is too large for the page
-        const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
+        const ratio = Math.min(
+          pdfWidth / imgProps.width,
+          pdfHeight / imgProps.height
+        );
         const scaledWidth = imgProps.width * ratio;
         const scaledHeight = imgProps.height * ratio;
 
@@ -75,7 +78,7 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
       <button
         onClick={onButtonClick}
         type="button"
-        class="fixed bottom-5 right-5 z-10 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        className="fixed bottom-5 right-5 z-10 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
       >
         <i className="fa-regular fa-circle-down"></i> Download
       </button>
@@ -94,21 +97,32 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
           <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
         </button>
 
-        <h1 className="font-bold text-2xl my-4 text-center text-blue-600">Pugad Maharlika</h1>
+        <h1 className="font-bold text-2xl my-4 text-center text-blue-600">
+          Pugad Maharlika
+        </h1>
         <hr className="mb-2" />
 
         <div className="flex justify-between mb-6">
           <h1 className="text-lg font-bold">Invoice</h1>
           <div className="text-gray-700">
-            <div>Date: {transaction && transaction.date_created}</div>
+            <div>
+              Date:
+              {new Date(
+                transaction && transaction.date_created
+              ).toLocaleString()}
+            </div>
             <div>Invoice #: {transaction && transaction.his_id}</div>
           </div>
         </div>
 
         <div className="mb-8">
           <h2 className="text-lg font-bold mb-4">Bill To:</h2>
-          <div className="text-gray-700 mb-2">{transaction && transaction.acc_username}</div>
-          <div className="text-gray-700">{transaction && transaction.acc_email}</div>
+          <div className="text-gray-700 mb-2">
+            {transaction && transaction.acc_username}
+          </div>
+          <div className="text-gray-700">
+            {transaction && transaction.acc_email}
+          </div>
         </div>
 
         <table className="w-full mb-8">
@@ -120,24 +134,63 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
           </thead>
           <tr>
             <td className="text-left text-gray-700">
-              {transaction.his_type === "O" ? transaction.ofr_name : transaction.item_name}
+              {transaction.his_type === "O"
+                ? transaction.ofr_name
+                : transaction.item_name}
             </td>
             <td className="text-right text-gray-700">
-              ₱{transaction.his_type === "O" ? transaction.ofr_price : transaction.item_value}
+              ₱
+              {transaction.his_type === "O"
+                ? transaction.ofr_price
+                : transaction.item_value}
             </td>
           </tr>
+          <br />
           <tfoot>
+            <tr>
+              <td className="text-left font-bold text-gray-700">SubTotal</td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price -
+                    transaction.ofr_price * 0.12 -
+                    transaction.ofr_price * 0.025
+                  : transaction.item_value * 0.12}
+              </td>
+            </tr>
+            <tr>
+              <td className="text-left font-bold text-gray-700">Vat 12%</td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price * 0.12
+                  : transaction.item_value * 0.12}
+              </td>
+            </tr>
+            <tr>
+              <td className="text-left font-bold text-gray-700">
+                Transaction Fee 2.5%
+              </td>
+              <td className="text-right font-bold text-gray-700">
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price * 0.025
+                  : transaction.item_value * 0.025}
+              </td>
+            </tr>
             <tr>
               <td className="text-left font-bold text-gray-700">Total</td>
               <td className="text-right font-bold text-gray-700">
-                ₱{transaction.his_type === "O" ? transaction.ofr_price : transaction.item_value}
+                ₱
+                {transaction.his_type === "O"
+                  ? transaction.ofr_price
+                  : transaction.item_value}
               </td>
             </tr>
           </tfoot>
         </table>
 
-        <div className="text-gray-700 mb-2">Thank you for your business!</div>
-        <div className="text-gray-700 text-sm">Please remit payment within 30 days.</div>
+        <div className="text-gray-700 mb-2">Thank you for your support!</div>
       </div>
     </>
   );

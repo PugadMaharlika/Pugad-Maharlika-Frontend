@@ -51,16 +51,18 @@ export const TransactionTable = ({
             {paginatedData.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="px-4 py-2 justify-center">
-                  <button
-                    id="btn_view_receipt"
-                    onClick={() => {
-                      setSelected("Receipt");
-                      setTransactionSelected(transaction.his_id);
-                    }}
-                    className="hover:text-blue-700  font-bold py-2 px-4 rounded"
-                  >
-                    <i className="fa-solid fa-eye"></i>
-                  </button>
+                  {transaction.his_type === "O" && (
+                    <button
+                      id="btn_view_receipt"
+                      onClick={() => {
+                        setSelected("Receipt");
+                        setTransactionSelected(transaction.his_id);
+                      }}
+                      className="hover:text-blue-700  font-bold py-2 px-4 rounded"
+                    >
+                      <i className="fa-solid fa-eye"></i>
+                    </button>
+                  )}
                 </td>
                 <td className="px-4 py-2">{transaction.acc_username}</td>
                 <td className="px-4 py-2">

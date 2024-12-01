@@ -72,9 +72,7 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
         </button>
       </div>
 
-      <div
-        className={`mx-auto rounded-xl shadow-md overflow-hidden w-full bg-${theme}`}
-      >
+      <div className={`mx-auto rounded-xl shadow-md overflow-hidden w-full bg-${theme}`}>
         <div className="md:flex">
           <div className="md:flex-shrink-0">
             <img
@@ -87,30 +85,25 @@ export const ItemDetails = ({ setSelected, id, selectedItem }) => {
             <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
               {items && items.item_name}
             </div>
-            <p className="mt-2 text-gray-600">
-              Product Description: {items && items.item_desc}
-            </p>
+            <p className="mt-2 text-gray-600">Product Description: {items && items.item_desc}</p>
+            <div className="mt-4">
+              <span className="text-gray-600">Price: {items && items.item_value}</span>
+            </div>
             <div className="mt-4">
               <span className="text-gray-600">
-                Price: {items && items.item_value}
+                Status: {items && items.item_enabled ? "Released" : "Unreleased"}
               </span>
             </div>
             <div className="mt-4">
               <span className="text-gray-600">
-                Status:{" "}
-                {items && items.item_enabled ? "Released" : "Unreleased"}
+                Date Created: {items && new Date(items.date_created).toLocaleString()}
               </span>
             </div>
-            <div className="mt-4">
-              <span className="text-gray-600">
-                Date Created: {items && items.date_created}
-              </span>
-            </div>
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <span className="text-gray-600">
                 Date Updated: {items && items.date_updated}
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

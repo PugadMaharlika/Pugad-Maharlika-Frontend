@@ -18,13 +18,13 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
   const refreshToken = localStorage.getItem("refreshToken");
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [search, setSearch] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState("A");
 
   useEffect(() => {
     fetchTransactions();
 
     return () => {
-      setTransactions([]);
+      fetchTransactions();
     };
   }, []);
 
@@ -42,6 +42,7 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
         })
         .then((response) => {
           setTransactions(response.data.transactionData);
+
           setSuccess(true);
         });
     } catch (error) {
@@ -104,7 +105,7 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
 
         if (res) {
           if (res.data.transactionSearchItemType) {
-            setTransactions([res.data.transactionSearchItemType]);
+            setTransactions(res.data.transactionSearchItemType);
           }
         }
 
@@ -117,7 +118,10 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
         console.error(err);
       }
     };
-    handleSearchItemOrOffer();
+    if (selectedOption == "A") {
+      fetchTransactions();
+      return;
+    } else handleSearchItemOrOffer();
   }, [selectedOption]);
 
   const handleSelectChange = (e) => {
@@ -158,8 +162,8 @@ export const Transactions = ({ setSelected, setTransactionSelected, transactionS
               className="border border-gray-300 p-2 rounded-r-lg"
               onChange={(e) => handleSelectChange(e)}
             >
-              <option disabled selected>
-                Choose Type
+              <option default selected value="A">
+                All
               </option>
               <option value="I">Item</option>
               <option value="O">Offer</option>

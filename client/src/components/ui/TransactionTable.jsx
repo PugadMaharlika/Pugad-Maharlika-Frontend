@@ -1,11 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const TransactionTable = ({
-  transactions,
-  setSelected,
-  setTransactionSelected,
-}) => {
+export const TransactionTable = ({ transactions, setSelected, setTransactionSelected }) => {
   const [theme, setTheme] = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // Number of rows per page
@@ -17,7 +13,6 @@ export const TransactionTable = ({
   // Paginated data
   const paginatedData = transactions.slice(startIndex, endIndex);
 
-  console.log("Paginated Data: ", paginatedData);
   // Calculate total pages
   const totalPages = Math.ceil(transactions.length / rowsPerPage);
 
@@ -51,7 +46,7 @@ export const TransactionTable = ({
             {paginatedData.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="px-4 py-2 justify-center">
-                  {transaction.his_type === "O" && (
+                  {transaction.his_type === "O" ? (
                     <button
                       id="btn_view_receipt"
                       onClick={() => {
@@ -61,6 +56,10 @@ export const TransactionTable = ({
                       className="hover:text-blue-700  font-bold py-2 px-4 rounded"
                     >
                       <i className="fa-solid fa-eye"></i>
+                    </button>
+                  ) : (
+                    <button className="hover:text-red-700  font-bold py-2 px-4 rounded">
+                      <i className="fa-solid fa-eye-slash"></i>
                     </button>
                   )}
                 </td>
@@ -74,7 +73,7 @@ export const TransactionTable = ({
                 </td>
                 <td className="px-4 py-2">{transaction.his_mode}</td>
                 <td className="px-4 py-2">
-                  {new Date(transaction.date_created).toLocaleString()}
+                  {new Date(transaction.his_date_created).toLocaleString()}
                 </td>
               </tr>
             ))}
@@ -100,9 +99,7 @@ export const TransactionTable = ({
           <button
             onClick={handleNextPage}
             className={`px-4 py-2 rounded ${
-              currentPage === totalPages
-                ? "bg-gray-500 text-white"
-                : "bg-blue-900 text-white"
+              currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
             }`}
             disabled={currentPage === totalPages}
           >

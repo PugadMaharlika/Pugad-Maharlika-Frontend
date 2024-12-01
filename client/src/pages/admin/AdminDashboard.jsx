@@ -24,7 +24,6 @@ const lineChartData = {
 };
 
 function AdminDashboard() {
-  useAuthCheck();
   const [theme, setTheme] = useContext(ThemeContext);
   const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(true);
@@ -73,7 +72,6 @@ function AdminDashboard() {
               },
             ],
           }));
-          console.log(res.data.transactions);
         }
         if (error) {
           console.log(error);

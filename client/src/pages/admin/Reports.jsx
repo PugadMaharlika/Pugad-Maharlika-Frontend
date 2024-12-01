@@ -79,9 +79,7 @@ export const Reports = ({
     const { res, error } = await API(config);
 
     if (res) {
-      if (res.data.feedbackData) {
-        setFeedback(res.data.feedbackData);
-      }
+      setFeedback(res.data.feedbackData);
     }
 
     if (error) {
@@ -99,9 +97,7 @@ export const Reports = ({
     const { res, error } = await API(config);
 
     if (res) {
-      if (res.data.userlogData) {
-        setUserLog(res.data.userlogData);
-      }
+      setUserLog(res.data.userlogData);
     }
 
     if (error) {
@@ -293,7 +289,6 @@ export const Reports = ({
 
     if (res) {
       if (res.data.totrevenueSearch) {
-        console.log(res.data.totrevenueSearch);
         settotalRevenue(res.data.totrevenueSearch);
         setLineChartRevenue((prevData) => ({
           ...prevData,
@@ -454,7 +449,6 @@ export const Reports = ({
       const { res, error } = await API(config);
       if (res) {
         if (res.data.feedbackType) {
-          console.log(res.data.feedbackType);
           setFeedback(res.data.feedbackType);
         }
       }
@@ -578,20 +572,16 @@ export const Reports = ({
             <div
               className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              {lineChart.datasets[0].data && (
-                <div className="w-full h-full flex items-center justify-center">
-                  <LineChart data={lineChart} title_text={"Yearly Sales"} />
-                </div>
-              )}
+              <div className="w-full h-full flex items-center justify-center">
+                <LineChart data={lineChart} title_text={"Yearly Sales"} />
+              </div>
             </div>
             <div
               className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              {lineChartRevenue.datasets[0].data && (
-                <div className="w-full h-full flex items-center justify-center">
-                  <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
-                </div>
-              )}
+              <div className="w-full h-full flex items-center justify-center">
+                <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+              </div>
             </div>
           </div>
 

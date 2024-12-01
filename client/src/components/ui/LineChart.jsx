@@ -22,12 +22,12 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ title_text, data }) => {
+const LineChart = ({ title_text, data, isLegend = false }) => {
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: isLegend,
         position: "top",
       },
       title: {

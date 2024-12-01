@@ -46,16 +46,22 @@ export const TransactionTable = ({ transactions, setSelected, setTransactionSele
             {paginatedData.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="px-4 py-2 justify-center">
-                  <button
-                    id="btn_view_receipt"
-                    onClick={() => {
-                      setSelected("Receipt");
-                      setTransactionSelected(transaction.his_id);
-                    }}
-                    className="hover:text-blue-700  font-bold py-2 px-4 rounded"
-                  >
-                    <i className="fa-solid fa-eye"></i>
-                  </button>
+                  {transaction.his_type === "O" ? (
+                    <button
+                      id="btn_view_receipt"
+                      onClick={() => {
+                        setSelected("Receipt");
+                        setTransactionSelected(transaction.his_id);
+                      }}
+                      className="hover:text-blue-700  font-bold py-2 px-4 rounded"
+                    >
+                      <i className="fa-solid fa-eye"></i>
+                    </button>
+                  ) : (
+                    <button className="hover:text-red-700  font-bold py-2 px-4 rounded">
+                      <i className="fa-solid fa-eye-slash"></i>
+                    </button>
+                  )}
                 </td>
                 <td className="px-4 py-2">{transaction.acc_username}</td>
                 <td className="px-4 py-2">
@@ -66,7 +72,9 @@ export const TransactionTable = ({ transactions, setSelected, setTransactionSele
                       : ""}
                 </td>
                 <td className="px-4 py-2">{transaction.his_mode}</td>
-                <td className="px-4 py-2">{new Date(transaction.date_created).toLocaleString()}</td>
+                <td className="px-4 py-2">
+                  {new Date(transaction.his_date_created).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>

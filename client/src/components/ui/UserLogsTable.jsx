@@ -11,10 +11,10 @@ export const UserLogsTable = ({ setSelected, userlog }) => {
   const endIndex = startIndex + rowsPerPage;
 
   // Paginated data
-  const paginatedData = userlog.slice(startIndex, endIndex);
+  const paginatedData = userlog ? userlog.slice(startIndex, endIndex) : [];
 
   // Calculate total pages
-  const totalPages = Math.ceil(userlog.length / rowsPerPage);
+  const totalPages = userlog ? Math.ceil(userlog.length / rowsPerPage) : 0;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -57,7 +57,9 @@ export const UserLogsTable = ({ setSelected, userlog }) => {
                     <td className="px-4 py-2">{userlog.log_origin}</td>
                     <td className="px-4 py-2">{userlog.log_ip_address.split(",")[0].trim()}</td>
                     <td className="px-4 py-2">{userlog.log_description}</td>
-                    <td className="px-4 py-2">{new Date(userlog.date_created).toLocaleString()}</td>
+                    <td className="px-4 py-2">
+                      {new Date(userlog.log_date_created).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
             </tbody>

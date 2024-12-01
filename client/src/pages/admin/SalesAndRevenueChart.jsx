@@ -6,13 +6,24 @@ import { SuccessContext } from "../../context/Success";
 import { UserContext } from "../../context/User";
 import LineChart from "../../components/ui/LineChart";
 import API from "../../service/API";
-
+import jsPDF from "jspdf";
+import * as htmlToImage from "html-to-image";
+import TopItem from "../../components/ui/TopTables";
+import useAuthCheck from "../../hooks/useAuthCheck";
 const lineChartData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
-      label: "",
-      data: [],
+      label: "Sales",
+      data: localStorage.getItem("report") ? JSON.parse(localStorage.getItem("report"))[0] : [],
+      backgroundColor: "rgba(255, 22, 49, 0.9)",
+      borderColor: "rgba(216, 23, 45, 0.9)",
+      borderWidth: 2,
+      pointBackgroundColor: "rgba(216, 23, 45, 0.9)",
+    },
+    {
+      label: "Revenue",
+      data: localStorage.getItem("report") ? JSON.parse(localStorage.getItem("report"))[1] : [],
       backgroundColor: "rgba(75,192,192,0.4)",
       borderColor: "rgba(75,192,192,1)",
       borderWidth: 2,
@@ -48,16 +59,18 @@ const SalesAndRevenueChart = ({
   const [data, setData] = useState();
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [reloadKey, setReloadKey] = useState(0);
-
+  const [topItem, settopItem] = useState([]);
+  const [topOffer, settopOffer] = useState([]);
+  const [year, setYear] = useState(JSON.parse(localStorage.getItem("reportYear")));
+  useAuthCheck();
   const reloadComponent = () => {
     setReloadKey((prevKey) => prevKey + 1);
   };
 
   useEffect(() => {
     fetchCurrentUser();
-    fetchtotalSales();
-    fetchtotalRevenue();
   }, []);
+
   // Theme color definitions
   const themeColors =
     theme === "night"
@@ -71,6 +84,9 @@ const SalesAndRevenueChart = ({
         };
 
   const fetchtotalSales = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/totalsales`,
       method: "GET",
@@ -95,6 +111,9 @@ const SalesAndRevenueChart = ({
   };
 
   const fetchtotalRevenue = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/totalrevenue`,
       method: "GET",
@@ -118,7 +137,57 @@ const SalesAndRevenueChart = ({
     }
   };
 
+  const fetchTopItems = async () => {
+    if (!user) {
+      return;
+    }
+    const config = {
+      url: `${serverUrl}/reports/view/topitembyyear?year=${year}`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.topitemDataByYear) {
+        console.log(res.data.topitemDataByYear);
+        settopItem(res.data.topitemDataByYear);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchTopOffer = async () => {
+    if (!user) {
+      return;
+    }
+    const config = {
+      url: `${serverUrl}/reports/view/topofferbyyear?year=${year}`,
+      method: "GET",
+      data: {},
+    };
+
+    const { res, error } = await API(config);
+
+    if (res) {
+      if (res.data.topofferDataByYear) {
+        settopOffer(res.data.topofferDataByYear);
+      }
+    }
+
+    if (error) {
+      console.log(error);
+    }
+  };
+
   const fetchCurrentUser = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/account/view-account`,
       method: "POST",
@@ -139,157 +208,176 @@ const SalesAndRevenueChart = ({
     }
   };
 
-  return (
-    <div
-      className="chart-container"
-      style={{
-        padding: "20px",
-        backgroundColor: themeColors.bgColor,
-        color: themeColors.textColor,
-        borderRadius: "10px",
-        maxWidth: "900px",
-        margin: "0 auto",
-      }}
-    >
-      {/* Logo and Title Section */}
-      <div
-        className="header"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "10px",
-        }}
-      >
-        <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "15px" }} />
-        <h1
+  const onButtonClick = () => {
+    let domElement = document.getElementById("custom-sales-and-revenue-report");
+
+    // Use htmlToImage to generate the image
+    htmlToImage
+      .toPng(domElement)
+      .then(function (dataUrl) {
+        console.log(dataUrl);
+
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+
+        // Adjust the image size and position based on the page dimensions
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Adjust the scaling if the content is too large for the page
+        const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
+        const scaledWidth = imgProps.width * ratio;
+        const scaledHeight = imgProps.height * ratio;
+
+        // Add the image to the PDF
+        pdf.addImage(dataUrl, "PNG", 5, 20, scaledWidth, scaledHeight);
+
+        // Save the generated PDF
+        pdf.save("SalesAndRevenueReport.pdf");
+      })
+      .catch(function (error) {
+        console.error("Oops, something went wrong!", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchTopItems();
+    fetchTopOffer();
+
+    return () => {
+      settopItem();
+      settopOffer();
+    };
+  }, []);
+
+  return !user ? (
+    <></>
+  ) : (
+    <div className="flex place-content-center mx-auto w-full">
+      <div id="custom-sales-and-revenue-report" className="w-8/12">
+        <button
+          onClick={onButtonClick}
+          type="button"
+          className="fixed bottom-5 right-5 z-10 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+        >
+          <i className="fa-regular fa-circle-down"></i> Download
+        </button>
+        <div
+          className="chart-container"
           style={{
-            fontWeight: "bold",
-            fontSize: "1.8rem",
-            margin: 0,
+            padding: "20px",
+            backgroundColor: themeColors.bgColor,
             color: themeColors.textColor,
-          }}
-        >
-          Pugad Maharlika
-        </h1>
-      </div>
-
-      {/* Generated Info Section */}
-      <div
-        style={{
-          textAlign: "left",
-          marginBottom: "20px",
-          fontSize: "0.9rem",
-          color: themeColors.textColor,
-        }}
-      >
-        <p>
-          <strong>Generated by:</strong>{" "}
-          {currentUser &&
-            currentUser.acc_fname + " " + currentUser.acc_mname + " " + currentUser.acc_lname}
-        </p>
-        <p>
-          <strong>Date Printed:</strong> {new Date().toLocaleString()}
-        </p>
-      </div>
-
-      {/* Chart */}
-      <div className="flex mb-5 gap-5 justify-center mt-4">
-        <div
-          className={`place-content-center  rounded-xl p-5 shadow-md flex flex-wrap flex-2 flex-col gap-5 w-full max-w-lg max-h-64 bg-${theme}`}
-        >
-          <LineChart data={lineChart} title_text={"Yearly Sales"} />
-        </div>
-        <div
-          className={`rounded-xl p-5 shadow-md flex flex-2 flex-col gap-5 w-full max-w-[35rem] xl:max-w-lg max-h-64  bg-${theme}`}
-        >
-          <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
-        </div>
-      </div>
-
-      {/* Bottom Tables Section */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "30px",
-        }}
-      >
-        {/* Top Offers Table */}
-        <div
-          style={{
-            width: "48%",
-            backgroundColor: themeColors.bgColor,
             borderRadius: "10px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            padding: "15px",
+            maxWidth: "900px",
+            margin: "0 auto",
           }}
         >
-          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Top Offers</h3>
-          <table
+          {/* Logo and Title Section */}
+          <div
+            className="header"
             style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              color: themeColors.textColor,
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
             }}
           >
-            <thead>
-              <tr>
-                <th style={{ textAlign: "center" }}>Item</th>
-                <th style={{ textAlign: "center" }}>Sold</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { item: "Offer 1", sold: 150 },
-                { item: "Offer 2", sold: 120 },
-                { item: "Offer 3", sold: 80 },
-              ].map((offer, index) => (
-                <tr key={index}>
-                  <td style={{ textAlign: "center" }}>{offer.item}</td>
-                  <td style={{ textAlign: "center" }}>{offer.sold}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "15px" }} />
+            <h1
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.8rem",
+                margin: 0,
+                color: themeColors.textColor,
+              }}
+            >
+              Pugad Maharlika
+            </h1>
+          </div>
 
-        {/* Top Items Table */}
-        <div
-          style={{
-            width: "48%",
-            backgroundColor: themeColors.bgColor,
-            borderRadius: "10px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            padding: "15px",
-          }}
-        >
-          <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Top Items</h3>
-          <table
+          {/* Chart */}
+          <div className="flex mb-5 gap-5 justify-center mt-4">
+            <LineChart data={lineChart} title_text={"Yearly Sales"} isLegend={true} />
+          </div>
+
+          {/* Bottom Tables Section */}
+          <div
             style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              color: themeColors.textColor,
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "30px",
             }}
           >
-            <thead>
-              <tr>
-                <th style={{ textAlign: "center" }}>Item</th>
-                <th style={{ textAlign: "center" }}>Sold</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { item: "Item A", sold: 250 },
-                { item: "Item B", sold: 200 },
-                { item: "Item C", sold: 180 },
-              ].map((item, index) => (
-                <tr key={index}>
-                  <td style={{ textAlign: "center" }}>{item.item}</td>
-                  <td style={{ textAlign: "center" }}>{item.sold}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            {/* Top Offers Table */}
+            <div>
+              <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Offers</h3>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  color: themeColors.textColor,
+                }}
+              >
+                <thead>
+                  <tr>
+                    <TopItem
+                      column={{
+                        column1: "Offer",
+                        column2: "Unit Sold",
+                        column3: "Date Created",
+                      }}
+                      topItem={topOffer}
+                    />
+                  </tr>
+                </thead>
+              </table>
+            </div>
+
+            {/* Top Items Table */}
+            <div>
+              <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Items</h3>
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  color: themeColors.textColor,
+                }}
+              >
+                <thead>
+                  <tr>
+                    <TopItem
+                      column={{
+                        column1: "Item",
+                        column2: "Unit Sold",
+                        column3: "Date Created",
+                      }}
+                      topItem={topItem}
+                    />
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+          {/* Generated Info Section */}
+          <div
+            style={{
+              textAlign: "left",
+              marginBottom: "20px",
+              fontSize: "0.9rem",
+              color: themeColors.textColor,
+              marginTop: "30px",
+            }}
+          >
+            <p>
+              <strong>Generated by:</strong>{" "}
+              {currentUser &&
+                currentUser.acc_fname + " " + currentUser.acc_mname + " " + currentUser.acc_lname}
+            </p>
+            <p>
+              <strong>Date Printed:</strong> {new Date().toLocaleString()}
+            </p>
+          </div>
         </div>
       </div>
     </div>

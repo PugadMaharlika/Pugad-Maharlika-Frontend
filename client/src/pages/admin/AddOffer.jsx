@@ -32,7 +32,7 @@ export const AddOffer = ({ setSelected }) => {
     console.log(url);
     setErrors([]);
     setSuccess(false);
-    
+
     if (!name || !value || !price || !description) {
       setErrors(["All fields are required..."]);
       return;
@@ -70,9 +70,7 @@ export const AddOffer = ({ setSelected }) => {
   };
 
   return (
-    
     <div className="col-span-8 overflow-hidden rounded-lg text-xs md:text-md w-full px-4 md:px-8 h-full">
-      
       <div className="flex justify-between items-center py-4">
         <h1 className="text-xl md:text-3xl font-bold">Add Offer</h1>
         <button
@@ -85,11 +83,11 @@ export const AddOffer = ({ setSelected }) => {
           <i className="fa-solid fa-circle-chevron-left text-2xl md:text-3xl"></i>
         </button>
       </div>
-       <div
-      className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
-        theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
-      }`}
-    >
+      <div
+        className={`col-span-8 flex flex-col md:flex-row  items-center w-full p-4 md:p-8 text-xs md:text-md w-64 px-8 sm:w-full py-10 ${
+          theme === "night" ? "bg-night text-white " : "bg-fantasy text-black"
+        }`}
+      >
         {/* Image uploading */}
         <div className="flex flex-col items-center mb-5 md:mb-0 w-full md:w-1/3">
           <div className="relative">
@@ -131,7 +129,14 @@ export const AddOffer = ({ setSelected }) => {
             max="9999999"
             placeholder="Value"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              if (parseInt(e.target.value) <= 0) {
+                setSuccess(true);
+                setErrors(["Min of 100"]);
+              } else {
+                setValue(e.target.value);
+              }
+            }}
             className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
           />
           <input
@@ -140,7 +145,14 @@ export const AddOffer = ({ setSelected }) => {
             max="9999999"
             placeholder="Price"
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) => {
+              if (parseInt(e.target.value) <= 0) {
+                setSuccess(true);
+                setErrors(["Min of 100"]);
+              } else {
+                setPrice(e.target.value);
+              }
+            }}
             className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
           />
 

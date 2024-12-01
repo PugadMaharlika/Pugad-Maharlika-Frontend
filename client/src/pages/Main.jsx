@@ -37,6 +37,7 @@ import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
 import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
 import UserLogsChart from "./admin/UserLogsChart";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -56,7 +57,8 @@ function Main({ theme, toggleTheme }) {
   const [feedback, setFeedback] = useState([]);
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
-
+  const [selectedFeedback, setselectedfeedbackID] = useState(null);
+  useAuthCheck();
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -75,23 +77,23 @@ function Main({ theme, toggleTheme }) {
         },
       })
       .then((response) => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
         setSuccess(true);
         setErrors([success]);
         setUser(null);
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
+        localStorage.removeItem("user");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
         navigate("/");
       });
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("refreshToken");
     await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
@@ -111,7 +113,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -119,7 +121,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Notifications"}
+          title={"Notification"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -206,7 +208,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Offers"}
+          title={"Offer"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -214,7 +216,7 @@ function Main({ theme, toggleTheme }) {
           selected={selected}
           theme={theme}
           sideBarOpen={sideBarOpen}
-          title={"Notifications"}
+          title={"Notification"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -270,7 +272,9 @@ function Main({ theme, toggleTheme }) {
 
   useInactivityTimeout(handleLogout);
 
-  return (
+  return !user ? (
+    <></>
+  ) : (
     <>
       {/* Logout Dialog */}
       <ConfirmationDialog
@@ -283,7 +287,7 @@ function Main({ theme, toggleTheme }) {
         buttonText={"Logout"}
       />
       {/* Main Content */}
-      <div className={`flex flex-row w-screen `}>
+      <div className={`flex flex-row w-screen`}>
         {/* Drawer */}
         <div
           className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] max-h-svh p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
@@ -473,9 +477,19 @@ function Main({ theme, toggleTheme }) {
                   transactionSelected={transactionSelected}
                 />
               )}
-              {selected === "Reports" && <Reports theme={theme} setSelected={setSelected} />}
+              {selected === "Reports" && (
+                <Reports
+                  theme={theme}
+                  setSelected={setSelected}
+                  setselectedfeedbackID={setselectedfeedbackID}
+                />
+              )}
               {selected === "FeedBackDetails" && (
-                <FeedBackDetails theme={theme} setSelected={setSelected} feedback={feedback} />
+                <FeedBackDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedFeedback={selectedFeedback}
+                />
               )}
             </div>
           </div>

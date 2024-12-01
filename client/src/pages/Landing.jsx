@@ -62,12 +62,13 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
           </div>
           <div className="mr-auto place-self-center lg:col-span-7 ">
             <h1 className="max-w-2xl mb-4 text-center text-3xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl md:text-left lg:text-left">
-              Pugad Maharlika: Mobile 2D Fighting Game of Philippine History, Culture, and Martial
-              Arts
+              Pugad Maharlika: Mobile 2D Fighting Game of Philippine History,
+              Culture, and Martial Arts
             </h1>
 
             <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl ">
-              Unleash the Warrior Within: Dive into the Rich Tapestry of Philippine Heritage!
+              Unleash the Warrior Within: Dive into the Rich Tapestry of
+              Philippine Heritage!
             </p>
             <div className="flex ">
               <button
@@ -117,8 +118,9 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
             <div className="p-6">
               <p className="text-lg  mb-2  font-bold">History</p>
               <p className="text-base">
-                Engage in dynamic 2D combat, showcasing traditional Filipino martial arts and iconic
-                fighting styles in thrilling, action-packed battles.
+                Engage in dynamic 2D combat, showcasing traditional Filipino
+                martial arts and iconic fighting styles in thrilling,
+                action-packed battles.
               </p>
             </div>
           </div>
@@ -133,8 +135,9 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
             <div className="p-6">
               <p className="text-lg mb-2 font-bold">Exploration</p>
               <p className="text-base">
-                Discover vibrant and immersive environments reflecting the diverse landscapes of the
-                Philippines, each with unique challenges and secrets.
+                Discover vibrant and immersive environments reflecting the
+                diverse landscapes of the Philippines, each with unique
+                challenges and secrets.
               </p>
             </div>
           </div>
@@ -149,8 +152,9 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
             <div className="p-6">
               <p className="text-lg  mb-2  font-bold">Fighting</p>
               <p className="text-base">
-                Engage in dynamic 2D combat, showcasing traditional Filipino martial arts and iconic
-                fighting styles in thrilling, action-packed battles.
+                Engage in dynamic 2D combat, showcasing traditional Filipino
+                martial arts and iconic fighting styles in thrilling,
+                action-packed battles.
               </p>
             </div>
           </div>
@@ -161,19 +165,26 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
       <section className="mt-20">
         <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
           <div className="font-light  sm:text-lg">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold e">About Pugad Maharlika</h2>
+            <h2 className="mb-4 text-4xl tracking-tight font-extrabold e">
+              About Pugad Maharlika
+            </h2>
             <p className="mb-4">
-              PUGAD MAHARLIKA is a mobile 2D Fighting Game about Philippine History, Culture, and
-              Martial Arts, aimed at enriching our culture by providing newer ways to learn. It
-              helps players engage with Philippine History in an interactive and immersive manner.
+              PUGAD MAHARLIKA is a mobile 2D Fighting Game about Philippine
+              History, Culture, and Martial Arts, aimed at enriching our culture
+              by providing newer ways to learn. It helps players engage with
+              Philippine History in an interactive and immersive manner.
             </p>
             <p>
-              Join us on a journey that celebrates and deepens your connection with the vibrant
-              traditions and heroic tales of the Philippines.
+              Join us on a journey that celebrates and deepens your connection
+              with the vibrant traditions and heroic tales of the Philippines.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4 mt-8">
-            <img className="w-full rounded-lg" src={diego1} alt="Deigo Silang" />
+            <img
+              className="w-full rounded-lg"
+              src={diego1}
+              alt="Deigo Silang"
+            />
             <img
               className="mt-4 w-full lg:mt-10 rounded-lg"
               src={gabriela1}
@@ -191,13 +202,21 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
           }`}
         >
           <div className="mx-auto max-w-screen-sm text-center mb-8 lg:mb-16">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold ">Meet The Team</h2>
-            <p className="font-light lg:mb-16 sm:text-xl">CTU-MAIN BSIT 4-B PowerPuffBoys</p>
+            <h2 className="mb-4 text-4xl tracking-tight font-extrabold ">
+              Meet The Team
+            </h2>
+            <p className="font-light lg:mb-16 sm:text-xl">
+              CTU-MAIN BSIT 4-B PowerPuffBoys
+            </p>
           </div>
           <div className="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2 lg:grid-cols-4">
             {/* Oneal */}
             <div className="text-center ">
-              <img className="mx-auto mb-4 w-36 h-36 rounded-full" src={oneal} alt="Oneal Avatar" />
+              <img
+                className="mx-auto mb-4 w-36 h-36 rounded-full"
+                src={oneal}
+                alt="Oneal Avatar"
+              />
               <h3 className="mb-1 text-2xl font-bold tracking-tight">
                 <a href="#">Oneal Ryan Torres</a>
               </h3>
@@ -217,19 +236,23 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
             </div>
             {/* Louie */}
             <div className="text-center ">
-              <img className="mx-auto mb-4 w-36 h-36 rounded-full" src={louie} alt="Louie Avatar" />
+              <img
+                className="mx-auto mb-4 w-36 h-36 rounded-full"
+                src={louie}
+                alt="Louie Avatar"
+              />
               <h3 className="mb-1 text-2xl font-bold tracking-tight">
                 <a href="#">Louie Jay Natividad</a>
               </h3>
               <p>Hustler</p>
               <ul className="flex justify-center mt-4 space-x-4">
                 <li>
-                  <a href="https://www.facebook.com/onealryan.torres.9">
+                  <a href="https://www.facebook.com/lj.theivory">
                     <i className="fa-brands fa-facebook lg:text-2xl"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/OnealTorres">
+                  <a href="https://github.com/RoriBambino">
                     <i className="fa-brands fa-github lg:text-2xl"></i>
                   </a>
                 </li>
@@ -248,12 +271,12 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
               <p>Hipster</p>
               <ul className="flex justify-center mt-4 space-x-4">
                 <li>
-                  <a href="https://www.facebook.com/onealryan.torres.9">
+                  <a href="https://www.facebook.com/justinecabezas12">
                     <i className="fa-brands fa-facebook lg:text-2xl"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/OnealTorres">
+                  <a href="https://github.com/justincabezas">
                     <i className="fa-brands fa-github lg:text-2xl"></i>
                   </a>
                 </li>
@@ -261,19 +284,23 @@ function Landing({ theme, toggleTheme, handleCoookie, cookie }) {
             </div>
             {/* Shane */}
             <div className="text-center ">
-              <img className="mx-auto mb-4 w-36 h-36 rounded-full" src={shane} alt="Shane Avatar" />
+              <img
+                className="mx-auto mb-4 w-36 h-36 rounded-full"
+                src={shane}
+                alt="Shane Avatar"
+              />
               <h3 className="mb-1 text-2xl font-bold tracking-tight">
                 <a href="#">Shane Audrey Tagpuno</a>
               </h3>
               <p>Hacker</p>
               <ul className="flex justify-center mt-4 space-x-4">
                 <li>
-                  <a href="https://www.facebook.com/onealryan.torres.9">
+                  <a href="https://web.facebook.com/profile.php?id=100010099233830">
                     <i className="fa-brands fa-facebook lg:text-2xl"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/OnealTorres">
+                  <a href="hhttps://github.com/SHANEXT">
                     <i className="fa-brands fa-github lg:text-2xl"></i>
                   </a>
                 </li>

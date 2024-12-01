@@ -109,7 +109,9 @@ export const AddItem = ({ setSelected }) => {
                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
-            <p className="mt-2 text-gray-600 text-sm text-center">Click to upload a new image</p>
+            <p className="mt-2 text-gray-600 text-sm text-center">
+              Click to upload a new image
+            </p>
           </div>
 
           {/* Form fields */}
@@ -127,7 +129,14 @@ export const AddItem = ({ setSelected }) => {
               max="99999999999"
               placeholder="Value"
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                if (parseInt(e.target.value) <= 0) {
+                  setSuccess(true);
+                  setErrors(["Min of 100"]);
+                } else {
+                  setValue(e.target.value);
+                }
+              }}
               className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
             />
             <select
@@ -161,7 +170,10 @@ export const AddItem = ({ setSelected }) => {
               className="w-5/6 border border-gray-300 p-3 rounded-lg mx-auto"
             ></textarea>
             <div className="flex justify-end w-5/6 mx-auto">
-              <button className="bg-green-500 px-6 py-2 text-white rounded-lg" onClick={handleItem}>
+              <button
+                className="bg-green-500 px-6 py-2 text-white rounded-lg"
+                onClick={handleItem}
+              >
                 Add
               </button>
             </div>

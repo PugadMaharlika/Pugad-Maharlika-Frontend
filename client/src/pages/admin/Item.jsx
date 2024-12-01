@@ -72,17 +72,30 @@ export const Item = ({ setSelected, setSelectedItem }) => {
           Add Item
         </button>
       </div>
-      <div className="flex flex-row flex-wrap gap-2">
-        {items &&
-          items.map((item) => (
-            <ItemCard
-              key={item.item_id}
-              setSelected={setSelected}
-              user={user}
-              item={item}
-              setSelectedItem={setSelectedItem}
-            />
-          ))}
+      <p className="flex flex-row flex-grow text-xs ml-3 py-3 gap-3">
+        Legend
+        <div className="flex items-center space-x-2 ">
+          <div className="w-3 h-3 bg-red-500"></div>
+          <span className="text-xs">Unreleased</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-green-500"></div>
+          <span className="text-xs">Released</span>
+        </div>
+      </p>
+      <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center sm:items-start w-full mt-4">
+        <div className="flex flex-row flex-wrap gap-2">
+          {items &&
+            items.map((item) => (
+              <ItemCard
+                key={item.item_id}
+                setSelected={setSelected}
+                user={user}
+                item={item}
+                setSelectedItem={setSelectedItem}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );

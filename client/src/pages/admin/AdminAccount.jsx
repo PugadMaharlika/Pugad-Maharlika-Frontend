@@ -69,8 +69,7 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
   const handleUpdateAdmin = async () => {
     setErrors([]);
     setSuccess(false);
-    if (!gold || !perlas) {
-    } else if (gold.length > 9 || perlas.length > 9 || gold < 0 || perlas < 0) {
+    if (gold.length > 9 || perlas.length > 9 || gold < 0 || perlas < 0) {
       setSuccess(false);
       setErrors(["Please enter a valid amount!"]);
       return;
@@ -136,7 +135,11 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
                 className="w-full h-auto rounded-lg mb-4"
               />
             ) : (
-              <img src={logo} alt="Default" className="w-full h-auto rounded-lg mb-4" />
+              <img
+                src={logo}
+                alt="Default"
+                className="w-full h-auto rounded-lg mb-4"
+              />
             )}
           </div>
         </div>
@@ -150,7 +153,11 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
               type="text"
               value={
                 useraccount &&
-                useraccount.acc_fname + " " + useraccount.acc_mname + " " + useraccount.acc_lname
+                useraccount.acc_fname +
+                  " " +
+                  useraccount.acc_mname +
+                  " " +
+                  useraccount.acc_lname
               }
               placeholder="Username"
               className="w-full p-2 rounded-lg border"
@@ -211,7 +218,9 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
               value={
                 (useraccount &&
                   Math.trunc(
-                    (useraccount.acc_win / (useraccount.acc_win + useraccount.acc_lose)) * 100
+                    (useraccount.acc_win /
+                      (useraccount.acc_win + useraccount.acc_lose)) *
+                      100
                   )) ||
                 0
               }
@@ -264,7 +273,9 @@ export const AdminAccount = ({ setSelected, selectedadmin }) => {
                 handleToggleStatus();
               }}
               className={`py-2 px-4 rounded text-white ${
-                status ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
+                status
+                  ? "bg-red-500 hover:bg-red-700"
+                  : "bg-green-500 hover:bg-green-700"
               }`}
             >
               {status ? "Deactivate" : "Activate"}

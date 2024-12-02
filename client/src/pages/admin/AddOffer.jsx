@@ -13,7 +13,7 @@ export const AddOffer = ({ setSelected }) => {
   const [value, setValue] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("G");
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
   const [user, setUser] = useContext(UserContext);
@@ -65,7 +65,6 @@ export const AddOffer = ({ setSelected }) => {
   };
 
   const handleOfferImg = async () => {
-    console.log(image);
     await UploadImage(image, setSuccess, setErrors, handleCreateOffer, user);
   };
 
@@ -109,9 +108,7 @@ export const AddOffer = ({ setSelected }) => {
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
             />
           </div>
-          <p className="mt-2 text-gray-600 text-sm md:text-base">
-            Click to upload a new image
-          </p>
+          <p className="mt-2 text-gray-600 text-sm md:text-base">Click to upload a new image</p>
         </div>
 
         {/* Input fields */}
@@ -161,7 +158,9 @@ export const AddOffer = ({ setSelected }) => {
             onChange={(e) => setType(e.target.value)}
             className="w-full p-2 rounded-lg mb-4 border border-gray-300 focus:border-green-500"
           >
-            <option value="G">Gold</option>
+            <option default value="G">
+              Gold
+            </option>
             <option value="P">Perlas</option>
           </select>
 

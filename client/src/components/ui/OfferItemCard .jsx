@@ -168,7 +168,7 @@ export const OfferItemCard = ({ setSelected, offer, setOfferselected }) => {
         )}
       </div>
       <img
-        className="w-full h-52 object-cover"
+        className="w-full h-60 object-cover rounded-lg"
         src={offer && offer.ofr_sprite}
         alt="card"
       />

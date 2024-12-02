@@ -58,6 +58,7 @@ function Main({ theme, toggleTheme }) {
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
   const [selectedFeedback, setselectedfeedbackID] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   useAuthCheck();
   const navigate = useNavigate();
 
@@ -267,6 +268,7 @@ function Main({ theme, toggleTheme }) {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
       setSideBarOpen(false);
+      setIsMobile(true);
     }
   }, []);
 
@@ -287,11 +289,11 @@ function Main({ theme, toggleTheme }) {
         buttonText={"Logout"}
       />
       {/* Main Content */}
-      <div className={`flex flex-row w-screen`}>
+      <div className={`flex flex-row w-screen overflow-x-hidden`}>
         {/* Drawer */}
         <div
           className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] max-h-svh p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
-            sideBarOpen ? "flex min-w-[240px]" : "w-20 flex"
+            sideBarOpen ? "flex min-w-[240px]" : isMobile ? "hidden" : "w-20 flex"
           }`}
         >
           <div className="mb-2 px-2 py-4">

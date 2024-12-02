@@ -54,7 +54,6 @@ const Profile = ({ theme }) => {
       .then((response) => {
         setSuccess(true);
         setErrors([success]);
-        setUser(response.data.account);
       })
       .catch((error) => {
         console.log(error);

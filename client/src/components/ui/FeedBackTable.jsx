@@ -69,7 +69,7 @@ export const FeedbackTable = ({ setSelected, feedback, setselectedfeedbackID }) 
                         <td className="px-4 py-2">{Fback.fdbk_type}</td>
                         <td className="px-4 py-2">{Fback.fdbk_title}</td>
                         <td className="px-4 py-2">
-                          {new Date(Fback.fdbk_date_created).toLocaleString}
+                          {new Date(Fback.date_created).toLocaleString()}
                         </td>
                       </tr>
                     );

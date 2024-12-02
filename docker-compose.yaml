@@ -8,6 +8,9 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - NODE_OPTIONS="--max-old-space-size=1024"
       - PORT=8080
+    
+    mem_limit: 1g
     stdin_open: true
     tty: true

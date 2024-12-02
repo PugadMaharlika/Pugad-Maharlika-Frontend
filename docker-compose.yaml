@@ -1,12 +1,16 @@
 services:
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        REACT_APP_SERVER_URL: "https://pugad-maharlika-backend.onrender.com"
     container_name: client_c
     ports:
-      - "80:8080"
-
-    volumes:
-      - "./client:/app"
-
+      - "8080:8080"
+    environment:
+      - NODE_OPTIONS="--max-old-space-size=1024"
+      - PORT=8080
+    
+    mem_limit: 1g
     stdin_open: true
     tty: true

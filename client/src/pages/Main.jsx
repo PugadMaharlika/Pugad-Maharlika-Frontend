@@ -33,6 +33,8 @@ import AdminDashboard from "./admin/AdminDashboard";
 import { AdminManagement } from "./admin/AdminManagement";
 import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
+import { Classroom } from "./user/Classroom";
+import { Batch } from "./user/Batch";
 import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
 import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
@@ -59,6 +61,7 @@ function Main({ theme, toggleTheme }) {
   const [selectedplayer, setSelectedPlayer] = useState(null);
   const [selectedFeedback, setselectedfeedbackID] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState(null);
   useAuthCheck();
   const navigate = useNavigate();
 
@@ -131,6 +134,14 @@ function Main({ theme, toggleTheme }) {
           theme={theme}
           sideBarOpen={sideBarOpen}
           title={"Transactions"}
+          handleSelectedButton={handleSelectedButton}
+        />
+        <DrawerButton
+          icon={<i className="fa-solid fa-book pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Classroom"}
           handleSelectedButton={handleSelectedButton}
         />
         <DrawerButton
@@ -492,6 +503,16 @@ function Main({ theme, toggleTheme }) {
                   setSelected={setSelected}
                   selectedFeedback={selectedFeedback}
                 />
+              )}
+              {selected === "Classroom" && (
+                <Classroom
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedBatch={setSelectedBatch}
+                />
+              )}
+              {selected === "Batch" && (
+                <Batch theme={theme} setSelected={setSelected} selectedBatch={selectedBatch} />
               )}
             </div>
           </div>

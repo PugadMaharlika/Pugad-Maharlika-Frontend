@@ -29,6 +29,7 @@ function useAuthCheck() {
       )
       .then((response) => {
         setUser(response.data.account);
+
         localStorage.setItem("authToken", response.data.token);
       })
       .catch((error) => {

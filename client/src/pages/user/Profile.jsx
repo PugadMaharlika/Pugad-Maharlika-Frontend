@@ -14,6 +14,9 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 const Profile = ({ theme }) => {
   const [profile, setProfile] = useState("");
   const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [middlename, setMiddlename] = useState("");
+  const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [success, setSuccess] = useContext(SuccessContext);
@@ -76,6 +79,20 @@ const Profile = ({ theme }) => {
     );
   };
 
+  const handleName = async () => {
+    if (!firstname || !lastname) {
+      setSuccess(false);
+      setErrors(["Not a valid name!"]);
+      return;
+    }
+    await handlePutRequest(
+      "/profile/update-name",
+      { firstname: firstname, middlename: middlename, lastname: lastname },
+      "Success! name has been changed"
+    );
+    const newUser = user;
+  };
+
   const handlePassword = async () => {
     if (!password || !newpassword) {
       setSuccess(false);
@@ -119,6 +136,53 @@ const Profile = ({ theme }) => {
         <div className="pt-4">
           <h1 className="py-2   font-semibold">Account Profile</h1>
         </div>
+
+        <hr className="mt-4 mb-8" />
+        <p className="py-2   font-semibold">Username</p>
+        <div className="flex flex-col md:flex-row md:items-center gap-1 sm:justify-between">
+          <p className="">
+            Name:{" "}
+            <strong>
+              {user.fname
+                ? user.fname && user.fname + " " + (user.mname ? user.mname : "") + " " + user.lname
+                : "Blank"}
+            </strong>
+          </p>
+          <p className=""></p>
+          <div className="relative flex flex-col gap-5 overflow-hidden rounded-md  transition focus-within:border-blue-600">
+            <input
+              type="text"
+              id="firstname"
+              className="w-full flex-shrink appearance-none rounded-lg border-solid border-2 border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+              placeholder={"Firstname"}
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+            />
+            <input
+              type="text"
+              id="middlename"
+              className="w-full flex-shrink appearance-none rounded-lg border-solid border-2 border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+              placeholder={"Middlename"}
+              value={middlename}
+              onChange={(e) => setMiddlename(e.target.value)}
+            />
+            <input
+              type="text"
+              id="lastname"
+              className="w-full flex-shrink appearance-none rounded-lg border-solid border-2 border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+              placeholder={"Lastname"}
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
+            />
+          </div>
+          <button
+            onClick={handleName}
+            className="inline-flex   font-semibold text-blue-600 hover:underline decoration-2"
+          >
+            Change
+          </button>
+        </div>
+
         <hr className="mt-4 mb-8" />
         <p className="py-2   font-semibold">Profile Picture</p>
         <div className="flex flex-col md:flex-row sm:items-left sm:justify-between">

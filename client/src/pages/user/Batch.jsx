@@ -793,7 +793,7 @@ export const Batch = ({ setSelected, selectedBatch }) => {
           </div>
         </div>
         <div
-          className={`bg-white rounded-lg w-full h-auto my-3 p-4 flex flex-col ${batch.acc_id != user.id && "hidden"}`}
+          className={`bg-${theme} rounded-lg w-full h-auto my-3 p-4 flex flex-col ${batch.acc_id != user.id && "hidden"}`}
         >
           <h3 className="font-bold text-[20px] mb-2 flex flex-row justify-between">
             Students

@@ -37,20 +37,7 @@ export const Reports = ({
   const [totalSales, settotalSales] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [lineChart, setLineChart] = useState({
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
         label: "",
@@ -63,20 +50,7 @@ export const Reports = ({
     ],
   });
   const [lineChartRevenue, setLineChartRevenue] = useState({
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
         label: "",
@@ -90,10 +64,7 @@ export const Reports = ({
   });
 
   const [totaRevenue, settotalRevenue] = useState([]);
-  const years = Array.from(
-    { length: endYear - startYear + 1 },
-    (_, i) => startYear + i
-  );
+  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [type, setType] = useState("All");
@@ -108,9 +79,7 @@ export const Reports = ({
     const { res, error } = await API(config);
 
     if (res) {
-      if (res.data.feedbackData) {
-        setFeedback(res.data.feedbackData);
-      }
+      setFeedback(res.data.feedbackData);
     }
 
     if (error) {
@@ -128,9 +97,7 @@ export const Reports = ({
     const { res, error } = await API(config);
 
     if (res) {
-      if (res.data.userlogData) {
-        setUserLog(res.data.userlogData);
-      }
+      setUserLog(res.data.userlogData);
     }
 
     if (error) {
@@ -322,7 +289,6 @@ export const Reports = ({
 
     if (res) {
       if (res.data.totrevenueSearch) {
-        console.log(res.data.totrevenueSearch);
         settotalRevenue(res.data.totrevenueSearch);
         setLineChartRevenue((prevData) => ({
           ...prevData,
@@ -483,7 +449,6 @@ export const Reports = ({
       const { res, error } = await API(config);
       if (res) {
         if (res.data.feedbackType) {
-          console.log(res.data.feedbackType);
           setFeedback(res.data.feedbackType);
         }
       }
@@ -548,11 +513,7 @@ export const Reports = ({
       }
     } catch (error) {
       console.log(error);
-      setErrors(
-        error.response?.data?.errors.map((err) => err.msg) || [
-          "An error occurred.",
-        ]
-      );
+      setErrors(error.response?.data?.errors.map((err) => err.msg) || ["An error occurred."]);
     }
   };
 
@@ -598,10 +559,7 @@ export const Reports = ({
               className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
               onClick={() => {
                 window.open("/sales-revenue-chart", "_blank");
-                localStorage.setItem(
-                  "report",
-                  JSON.stringify([totalSales, totaRevenue])
-                );
+                localStorage.setItem("report", JSON.stringify([totalSales, totaRevenue]));
               }}
             >
               Generate
@@ -614,23 +572,16 @@ export const Reports = ({
             <div
               className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              {lineChart.datasets[0].data && (
-                <div className="w-full h-full flex items-center justify-center">
-                  <LineChart data={lineChart} title_text={"Yearly Sales"} />
-                </div>
-              )}
+              <div className="w-full h-full flex items-center justify-center">
+                <LineChart data={lineChart} title_text={"Yearly Sales"} />
+              </div>
             </div>
             <div
               className={`rounded-xl p-5 shadow-md flex flex-col gap-5 w-full sm:w-[48%] lg:max-w-lg max-h-64 bg-${theme} items-center justify-center`}
             >
-              {lineChartRevenue.datasets[0].data && (
-                <div className="w-full h-full flex items-center justify-center">
-                  <LineChart
-                    data={lineChartRevenue}
-                    title_text={"Yearly Revenue"}
-                  />
-                </div>
-              )}
+              <div className="w-full h-full flex items-center justify-center">
+                <LineChart data={lineChartRevenue} title_text={"Yearly Revenue"} />
+              </div>
             </div>
           </div>
 

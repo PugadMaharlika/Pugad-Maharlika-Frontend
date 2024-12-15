@@ -1,11 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../context/Theme";
 
-export const FeedbackTable = ({
-  setSelected,
-  feedback,
-  setselectedfeedbackID,
-}) => {
+export const FeedbackTable = ({ setSelected, feedback, setselectedfeedbackID }) => {
   const [theme, setTheme] = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5; // Number of rows per page
@@ -72,7 +68,9 @@ export const FeedbackTable = ({
                         <td className="px-4 py-2">{Fback.acc_username}</td>
                         <td className="px-4 py-2">{Fback.fdbk_type}</td>
                         <td className="px-4 py-2">{Fback.fdbk_title}</td>
-                        <td className="px-4 py-2">{Fback.date_created}</td>
+                        <td className="px-4 py-2">
+                          {new Date(Fback.date_created).toLocaleString()}
+                        </td>
                       </tr>
                     );
                   })}
@@ -96,9 +94,7 @@ export const FeedbackTable = ({
               <button
                 onClick={handleNextPage}
                 className={`px-4 py-2 rounded ${
-                  currentPage === totalPages
-                    ? "bg-gray-500 text-white"
-                    : "bg-blue-900 text-white"
+                  currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
                 }`}
                 disabled={currentPage === totalPages}
               >

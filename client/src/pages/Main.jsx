@@ -34,10 +34,13 @@ import { AdminManagement } from "./admin/AdminManagement";
 import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
 import { Feedbacks } from "../pages/user/Feedbacks";
+import { Classroom } from "./user/Classroom";
+import { Batch } from "./user/Batch";
 import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
 import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
 import UserLogsChart from "./admin/UserLogsChart";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -58,7 +61,9 @@ function Main({ theme, toggleTheme }) {
   const [selectedadmin, setSelectedAdmin] = useState(null);
   const [selectedplayer, setSelectedPlayer] = useState(null);
   const [selectedFeedback, setselectedfeedbackID] = useState(null);
-
+  const [isMobile, setIsMobile] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState(null);
+  useAuthCheck();
   const navigate = useNavigate();
 
   const toggleSideBar = () => {
@@ -77,23 +82,23 @@ function Main({ theme, toggleTheme }) {
         },
       })
       .then((response) => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
         setSuccess(true);
         setErrors([success]);
         setUser(null);
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        setSuccess(false);
-        setErrors(error.response.data.errors.map((error) => error.msg));
+        localStorage.removeItem("user");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
         navigate("/");
       });
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("refreshToken");
     await handlePutRequest("/auth/logout", {}, "Logout Successful");
   };
 
@@ -142,6 +147,14 @@ function Main({ theme, toggleTheme }) {
           handleSelectedButton={handleSelectedButton}
         />
 
+        <DrawerButton
+          icon={<i className="fa-solid fa-book pl-0.5 md-pl-0"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Classroom"}
+          handleSelectedButton={handleSelectedButton}
+        />
         <DrawerButton
           icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
           selected={selected}
@@ -277,12 +290,15 @@ function Main({ theme, toggleTheme }) {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
       setSideBarOpen(false);
+      setIsMobile(true);
     }
   }, []);
 
   useInactivityTimeout(handleLogout);
 
-  return (
+  return !user ? (
+    <></>
+  ) : (
     <>
       {/* Logout Dialog */}
       <ConfirmationDialog
@@ -295,11 +311,15 @@ function Main({ theme, toggleTheme }) {
         buttonText={"Logout"}
       />
       {/* Main Content */}
-      <div className={`flex flex-row w-screen `}>
+      <div className={`flex flex-row w-screen overflow-x-hidden`}>
         {/* Drawer */}
         <div
           className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] max-h-svh p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
-            sideBarOpen ? "flex min-w-[240px]" : "w-20 flex"
+            sideBarOpen
+              ? "flex min-w-[240px]"
+              : isMobile
+                ? "hidden"
+                : "w-20 flex"
           }`}
         >
           <div className="mb-2 px-2 py-4">
@@ -519,6 +539,20 @@ function Main({ theme, toggleTheme }) {
               )}
 
               {selected === "Feedback" && <Feedbacks theme={theme} />}
+              {selected === "Classroom" && (
+                <Classroom
+                  theme={theme}
+                  setSelected={setSelected}
+                  setSelectedBatch={setSelectedBatch}
+                />
+              )}
+              {selected === "Batch" && (
+                <Batch
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedBatch={selectedBatch}
+                />
+              )}
             </div>
           </div>
         </div>

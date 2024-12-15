@@ -33,6 +33,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import { AdminManagement } from "./admin/AdminManagement";
 import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
+import { Feedbacks } from "../pages/user/Feedbacks";
 import { Classroom } from "./user/Classroom";
 import { Batch } from "./user/Batch";
 import PlayerManagement from "./admin/PlayerManagement";
@@ -136,6 +137,16 @@ function Main({ theme, toggleTheme }) {
           title={"Transactions"}
           handleSelectedButton={handleSelectedButton}
         />
+
+        <DrawerButton
+          icon={<i className="fa-solid fa-comments"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Feedback"}
+          handleSelectedButton={handleSelectedButton}
+        />
+
         <DrawerButton
           icon={<i className="fa-solid fa-book pl-0.5 md-pl-0"></i>}
           selected={selected}
@@ -304,7 +315,11 @@ function Main({ theme, toggleTheme }) {
         {/* Drawer */}
         <div
           className={`relative flex-1 h-svh flex-col bg-base-100 border-r-2 border-transparent text-fantasy  w-full max-w-[20rem] max-h-svh p-2 md:p-4 shadow-xl shadow-blue-gray-900/5 ${
-            sideBarOpen ? "flex min-w-[240px]" : isMobile ? "hidden" : "w-20 flex"
+            sideBarOpen
+              ? "flex min-w-[240px]"
+              : isMobile
+                ? "hidden"
+                : "w-20 flex"
           }`}
         >
           <div className="mb-2 px-2 py-4">
@@ -354,9 +369,13 @@ function Main({ theme, toggleTheme }) {
               theme === "night" ? "bg-space" : "bg-gray-200"
             }`}
           >
-            <div className={`flex-grow flex justify-center m-3 pb-10 border-solid`}>
+            <div
+              className={`flex-grow flex justify-center m-3 pb-10 border-solid`}
+            >
               {/* Content */}
-              {selected === "Dashboard" && user.role != "P" && <AdminDashboard theme={theme} />}
+              {selected === "Dashboard" && user.role != "P" && (
+                <AdminDashboard theme={theme} />
+              )}
               {selected === "Dashboard" && user.role === "P" && (
                 <Dashboard setSelected={setSelected} theme={theme} />
               )}
@@ -389,7 +408,9 @@ function Main({ theme, toggleTheme }) {
               {selected === "SalesAndRevenueChart" && user.role !== "P" && (
                 <SalesAndRevenueChart theme={theme} />
               )}
-              {selected === "UserLogsChart" && user.role !== "P" && <UserLogsChart theme={theme} />}
+              {selected === "UserLogsChart" && user.role !== "P" && (
+                <UserLogsChart theme={theme} />
+              )}
               {selected === "Player" && user.role !== "P" && (
                 <PlayerManagement
                   theme={theme}
@@ -404,7 +425,9 @@ function Main({ theme, toggleTheme }) {
                   selectedplayer={selectedplayer}
                 />
               )}
-              {selected === "AddOffer" && <AddOffer theme={theme} setSelected={setSelected} />}
+              {selected === "AddOffer" && (
+                <AddOffer theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ViewOffer" && (
                 <ViewOffer
                   theme={theme}
@@ -467,12 +490,22 @@ function Main({ theme, toggleTheme }) {
                   setSelectedItem={setSelectedItem}
                 />
               )}
-              {selected === "AddItem" && <AddItem theme={theme} setSelected={setSelected} />}
+              {selected === "AddItem" && (
+                <AddItem theme={theme} setSelected={setSelected} />
+              )}
               {selected === "ItemDetails" && (
-                <ItemDetails theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <ItemDetails
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "UpdateItem" && (
-                <UpdateItem theme={theme} setSelected={setSelected} selectedItem={selectedItem} />
+                <UpdateItem
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedItem={selectedItem}
+                />
               )}
               {selected === "Transactions" && (
                 <Transactions
@@ -504,6 +537,8 @@ function Main({ theme, toggleTheme }) {
                   selectedFeedback={selectedFeedback}
                 />
               )}
+
+              {selected === "Feedback" && <Feedbacks theme={theme} />}
               {selected === "Classroom" && (
                 <Classroom
                   theme={theme}
@@ -512,7 +547,11 @@ function Main({ theme, toggleTheme }) {
                 />
               )}
               {selected === "Batch" && (
-                <Batch theme={theme} setSelected={setSelected} selectedBatch={selectedBatch} />
+                <Batch
+                  theme={theme}
+                  setSelected={setSelected}
+                  selectedBatch={selectedBatch}
+                />
               )}
             </div>
           </div>

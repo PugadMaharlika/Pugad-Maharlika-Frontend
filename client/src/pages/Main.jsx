@@ -33,6 +33,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import { AdminManagement } from "./admin/AdminManagement";
 import { AddAdminAccount } from "./admin/AddAdminAccount";
 import { AdminAccount } from "./admin/AdminAccount";
+import { Feedbacks } from "../pages/user/Feedbacks";
 import PlayerManagement from "./admin/PlayerManagement";
 import PlayerAccount from "./admin/PlayerAccount";
 import SalesAndRevenueChart from "./admin/SalesAndRevenueChart";
@@ -131,6 +132,16 @@ function Main({ theme, toggleTheme }) {
           title={"Transactions"}
           handleSelectedButton={handleSelectedButton}
         />
+
+        <DrawerButton
+          icon={<i className="fa-solid fa-comments"></i>}
+          selected={selected}
+          theme={theme}
+          sideBarOpen={sideBarOpen}
+          title={"Feedback"}
+          handleSelectedButton={handleSelectedButton}
+        />
+
         <DrawerButton
           icon={<i className="fa-solid fa-user pl-0.5 md-pl-0"></i>}
           selected={selected}
@@ -506,6 +517,8 @@ function Main({ theme, toggleTheme }) {
                   selectedFeedback={selectedFeedback}
                 />
               )}
+
+              {selected === "Feedback" && <Feedbacks theme={theme} />}
             </div>
           </div>
         </div>

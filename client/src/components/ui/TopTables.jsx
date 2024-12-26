@@ -26,7 +26,9 @@ export const TopItem = ({ column, topItem }) => {
                   <tr key={topItems.id}>
                     <td className="px-4 py-2">{topItems.item_name}</td>
                     <td className="px-4 py-2">{topItems.unit_sold}</td>
-                    <td className="px-4 py-2">{topItems.date_created}</td>
+                    <td className="px-4 py-2">
+                      {new Date(topItems.date_created).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
             </tbody>

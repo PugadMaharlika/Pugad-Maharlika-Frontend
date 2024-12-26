@@ -55,12 +55,10 @@ export const UserLogsTable = ({ setSelected, userlog }) => {
                     <td className="px-4 py-2">{userlog.acc_username}</td>
                     <td className="px-4 py-2">{userlog.log_type}</td>
                     <td className="px-4 py-2">{userlog.log_origin}</td>
-                    <td className="px-4 py-2">
-                      {userlog.log_ip_address.split(",")[0].trim()}
-                    </td>
+                    <td className="px-4 py-2">{userlog.log_ip_address.split(",")[0].trim()}</td>
                     <td className="px-4 py-2">{userlog.log_description}</td>
                     <td className="px-4 py-2">
-                      {new Date(userlog.date_created).toLocaleString()}
+                      {new Date(userlog.log_date_created).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -93,9 +91,7 @@ export const UserLogsTable = ({ setSelected, userlog }) => {
             <button
               onClick={handleNextPage}
               className={`px-4 py-2 rounded ${
-                currentPage === totalPages
-                  ? "bg-gray-500 text-white"
-                  : "bg-blue-900 text-white"
+                currentPage === totalPages ? "bg-gray-500 text-white" : "bg-blue-900 text-white"
               }`}
               disabled={currentPage === totalPages}
             >

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import axios from "axios";
 import Alert from "./ui/Alert";
@@ -17,6 +17,7 @@ function Registration({ theme }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useContext(SuccessContext);
   const [errors, setErrors] = useContext(AlertsContext);
+  const [isTeacher, setIsTeacher] = useState(false);
 
   // Tooltip visibility state
   const [showTooltip, setShowTooltip] = useState(false);
@@ -41,7 +42,7 @@ function Registration({ theme }) {
     axios
       .post(
         `${serverUrl}/auth/register`,
-        { username: username, email: email, password: password },
+        { username: username, email: email, password: password, isTeacher: isTeacher },
         {
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +99,7 @@ function Registration({ theme }) {
               <i className="fa-solid fa-x"></i>
             </button>
           </div>
-          <form className="space-y-4">
+          <form className="space-y-2">
             <h5 className="text-xl text-center font-medium">Sign Up</h5>
             <div>
               <label htmlFor="username" className="block mb-2 text-sm font-medium">
@@ -116,6 +117,7 @@ function Registration({ theme }) {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
+
             <div>
               <label htmlFor="email" className="block mb-2 text-sm font-medium">
                 <i className="fa-regular fa-envelope mr-2"></i>
@@ -132,6 +134,18 @@ function Registration({ theme }) {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+            <label className="label cursor-pointer">
+              <span className="label-text">Are you a teacher?</span>
+              <div className="label-text mt-2">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    setIsTeacher(!isTeacher);
+                  }}
+                  className="toggle toggle-xs"
+                />
+              </div>
+            </label>
             <div>
               <label htmlFor="password" className="block mb-2 text-sm font-medium">
                 <i className="fa-solid fa-shield-halved mr-2"></i>

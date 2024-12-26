@@ -178,7 +178,7 @@ function Dashboard({ setSelected }) {
               <p className="text-xs text-nowrap w-24 ">Deigo Silang </p>
               <progress
                 className="progress progress-info my-2 mx-4 w-full"
-                value={user.progress && (user.progress.stories.story1.completed / 6) * 100}
+                value={user.progress ? (user.progress.stories.story1.completed / 6) * 100 : 0}
                 max="100"
               ></progress>
             </div>
@@ -186,7 +186,7 @@ function Dashboard({ setSelected }) {
               <p className="text-xs text-nowrap w-20 ">Gabriela Silang </p>
               <progress
                 className="progress progress-info my-2 mx-4 w-full"
-                value={user.progress && (user.progress.stories.story2.completed / 6) * 100}
+                value={user.progress ? (user.progress.stories.story2.completed / 6) * 100 : 0}
                 max="100"
               ></progress>
             </div>

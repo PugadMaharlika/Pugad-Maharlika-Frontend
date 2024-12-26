@@ -29,16 +29,14 @@ function ForgotPassword({ theme }) {
             code: response.data.code,
           };
 
-          emailjs
-            .send("service_fp4kl58", "template_l6cbh1m", templateParams)
-            .then(
-              (response) => {
-                console.log("SUCCESS!", response.status, response.text);
-              },
-              (error) => {
-                console.log("FAILED...", error);
-              },
-            );
+          emailjs.send("service_fp4kl58", "template_l6cbh1m", templateParams).then(
+            (response) => {
+              console.log("SUCCESS!", response.status, response.text);
+            },
+            (error) => {
+              console.log("FAILED...", error);
+            }
+          );
           setSuccess(true);
           setErrors(["Success! check email for verification"]);
         })
@@ -66,7 +64,7 @@ function ForgotPassword({ theme }) {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       )
       .then((response) => {
         setSuccess(true);
@@ -96,18 +94,14 @@ function ForgotPassword({ theme }) {
             <span className="flex-2 w-full "></span>
             <button
               id="forget_password_modal_close"
-              onClick={() =>
-                document.getElementById("forget_password_modal").close()
-              }
+              onClick={() => document.getElementById("forget_password_modal").close()}
               className="flex-1 hover:underline mt-2  "
             >
               <i className="fa-solid fa-x "></i>
             </button>
           </div>
           <form className="space-y-4" action="#">
-            <h5 className="text-xl text-center font-medium ">
-              Forgot Passsword
-            </h5>
+            <h5 className="text-xl text-center font-medium ">Forgot Passsword</h5>
             <div>
               <label htmlFor="email" className="block mb-2 text-sm font-medium">
                 <i className="fa-regular fa-envelope mr-2"></i>
@@ -147,7 +141,7 @@ function ForgotPassword({ theme }) {
                 name="code"
                 id="code"
                 className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-night "
-                placeholder="example@gmail.com"
+                placeholder="123abc"
                 value={code}
                 onChange={(e) => {
                   setCode(e.target.value);
@@ -156,10 +150,7 @@ function ForgotPassword({ theme }) {
               />
             </div>
             <div>
-              <label
-                htmlFor="new_password"
-                className="block mb-2 text-sm font-medium"
-              >
+              <label htmlFor="new_password" className="block mb-2 text-sm font-medium">
                 <i className="fa-solid fa-shield-halved mr-2"></i>
                 New Password
               </label>
@@ -168,7 +159,7 @@ function ForgotPassword({ theme }) {
                 name="new_password"
                 id="new_password"
                 className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-night  "
-                placeholder="example@gmail.com"
+                placeholder="************"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);

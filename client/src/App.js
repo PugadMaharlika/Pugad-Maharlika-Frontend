@@ -38,6 +38,7 @@ function App() {
                 index
                 element={
                   <Landing
+                    path="/"
                     cookie={cookie}
                     theme={theme}
                     toggleTheme={toggleTheme}
@@ -45,20 +46,11 @@ function App() {
                   />
                 }
               />
-              <Route
-                path="/app"
-                element={<Main theme={theme} toggleTheme={toggleTheme} />}
-              />
+              <Route path="/app" element={<Main theme={theme} toggleTheme={toggleTheme} />} />
               {/* Add new route for SalesAndRevenueChart */}
-              <Route
-                path="/sales-revenue-chart"
-                element={<SalesAndRevenueChart theme={theme} />}
-              />
+              <Route path="/sales-revenue-chart" element={<SalesAndRevenueChart theme={theme} />} />
               {/* Add new route for UserLogsChart */}
-              <Route
-                path="/user-logs-chart"
-                element={<UserLogsChart theme={theme} />}
-              />
+              <Route path="/user-logs-chart" element={<UserLogsChart theme={theme} />} />
             </Routes>
           </Success>
         </Alerts>

@@ -24,11 +24,22 @@ const lineChartData = {
 };
 
 function AdminDashboard() {
-  useAuthCheck();
   const [theme, setTheme] = useContext(ThemeContext);
   const [user, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(true);
-  const [lineChart, setLineChart] = useState(lineChartData);
+  const [lineChart, setLineChart] = useState({
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(75,192,192,1)",
+      },
+    ],
+  });
   const [counter, setCounter] = useState([]);
   const [monthlyPlayer, setMonthlyPlayer] = useState([]);
   const [recentTransaction, setRecentTransaction] = useState([]);
@@ -52,8 +63,15 @@ function AdminDashboard() {
           setRecentTransaction(res.data.transactions);
           setRecentRegistration(res.data.registrations);
           lineChartData.datasets[0].data = res.data.monthly;
-          setLineChart(lineChartData);
-          console.log(res.data.transactions);
+          setLineChart((prevData) => ({
+            ...prevData,
+            datasets: [
+              {
+                ...prevData.datasets[0],
+                data: res.data.monthly, // New data
+              },
+            ],
+          }));
         }
         if (error) {
           console.log(error);

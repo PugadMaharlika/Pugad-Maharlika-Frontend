@@ -75,13 +75,6 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
 
   return (
     <>
-      <button
-        onClick={onButtonClick}
-        type="button"
-        className="fixed bottom-5 right-5 z-10 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-      >
-        <i className="fa-regular fa-circle-down"></i> Download
-      </button>
       <div
         id="custom-receipt"
         className="relative bg-white border rounded-lg shadow-lg px-6 py-8 flex-grow min-w-20 mx-auto mt-8"
@@ -96,6 +89,15 @@ export const Receipt = ({ setSelected, transactionSelected }) => {
         >
           <i className="fa-solid fa-circle-chevron-left text-3xl"></i>
         </button>
+
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <img
+            src="logo1.png"
+            alt="Pugad Maharlika Logo"
+            className="h-16 w-auto"
+          />
+        </div>
 
         <h1 className="font-bold text-2xl my-4 text-center text-blue-600">
           Pugad Maharlika

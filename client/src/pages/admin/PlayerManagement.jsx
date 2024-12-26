@@ -6,21 +6,6 @@ import { UserContext } from "../../context/User";
 import { SuccessContext } from "../../context/Success";
 import { AlertsContext } from "../../context/Alerts";
 import API from "../../service/API";
-
-var lineChartData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "Player Registration",
-      data: [],
-      backgroundColor: "rgba(54, 162, 235, 0.4)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      borderWidth: 2,
-      pointBackgroundColor: "rgba(54, 162, 235, 1)",
-    },
-  ],
-};
-
 const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
   const [theme] = useContext(ThemeContext);
   const [accvalues, setAccValues] = useState([]);
@@ -31,7 +16,19 @@ const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [charts, setCharts] = useState("");
-  const [linecharts, setLineCharts] = useState(lineChartData);
+  const [linecharts, setLineCharts] = useState({
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Player Registration",
+        data: [],
+        backgroundColor: "rgba(54, 162, 235, 0.4)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(54, 162, 235, 1)",
+      },
+    ],
+  });
 
   const handleChangePage = (account) => {
     setSelected("PlayerAccount");
@@ -56,8 +53,15 @@ const PlayerManagement = ({ setSelected, setSelectedPlayer }) => {
       setIsLoading(false);
       setAccValues(res.data.players);
       setCharts(res.data.charts);
-      lineChartData.datasets[0].data = res.data.charts;
-      setLineCharts(lineChartData);
+      setLineCharts((prevData) => ({
+        ...prevData,
+        datasets: [
+          {
+            ...prevData.datasets[0],
+            data: res.data.charts, // New data
+          },
+        ],
+      }));
       console.log(res.data.charts);
     }
     if (error) {

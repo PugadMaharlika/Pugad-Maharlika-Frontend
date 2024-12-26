@@ -7,20 +7,6 @@ import { SuccessContext } from "../../context/Success";
 import { AlertsContext } from "../../context/Alerts";
 import API from "../../service/API";
 
-var lineChartData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  datasets: [
-    {
-      label: "Admin Registration",
-      data: [],
-      backgroundColor: "rgba(54, 162, 235, 0.4)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      borderWidth: 2,
-      pointBackgroundColor: "rgba(54, 162, 235, 1)",
-    },
-  ],
-};
-
 export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   const [theme, setTheme] = useContext(ThemeContext);
   const [accvalues, setAccValues] = useState([]);
@@ -31,7 +17,19 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [charts, setCharts] = useState("");
-  const [linecharts, setLineCharts] = useState(lineChartData);
+  const [linecharts, setLineCharts] = useState({
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Admin Registration",
+        data: [],
+        backgroundColor: "rgba(54, 162, 235, 0.4)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 2,
+        pointBackgroundColor: "rgba(54, 162, 235, 1)",
+      },
+    ],
+  });
 
   const handleChangePage = (account) => {
     setSelected("AdminAccount");
@@ -52,12 +50,18 @@ export const AdminManagement = ({ setSelected, setSelectedAdmin }) => {
 
     const { res, error } = await API(config);
     if (res) {
-      console.log(res.data.admins);
       setIsLoading(false);
       setAccValues(res.data.admins);
       setCharts(res.data.charts);
-      lineChartData.datasets[0].data = res.data.charts;
-      setLineCharts(lineChartData);
+      setLineCharts((prevData) => ({
+        ...prevData,
+        datasets: [
+          {
+            ...prevData.datasets[0],
+            data: res.data.charts, // New data
+          },
+        ],
+      }));
     }
     if (error) {
       setErrors(error.response.data.errors.map((error) => error.msg));

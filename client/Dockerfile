@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY  package.json .
 
-ENV REACT_APP_SERVER_URL="http://localhost:5050"
+ENV REACT_APP_SERVER_URL="https://pugad-maharlika-backend.onrender.com"
 ENV PORT=8080
 ENV BROWSER=none
 

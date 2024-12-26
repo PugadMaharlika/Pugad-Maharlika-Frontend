@@ -9,28 +9,13 @@ import API from "../../service/API";
 import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 import TopItem from "../../components/ui/TopTables";
-
+import useAuthCheck from "../../hooks/useAuthCheck";
 const lineChartData = {
-  labels: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ],
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
       label: "Sales",
-      data: localStorage.getItem("report")
-        ? JSON.parse(localStorage.getItem("report"))[0]
-        : [],
+      data: localStorage.getItem("report") ? JSON.parse(localStorage.getItem("report"))[0] : [],
       backgroundColor: "rgba(255, 22, 49, 0.9)",
       borderColor: "rgba(216, 23, 45, 0.9)",
       borderWidth: 2,
@@ -38,9 +23,7 @@ const lineChartData = {
     },
     {
       label: "Revenue",
-      data: localStorage.getItem("report")
-        ? JSON.parse(localStorage.getItem("report"))[1]
-        : [],
+      data: localStorage.getItem("report") ? JSON.parse(localStorage.getItem("report"))[1] : [],
       backgroundColor: "rgba(75,192,192,0.4)",
       borderColor: "rgba(75,192,192,1)",
       borderWidth: 2,
@@ -50,20 +33,7 @@ const lineChartData = {
 };
 
 const lineChartRevenueData = {
-  labels: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ],
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   datasets: [
     {
       label: "",
@@ -82,8 +52,7 @@ const SalesAndRevenueChart = ({
   printedDate = new Date().toLocaleDateString(),
 }) => {
   const [lineChart, setLineChart] = useState(lineChartData);
-  const [lineChartRevenue, setLineChartRevenue] =
-    useState(lineChartRevenueData);
+  const [lineChartRevenue, setLineChartRevenue] = useState(lineChartRevenueData);
   const [user, setUser] = useContext(UserContext);
   const [currentUser, setCurrentUser] = useState([]);
   const [errors, setErrors] = useContext(AlertsContext);
@@ -92,10 +61,8 @@ const SalesAndRevenueChart = ({
   const [reloadKey, setReloadKey] = useState(0);
   const [topItem, settopItem] = useState([]);
   const [topOffer, settopOffer] = useState([]);
-  const [year, setYear] = useState(
-    JSON.parse(localStorage.getItem("reportYear"))
-  );
-
+  const [year, setYear] = useState(JSON.parse(localStorage.getItem("reportYear")));
+  useAuthCheck();
   const reloadComponent = () => {
     setReloadKey((prevKey) => prevKey + 1);
   };
@@ -103,6 +70,7 @@ const SalesAndRevenueChart = ({
   useEffect(() => {
     fetchCurrentUser();
   }, []);
+
   // Theme color definitions
   const themeColors =
     theme === "night"
@@ -116,6 +84,9 @@ const SalesAndRevenueChart = ({
         };
 
   const fetchtotalSales = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/totalsales`,
       method: "GET",
@@ -126,8 +97,7 @@ const SalesAndRevenueChart = ({
 
     if (res) {
       if (res.data.totalsalesData) {
-        lineChartData.datasets[0].data =
-          res.data.totalsalesData[0].total_sales_array;
+        lineChartData.datasets[0].data = res.data.totalsalesData[0].total_sales_array;
         setLineChart(lineChartData);
       } else {
         setErrors(["No data found"]);
@@ -136,14 +106,14 @@ const SalesAndRevenueChart = ({
 
     if (error) {
       console.log(error);
-      setErrors([
-        error.response?.data?.errors?.map((error) => error.msg) ||
-          "An error occurred",
-      ]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
     }
   };
 
   const fetchtotalRevenue = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/totalrevenue`,
       method: "GET",
@@ -154,8 +124,7 @@ const SalesAndRevenueChart = ({
 
     if (res) {
       if (res.data.totalrevenueData) {
-        lineChartRevenueData.datasets[0].data =
-          res.data.totalrevenueData[0].monthly_totals;
+        lineChartRevenueData.datasets[0].data = res.data.totalrevenueData[0].monthly_totals;
         setLineChartRevenue(lineChartRevenueData);
       } else {
         setErrors(["No data found"]);
@@ -164,14 +133,14 @@ const SalesAndRevenueChart = ({
 
     if (error) {
       console.log(error);
-      setErrors([
-        error.response?.data?.errors?.map((error) => error.msg) ||
-          "An error occurred",
-      ]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
     }
   };
 
   const fetchTopItems = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/topitembyyear?year=${year}`,
       method: "GET",
@@ -193,6 +162,9 @@ const SalesAndRevenueChart = ({
   };
 
   const fetchTopOffer = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/reports/view/topofferbyyear?year=${year}`,
       method: "GET",
@@ -213,6 +185,9 @@ const SalesAndRevenueChart = ({
   };
 
   const fetchCurrentUser = async () => {
+    if (!user) {
+      return;
+    }
     const config = {
       url: `${serverUrl}/account/view-account`,
       method: "POST",
@@ -229,10 +204,7 @@ const SalesAndRevenueChart = ({
 
     if (error) {
       console.log(error);
-      setErrors([
-        error.response?.data?.errors?.map((error) => error.msg) ||
-          "An error occurred",
-      ]);
+      setErrors([error.response?.data?.errors?.map((error) => error.msg) || "An error occurred"]);
     }
   };
 
@@ -254,10 +226,7 @@ const SalesAndRevenueChart = ({
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
         // Adjust the scaling if the content is too large for the page
-        const ratio = Math.min(
-          pdfWidth / imgProps.width,
-          pdfHeight / imgProps.height
-        );
+        const ratio = Math.min(pdfWidth / imgProps.width, pdfHeight / imgProps.height);
         const scaledWidth = imgProps.width * ratio;
         const scaledHeight = imgProps.height * ratio;
 
@@ -282,7 +251,9 @@ const SalesAndRevenueChart = ({
     };
   }, []);
 
-  return (
+  return !user ? (
+    <></>
+  ) : (
     <div className="flex place-content-center mx-auto w-full">
       <div id="custom-sales-and-revenue-report" className="w-8/12">
         <button
@@ -312,11 +283,7 @@ const SalesAndRevenueChart = ({
               marginBottom: "10px",
             }}
           >
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ height: "50px", marginRight: "15px" }}
-            />
+            <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "15px" }} />
             <h1
               style={{
                 fontWeight: "bold",
@@ -331,11 +298,7 @@ const SalesAndRevenueChart = ({
 
           {/* Chart */}
           <div className="flex mb-5 gap-5 justify-center mt-4">
-            <LineChart
-              data={lineChart}
-              title_text={"Yearly Sales"}
-              isLegend={true}
-            />
+            <LineChart data={lineChart} title_text={"Yearly Sales"} isLegend={true} />
           </div>
 
           {/* Bottom Tables Section */}
@@ -348,9 +311,7 @@ const SalesAndRevenueChart = ({
           >
             {/* Top Offers Table */}
             <div>
-              <h3 style={{ textAlign: "center", fontWeight: "bold" }}>
-                Offers
-              </h3>
+              <h3 style={{ textAlign: "center", fontWeight: "bold" }}>Offers</h3>
               <table
                 style={{
                   width: "100%",
@@ -411,11 +372,7 @@ const SalesAndRevenueChart = ({
             <p>
               <strong>Generated by:</strong>{" "}
               {currentUser &&
-                currentUser.acc_fname +
-                  " " +
-                  currentUser.acc_mname +
-                  " " +
-                  currentUser.acc_lname}
+                currentUser.acc_fname + " " + currentUser.acc_mname + " " + currentUser.acc_lname}
             </p>
             <p>
               <strong>Date Printed:</strong> {new Date().toLocaleString()}

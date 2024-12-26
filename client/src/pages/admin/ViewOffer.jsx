@@ -66,11 +66,7 @@ export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
         </button>
       </div>
       <div className="flex  text-balance mt-5">
-        <img
-          src={offer && offer.ofr_sprite}
-          alt="Offer"
-          className="w-1/2 max-h-96 object-cover"
-        />
+        <img src={offer && offer.ofr_sprite} alt="Offer" className="w-1/2 max-h-96 object-cover" />
         <div className="ml-5">
           <h2 className="text-2xl font-bold">{offer && offer.ofr_name}</h2>
           <p className="text-base flex items-center font-thin font-sans text-xl">
@@ -84,17 +80,15 @@ export const ViewOffer = ({ setSelected, offerselected, setOfferselected }) => {
           </p>
           <p className=" mt-2"> ₱ {offer && offer.ofr_price}</p>
           <p className="mt-2">Description: {offer && offer.ofr_desc}</p>
-          <p className="mt-2">
-            Status: {offer && offer.ofr_enabled ? "Released" : "Unreleased"}
-          </p>
+          <p className="mt-2">Status: {offer && offer.ofr_enabled ? "Released" : "Unreleased"}</p>
 
           <p className="mt-2">
-            Date Created: {offer && offer.offer_date_created}
+            Date Created: {offer && new Date(offer.date_created).toLocaleString()}
           </p>
-          <p className="mt-2">
+          {/* <p className="mt-2">
             Date Updated:
-            {offer && offer.offer_date_updated}
-          </p>
+            {offer && offer.date_updated}
+          </p> */}
         </div>
       </div>
       <div className="flex w-full justify-end">

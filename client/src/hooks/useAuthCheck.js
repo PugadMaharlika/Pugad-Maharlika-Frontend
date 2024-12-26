@@ -8,11 +8,10 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 function useAuthCheck() {
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
-
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const refreshToken = localStorage.getItem("refreshToken");
-    if (!authToken || !refreshToken) {
+    if (!authToken || !refreshToken || !user) {
       navigate("/");
       return; // Exit early if no tokens
     }
@@ -30,6 +29,7 @@ function useAuthCheck() {
       )
       .then((response) => {
         setUser(response.data.account);
+
         localStorage.setItem("authToken", response.data.token);
       })
       .catch((error) => {
